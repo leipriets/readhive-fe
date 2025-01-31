@@ -1,0 +1,17 @@
+.font12 {
+  font-size: 12px;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.mr-10 {
+  margin-right: 10rem;
+}
+
+.date {
+  color: #bbb;
+  font-size: 0.8rem;
+  display: block;
+}

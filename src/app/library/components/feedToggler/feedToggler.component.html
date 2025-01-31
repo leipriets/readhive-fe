@@ -1,0 +1,34 @@
+<nz-tabset nzLinkRouter>
+    <ng-container *ngIf="currentUser$ | async as currentUser">
+      <nz-tab>
+        <a
+        *nzTabLink
+        nz-tab-link
+        routerLink="/articles"
+        [queryParams]="{tab: 'feed'}"
+        >Your Feed
+      </a>
+      Your Feed
+      </nz-tab>
+    </ng-container>
+
+    <nz-tab>
+      <a
+        *nzTabLink
+        nz-tab-link
+        routerLink="/global-feed"
+        [queryParams]="{tab: 'globalFeed'}"
+        >Global Feed
+      </a>
+    </nz-tab>
+
+    <nz-tab *ngIf="tagName">
+      <a
+        *nzTabLink
+        nz-tab-link
+        [routerLink]="['/tags', tagName]"
+        [queryParams]="{tab: tagName}"
+        ><span nz-icon nzType="borderless-table"></span>&nbsp;{{ tagName }}
+      </a>
+    </nz-tab>
+  </nz-tabset>

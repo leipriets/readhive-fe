@@ -1,0 +1,8 @@
+<ng-container *ngIf="data$ | async as data">
+  <app-article-form
+    [initialValues]="data.initialValues"
+    [isSubmitting]="data.isSubmitting"
+    [errors]="data.backendErrors"
+    (articleSubmit)="onSubmit($event)"
+  ></app-article-form>
+</ng-container>

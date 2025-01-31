@@ -1,0 +1,16 @@
+<div class="container-popular-tags">
+  <i>Popular Tags</i>
+  <nz-card [nzBordered]="false">
+    <ng-container *ngIf="data$ | async as data">
+      @for (popularTag of data.popularTags; track $index) {
+      <nz-tag nzColor="#818a91">
+        <a
+          [routerLink]="['/tags', popularTag]"
+          [queryParams]="{tab: popularTag}"
+          >{{ popularTag }}</a
+        >
+      </nz-tag>
+      }
+    </ng-container>
+  </nz-card>
+</div>

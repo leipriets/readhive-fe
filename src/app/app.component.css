@@ -1,0 +1,27 @@
+@import "ng-zorro-antd/ng-zorro-antd.dark.less";
+
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+
+nz-content {
+  margin: 1rem 10rem 1rem 10rem;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+.inner-content {
+  padding: 24px;
+  margin-top: 15px;
+  background: #fff;
+  min-height: 660px;
+}
+
+nz-footer {
+  text-align: center;
+}
+

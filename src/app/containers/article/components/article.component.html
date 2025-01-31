@@ -1,0 +1,26 @@
+<div class="mb-20">
+  <div nz-row>
+    <ng-container *ngIf="currentUser$ | async as currentUser">
+      <button
+        nz-button
+        nzSize="default"
+        nzType="primary"
+        (click)="OpenCreateArticleForm()"
+      >
+        <i
+          ><span class="right10" nz-icon nzType="edit"></span><b>New Post</b></i
+        >
+      </button>
+    </ng-container>
+  </div>
+</div>
+<div nz-row>
+  <div nz-col nzFlex="1 1 200px">
+    <app-feed-toggler></app-feed-toggler>
+  </div>
+  <div nz-col nzFlex="0 1 300px">Popular Tags</div>
+</div>
+
+<app-drawer [title]="'Create Article'">
+  <create-article content />
+</app-drawer>

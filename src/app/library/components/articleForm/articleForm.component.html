@@ -1,0 +1,96 @@
+<form nz-form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-backend-error-messages
+    *ngIf="errors"
+    [backendErrors]="errors"
+  ></app-backend-error-messages>
+  <nz-form-item>
+    <nz-form-label
+      [nzSm]="6"
+      [nzXs]="24"
+      nzFor="title"
+      nzRequired
+      nzTooltipTitle="What is your article title?"
+    >
+      <span>Title</span>
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <input
+        nz-input
+        id="title"
+        formControlName="title"
+        placeholder="Article title"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSm]="6"
+      [nzXs]="24"
+      nzFor="description"
+      nzRequired
+      nzTooltipTitle="What is your article about?"
+    >
+      <span>About</span>
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <input
+        nz-input
+        id="description"
+        formControlName="description"
+        placeholder="Article about"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSm]="6"
+      [nzXs]="24"
+      nzFor="body"
+      nzRequired
+      nzTooltipTitle="Content of your article?"
+    >
+      <span>Body</span>
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <textarea
+        nz-input
+        id="body"
+        name="body"
+        formControlName="body"
+        placeholder="Write your article (in markdown)"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSm]="6"
+      [nzXs]="24"
+      nzFor="tagList"
+      nzRequired
+      nzTooltipTitle="Enter your article tags, e.g: news"
+    >
+      <span>Tags</span>
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <input
+        nz-input
+        id="tagList"
+        formControlName="tagList"
+        placeholder="Enter Tags"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button
+        type="submit"
+        nz-button
+        nzType="primary"
+        [disabled]="form.invalid || isSubmitting"
+      >
+        Publish Article
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

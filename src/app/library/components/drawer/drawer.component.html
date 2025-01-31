@@ -1,0 +1,22 @@
+<nz-drawer
+    [nzBodyStyle]="{overflow: 'auto'}"
+    [nzMaskClosable]="false"
+    [nzWidth]="720"
+    [nzVisible]="drawerVisible$ | async"
+    [nzTitle]="title"
+    (nzOnClose)="closeDrawer()"
+    [nzFooter]="footerTpl"
+    [nzContent]="childContent"
+  >
+    <ng-template #childContent>
+      <ng-content select="[content]"></ng-content>
+    </ng-template>
+
+    <ng-template #footerTpl>
+      <div style="float: right">
+        <button nz-button style="margin-right: 8px" (click)="closeDrawer()">
+          Cancel
+        </button>
+      </div>
+    </ng-template>
+  </nz-drawer>

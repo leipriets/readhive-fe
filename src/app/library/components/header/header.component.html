@@ -1,0 +1,43 @@
+<ng-container *ngIf="data$ | async as data">
+  <nz-header nzTheme="dark">
+    <div nz-row nzTheme="dark">
+      <div
+        nzTheme="dark"
+        nz-col
+        [nzXs]="{span: 5, offset: 1}"
+        [nzLg]="{span: 6, offset: 2}"
+      >
+        <div class="logo"></div>
+        <h3 class="banner-title">BlogVerse</h3>
+      </div>
+      <div nz-col [nzXs]="{span: 10, offset: 1}" [nzLg]="{span: 11, offset: 2}">
+        <ul
+          nz-menu
+          nzTheme="dark"
+          nzMode="horizontal"
+          class="header-menu pull-right"
+        >
+          <li nz-menu-item routerLink="/" >Home</li>
+          <ng-container *ngIf="data.currentUser">
+            <li nz-submenu [nzTitle]="data.currentUser.username" nzIcon="user">
+              <ul>
+                <li nz-menu-group>
+                  <ul>
+                    <li nz-menu-item>
+                      <span nz-icon nzType="setting"></span>&nbsp;
+                      <a routerLink="/settings">Settings</a>
+                    </li>
+                    <li nz-menu-item (click)="logout()">
+                      <span nz-icon nzType="logout"></span>
+                      Logout
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </nz-header>
+</ng-container>

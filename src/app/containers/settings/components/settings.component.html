@@ -1,0 +1,77 @@
+<div class="mb50">
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>
+      <span nz-icon nzType="home"></span>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item
+      ><span nz-icon nzType="setting"></span>&nbsp;Settings</nz-breadcrumb-item
+    >
+  </nz-breadcrumb>
+</div>
+
+<form nz-form>
+  <nz-form-item>
+    <nz-form-label nzSm="6" nzXs="24" nzFor="URL of profile picture"
+      >URL of profile picture</nz-form-label
+    >
+    <nz-form-control nzSm="14" nzXs="24">
+      <input nz-input id="url" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzSm="6" nzXs="24" nzFor="username" nzRequired
+      >Username</nz-form-label
+    >
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      nzErrorTip="Please input your username!"
+    >
+      <input nz-input type="text" id="username" formControlName="username" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword"
+      >Short bio about you</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <textarea
+        nz-input
+        [nzAutosize]="{minRows: 3, maxRows: 5}"
+      ></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSm]="6"
+      [nzXs]="24"
+      nzFor="email"
+      nzRequired
+    >
+      <span>Email</span>
+    </nz-form-label>
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      nzErrorTip="Please input your email!"
+    >
+      <input nz-input id="email" formControlName="email" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="website"
+      >New password</nz-form-label
+    >
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
+      <input
+        nz-input
+        id="password"
+        formControlName="password"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button nz-button nzType="primary">Update settings</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
