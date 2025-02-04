@@ -19,6 +19,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
 import { selectCurrentUser } from '../../../containers/auth/store/reducers';
 import {selectError, selectFeedData, selectIsLoading} from './store/reducers';
 import { EmptyDataComponent } from '../emptyData/emptyData.component';
+import { AddToFavoritesComponent } from '../addToFavorites/addToFavorites.component';
 
 
 @Component({
@@ -39,6 +40,7 @@ import { EmptyDataComponent } from '../emptyData/emptyData.component';
     NzAvatarModule,
     EmptyDataComponent,
     PaginationComponent,
+    AddToFavoritesComponent
   ],
 })
 export class FeedComponent implements OnInit {
