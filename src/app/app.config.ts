@@ -44,6 +44,8 @@ import {
   popularTagsReducer,
 } from './library/components/popularTags/store/reducers';
 import { settingsFeatureKey, settingsReducer } from './containers/settings/store/reducers';
+import { AddToFavoritesService } from './library/components/addToFavorites/services/addToFavorites.service';
+import * as addToFavoritesEffect from './library/components/addToFavorites/store/effects';
 
 registerLocaleData(en);
 
@@ -71,7 +73,8 @@ export const appConfig: ApplicationConfig = {
       authEffects,
       feedEffects,
       articleEffects,
-      popularTagsEffect
+      popularTagsEffect,
+      addToFavoritesEffect
     ),
     provideNzIcons(),
     provideNzI18n(en_US),
@@ -86,5 +89,6 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75,
     }),
     DrawerService,
+    AddToFavoritesService
   ],
 };
