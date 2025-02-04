@@ -6,6 +6,8 @@ import {ArticleSlugComponent} from '../../containers/article/components/articleS
 import { GlobalFeedComponent } from '../../containers/globalFeed/components/globalFeed.component';
 import { TagFeedComponent } from '../../containers/tagFeed/components/tagFeed.component';
 import { SettingsComponent } from '../../containers/settings/components/settings.component';
+import { YourFeedComponent } from '../../containers/yourFeed/components/yourFeed.component';
+import { UserProfileComponent } from '../../containers/userProfile/components/userProfile.component';
 
 export const innerPageRoutes: Route[] = [
   {
@@ -17,6 +19,14 @@ export const innerPageRoutes: Route[] = [
         component: GlobalFeedComponent,
         loadChildren: () =>
           import('../../containers/globalFeed/globalFeed.routes').then(
+            (m) => m.routes
+          ),
+      },
+      {
+        path: 'feed',
+        component: YourFeedComponent,
+        loadChildren: () =>
+          import('../../containers/yourFeed/yourFeed.routes').then(
             (m) => m.routes
           ),
       },
@@ -57,6 +67,14 @@ export const innerPageRoutes: Route[] = [
         component: SettingsComponent,
         loadChildren: () =>
           import('../../containers/settings/settings.routes').then(
+            (m) => m.routes
+          ),
+      },
+      {
+        path: 'profile/:username',
+        component: UserProfileComponent,
+        loadChildren: () =>
+          import('../../containers/userProfile/userProfile.routes').then(
             (m) => m.routes
           ),
       },

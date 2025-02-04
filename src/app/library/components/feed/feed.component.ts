@@ -10,13 +10,15 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzSkeletonModule} from 'ng-zorro-antd/skeleton';
 import { CommonModule } from '@angular/common';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 import {environment} from '../../../../environments/environment.development';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { selectCurrentUser } from '../../../containers/auth/store/reducers';
 import {selectError, selectFeedData, selectIsLoading} from './store/reducers';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzTagModule } from 'ng-zorro-antd/tag';
+import { EmptyDataComponent } from '../emptyData/emptyData.component';
 
 
 @Component({
@@ -27,14 +29,16 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   imports: [
     CommonModule,
     RouterLink,
-    PaginationComponent,
     NzDividerModule,
     NzListModule,
     NzIconModule,
     NzButtonModule,
     NzSkeletonModule,
     NzPageHeaderModule,
-    NzTagModule
+    NzTagModule,
+    NzAvatarModule,
+    EmptyDataComponent,
+    PaginationComponent,
   ],
 })
 export class FeedComponent implements OnInit {
@@ -69,6 +73,7 @@ export class FeedComponent implements OnInit {
   fetchFeed(): void {
     const offset = this.currentPage * this.limit - this.limit;
     const parsedUrl = queryString.parseUrl(this.apiUrl);
+    console.log(parsedUrl);
     const stringifiedParams = queryString.stringify({
       limit: this.limit,
       offset,
