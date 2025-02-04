@@ -1,0 +1,30 @@
+<div nz-row>
+  <div nz-col nzSpan="4">
+    <div nz-row>
+      <nz-space [nzSize]="4">
+        <img
+          class="mb10"
+          *nzSpaceItem
+          nz-image
+          width="234px"
+          height="200px"
+          [nzSrc]="src"
+        />
+      </nz-space>
+    </div>
+    <br />
+    <div nz-row>
+      <button nz-button nzType="primary" nzBlock>Follow</button>
+    </div>
+  </div>
+  <div nz-col nzSpan="12">
+    <div nz-row>
+      <span class="pl10" nz-icon nzType="profile"></span>
+      <nz-page-header
+        nzProfileIcon
+        nzSubtitle="This is a subtitle"
+      >
+      </nz-page-header>
+    </div>
+  </div>
+</div>

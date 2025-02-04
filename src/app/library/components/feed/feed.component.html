@@ -1,47 +1,66 @@
 <nz-list nzItemLayout="vertical" *ngIf="data$ | async as data">
   <div *ngIf="data.feed">
     @for (article of data.feed.articles; track article) {
-    <nz-list-item>
-      <nz-list-item-meta>
-        <nz-list-item-meta-avatar
-          nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-        ></nz-list-item-meta-avatar>
+      <nz-list-item>
+        <nz-list-item-meta>
+          <!-- <nz-list-item-meta-avatar
+            nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          ></nz-list-item-meta-avatar> -->
+          <nz-list-item-meta-avatar>
+            <nz-avatar nzIcon="user"></nz-avatar>
+          </nz-list-item-meta-avatar>
 
-        <nz-list-item-meta-title *ngIf="data.currentUser; else redirectToLogin">
-          <a [routerLink]="['/articles', article.slug]">{{ article.title }}</a>
-        </nz-list-item-meta-title>
-
-        <ng-template #redirectToLogin>
           <nz-list-item-meta-title>
-            <a routerLink="/sp/login">{{ article.title }}</a
-            ><span></span>
+            <nz-page-header-subtitle>{{
+              article.author.username
+            }}</nz-page-header-subtitle>
           </nz-list-item-meta-title>
-        </ng-template>
 
-        <nz-list-item-meta-description>
-          {{ article.description }}
-          <br />
-          <i class="font12">Read more...</i>
-        </nz-list-item-meta-description>
-      </nz-list-item-meta>
-      <ul nz-list-item-actions>
-        <nz-list-item-action>
-          <span nz-icon nzType="heart" class="mr-8"></span>
-          {{ article.favoritesCount }}
-        </nz-list-item-action>
-      </ul>
-      <nz-list-item-extra>
-        <nz-tag nzColor="blue">
-          <span nz-icon nzType="borderless-table"></span>
-          {{ article.tagList }}</nz-tag
-        >
-      </nz-list-item-extra>
-    </nz-list-item>
+          <nz-list-item-meta-description>
+            <h3 *ngIf="data.currentUser; else redirectToLogin">
+              {{ article.title }}
+            </h3>
+
+            <ng-template #redirectToLogin>
+              <nz-list-item-meta-title>
+                <a routerLink="/sp/login">{{ article.title }}</a
+                ><span></span>
+              </nz-list-item-meta-title>
+            </ng-template>
+
+            <div class="mt10">
+              {{ article.description }}
+            </div>
+            <br />
+            <i class="font12">Read more...</i>
+          </nz-list-item-meta-description>
+        </nz-list-item-meta>
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <span nz-icon nzType="heart" class="mr-8"></span>
+            {{ article.favoritesCount }}
+          </nz-list-item-action>
+        </ul>
+        <nz-list-item-extra>
+          <nz-tag nzColor="blue">
+            <span nz-icon nzType="borderless-table"></span>
+            {{ article.tagList }}</nz-tag
+          >
+        </nz-list-item-extra>
+      </nz-list-item>
+
     }
+    <ng-container *ngIf="data.feed.articlesCount == 0">
+      <app-empty-data></app-empty-data>
+    </ng-container>
     <br />
     <app-pagination
       [total]="data.feed.articlesCount"
       [currentPage]="currentPage"
     ></app-pagination>
   </div>
+
+  <ng-template #emptyData>
+    <app-empty-data></app-empty-data>
+  </ng-template>
 </nz-list>
