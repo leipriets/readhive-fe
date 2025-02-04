@@ -6,6 +6,7 @@ import { environment } from "../../../../environments/environment.development";
 import { Injectable } from "@angular/core";
 import { RegisterRequestInterface } from "../../../containers/auth/types/registerRequest.interface";
 import { LoginRequestInterface } from "../../../containers/auth/types/loginRequest.interface";
+import { CurrentUserRequestInterface } from "../types/currentUserRequest.interface";
 
 @Injectable({
     providedIn: 'root',
@@ -36,6 +37,13 @@ export class AuthService {
     const url = environment.apiUrl + '/users/login';
     return this.http
       .post<AuthResponseInterface>(url, data)
+      .pipe(map(this.getUser));
+  }
+
+  updateCurrentUser(currentUserRequest: CurrentUserRequestInterface): Observable<CurrentUserInterface> {
+    const url = environment.apiUrl + '/user';
+    return this.http
+      .put<AuthResponseInterface>(url, currentUserRequest)
       .pipe(map(this.getUser));
   }
 

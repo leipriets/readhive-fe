@@ -43,6 +43,7 @@ import {
   popularTagsFeatureKey,
   popularTagsReducer,
 } from './library/components/popularTags/store/reducers';
+import { settingsFeatureKey, settingsReducer } from './containers/settings/store/reducers';
 
 registerLocaleData(en);
 
@@ -65,6 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideState(articleFeatureKey, articleReducer),
     provideState(drawerFeatureKey, drawerReducer),
     provideState(popularTagsFeatureKey, popularTagsReducer),
+    provideState(settingsFeatureKey, settingsReducer),
     provideEffects(
       authEffects,
       feedEffects,
