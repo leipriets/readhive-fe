@@ -40,4 +40,9 @@ export class ArticleService {
       .put<ArticleResponseInterface>(fullUrl, articleRequest)
       .pipe(map((response) => response.article));
   }
+
+  deleteArticle(slug: string): Observable<{}> {
+    const fullUrl = `${environment.apiUrl}/articles/${slug}`;
+    return this.http.delete(fullUrl);
+}
 }

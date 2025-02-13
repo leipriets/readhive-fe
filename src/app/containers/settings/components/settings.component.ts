@@ -90,8 +90,6 @@ export class SettingsComponent implements OnInit{
         },
     }
 
-    console.log(currentUserRequest);
-
     this.store.dispatch(authActions.updateCurrentUser({currentUserRequest}));
   }
 }

@@ -1,30 +1,66 @@
-<div nz-row>
-  <div nz-col nzSpan="4">
-    <div nz-row>
-      <nz-space [nzSize]="4">
-        <img
-          class="mb10"
-          *nzSpaceItem
-          nz-image
-          width="234px"
-          height="200px"
-          [nzSrc]="src"
-        />
-      </nz-space>
+<ng-container *ngIf="data$ | async as data">
+  <nz-card
+    nzBordered
+    [nzBodyStyle]="{width: '100%', maxWidth: '600px', margin: 'auto'}"
+  >
+    <div
+      class="user-profile-header"
+      style="text-align: center; margin-bottom: 16px"
+    >
+      <nz-avatar
+        [nzSize]="96"
+        nzSrc="https://via.placeholder.com/150"
+        style="margin-bottom: 12px"
+      ></nz-avatar>
+      <h2>{{ data.userProfile?.username }}</h2>
+      <ng-container *ngIf="!data.isCurrentUserProfile">
+        <app-follow-button
+          [isFollowing]="data.userProfile?.following"
+          [username]="data.userProfile?.username"
+        ></app-follow-button>
+      </ng-container>
     </div>
-    <br />
-    <div nz-row>
-      <button nz-button nzType="primary" nzBlock>Follow</button>
+
+    <nz-divider></nz-divider>
+
+    <div class="user-profile-content" style="padding: 0 24px">
+      <h3>Bio</h3>
+      <p>{{ data.userProfile?.bio }}</p>
+
+      <nz-divider></nz-divider>
     </div>
+  </nz-card>
+
+  <div class="content-wrapper">
+    <nz-tabset nzLinkRouter>
+      <nz-tab>
+        <a
+          *nzTabLink
+          nz-tab-link
+          [routerLink]="['/profile', username]"
+          [queryParams]="{tab: 'posts'}"
+          queryParamsHandling="merge"
+        >
+          <ng-container *ngIf="data.isCurrentUserProfile; else userPostTabName"
+            >My Posts</ng-container
+          >
+
+          <ng-template #userPostTabName> Posts </ng-template>
+        </a>
+      </nz-tab>
+      <nz-tab>
+        <a
+          *nzTabLink
+          nz-tab-link
+          [routerLink]="['/profile', username, 'favorites']"
+          [queryParams]="{tab: 'favorites'}"
+        >
+          Favorites Posts
+        </a>
+      </nz-tab>
+    </nz-tabset>
+    <app-new-post *ngIf="isNewPostTab"></app-new-post>
+
+    <app-feed [apiUrl]="getApiUrl()"></app-feed>
   </div>
-  <div nz-col nzSpan="12">
-    <div nz-row>
-      <span class="pl10" nz-icon nzType="profile"></span>
-      <nz-page-header
-        nzProfileIcon
-        nzSubtitle="This is a subtitle"
-      >
-      </nz-page-header>
-    </div>
-  </div>
-</div>
+</ng-container>

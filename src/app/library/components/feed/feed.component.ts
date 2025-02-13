@@ -8,11 +8,11 @@ import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzListModule} from 'ng-zorro-antd/list';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import {NzSkeletonModule} from 'ng-zorro-antd/skeleton';
 import { CommonModule } from '@angular/common';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 import {environment} from '../../../../environments/environment.development';
 import { PaginationComponent } from '../pagination/pagination.component';
@@ -20,6 +20,7 @@ import { selectCurrentUser } from '../../../containers/auth/store/reducers';
 import {selectError, selectFeedData, selectIsLoading} from './store/reducers';
 import { EmptyDataComponent } from '../emptyData/emptyData.component';
 import { AddToFavoritesComponent } from '../addToFavorites/addToFavorites.component';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 
 
 @Component({
@@ -34,13 +35,14 @@ import { AddToFavoritesComponent } from '../addToFavorites/addToFavorites.compon
     NzListModule,
     NzIconModule,
     NzButtonModule,
-    NzSkeletonModule,
+    // NzAnchorModule,
     NzPageHeaderModule,
     NzTagModule,
     NzAvatarModule,
     EmptyDataComponent,
     PaginationComponent,
-    AddToFavoritesComponent
+    AddToFavoritesComponent,
+    SkeletonComponent
   ],
 })
 export class FeedComponent implements OnInit {
@@ -75,7 +77,6 @@ export class FeedComponent implements OnInit {
   fetchFeed(): void {
     const offset = this.currentPage * this.limit - this.limit;
     const parsedUrl = queryString.parseUrl(this.apiUrl);
-    console.log(parsedUrl);
     const stringifiedParams = queryString.stringify({
       limit: this.limit,
       offset,

@@ -14,11 +14,12 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {HeaderComponent} from '../../../../library/components/header/header.component';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Store} from '@ngrx/store';
-import { authActions } from '../../store/actions';
-import { Observable, Observer } from 'rxjs';
-import { RegisterRequestInterface } from '../../types/registerRequest.interface';
+import {authActions} from '../../store/actions';
+import {Observable, Observer} from 'rxjs';
+import {RegisterRequestInterface} from '../../types/registerRequest.interface';
+import {PersistenceService} from '../../../../library/data/services/persitence.service';
 
 @Component({
   selector: 'app-register',
@@ -37,7 +38,7 @@ import { RegisterRequestInterface } from '../../types/registerRequest.interface'
   ],
   standalone: true,
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   validateForm = this.formBuilder.group(
     {
       username: ['', Validators.required],
@@ -49,7 +50,20 @@ export class RegisterComponent {
     {validator: this.confirmValidator}
   );
 
-  constructor(private formBuilder: FormBuilder, private store: Store) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store,
+    private persistenceService: PersistenceService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    const token = this.persistenceService.get('BVaccessToken');
+
+    if (token) {
+      this.router.navigateByUrl('/');
+    }
+  }
 
   resetForm(e: MouseEvent): void {
     e.preventDefault();
@@ -57,12 +71,11 @@ export class RegisterComponent {
   }
 
   confirmValidator(group: FormGroup): ValidationErrors | null | void {
-
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
 
     if (!group.value) {
-      return { error: true, required: true };
+      return {error: true, required: true};
     }
 
     if (password !== confirmPassword) {
@@ -72,12 +85,14 @@ export class RegisterComponent {
     }
   }
 
-  userNameAsyncValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+  userNameAsyncValidator(
+    control: AbstractControl
+  ): Observable<ValidationErrors | null> {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
           // you have to return `{error: true}` to mark it as an error event
-          observer.next({ error: true, duplicated: true });
+          observer.next({error: true, duplicated: true});
         } else {
           observer.next(null);
         }
@@ -88,7 +103,7 @@ export class RegisterComponent {
 
   submitForm() {
     const request: RegisterRequestInterface = {
-      user: this.validateForm.getRawValue(),    
+      user: this.validateForm.getRawValue(),
     };
 
     this.store.dispatch(authActions.register({request}));

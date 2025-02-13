@@ -21,7 +21,7 @@ export class AddToFavoritesComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    console.log(this.isFavorited);
+    // console.log(this.isFavorited);
   }
 
   handleLike(): void {
@@ -39,6 +39,5 @@ export class AddToFavoritesComponent implements OnInit {
     }
 
     this.isFavorited = !this.isFavorited;
-    console.log(this.isFavorited);
   }
 }

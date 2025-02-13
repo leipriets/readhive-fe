@@ -37,7 +37,6 @@ export class DrawerComponent {
 
   toggleDrawer() {
     // this.visible = this.drawerService.toggleDrawer();
-    // console.log(this.visible);
     this.store.dispatch(drawerActions.toggleDrawerOpen());
 
   }

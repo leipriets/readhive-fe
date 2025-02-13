@@ -15,7 +15,6 @@ export const getFeedEffect = createEffect(
       switchMap(({url}) => {
         return feedService.getFeed(url).pipe(
           map((feed: GetFeedResponseInterface) => {
-            console.log(feed);
             return feedActions.getFeedSuccess({feed});
           }),
           catchError(() => {

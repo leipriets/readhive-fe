@@ -1,4 +1,5 @@
 <nz-list nzItemLayout="vertical" *ngIf="data$ | async as data">
+  <app-skeleton *ngIf="data.isLoading"></app-skeleton>
   <div *ngIf="data.feed">
     @for (article of data.feed.articles; track article) {
     <nz-list-item>
@@ -11,15 +12,23 @@
         </nz-list-item-meta-avatar>
 
         <nz-list-item-meta-title>
-          <nz-page-header-subtitle>{{
-            article.author.username
-          }}</nz-page-header-subtitle>
+          <nz-page-header-subtitle>
+            <a
+              [routerLink]="['/profile', article.author.username]"
+              [queryParams]="{tab: 'posts'}"
+              class="username"
+            >
+              {{article.author.username}}
+            </a>
+          </nz-page-header-subtitle>
         </nz-list-item-meta-title>
 
         <nz-list-item-meta-description>
-          <h3 *ngIf="data.currentUser; else redirectToLogin">
-            {{ article.title }}
-          </h3>
+          <h4 *ngIf="data.currentUser; else redirectToLogin">
+            <a [routerLink]="['/articles', article.slug]">{{
+              article.title
+            }}</a>
+          </h4>
 
           <ng-template #redirectToLogin>
             <nz-list-item-meta-title>
@@ -45,10 +54,12 @@
         </nz-list-item-action>
       </ul>
       <nz-list-item-extra>
-        <nz-tag nzColor="blue">
-          <span nz-icon nzType="borderless-table"></span>
-          {{ article.tagList }}</nz-tag
-        >
+        <a [routerLink]="['/tags', article.tagList[0]]">
+          <nz-tag nzColor="blue">
+            <span nz-icon nzType="borderless-table"></span>
+            {{ article.tagList }}</nz-tag
+          >
+        </a>
       </nz-list-item-extra>
     </nz-list-item>
 

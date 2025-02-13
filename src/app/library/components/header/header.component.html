@@ -22,7 +22,17 @@
             <li nz-menu-item routerLink="/settings">
               <span nz-icon nzType="setting"></span>&nbsp;Settings
             </li>
-            <li nz-submenu [nzTitle]="data.currentUser.username" nzIcon="user">
+            <li
+              nz-menu-item
+              [routerLink]="['profile', data.currentUser.username]"
+              [queryParams]="{tab: 'posts'}"
+            >
+              <span nz-icon nzType="user"></span>&nbsp;{{
+                data.currentUser.username
+              }}
+            </li>
+
+            <!-- <li nz-submenu [nzTitle]="data.currentUser.username" nzIcon="user">
               <ul>
                 <li nz-menu-group>
                   <ul>
@@ -33,7 +43,7 @@
                   </ul>
                 </li>
               </ul>
-            </li>
+            </li> -->
           </ng-container>
         </ul>
       </div>

@@ -8,7 +8,7 @@ import {combineLatest} from 'rxjs';
 import {selectCurrentUser} from '../../../containers/auth/store/reducers';
 import {CommonModule} from '@angular/common';
 import { authActions } from '../../../containers/auth/store/actions';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',

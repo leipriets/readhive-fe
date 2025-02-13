@@ -25,7 +25,6 @@ export const getCurrentUserEffect = createEffect(
         }
         return authService.getCurrentUser().pipe(
           map((currentUser: CurrentUserInterface) => {
-            console.log('currentUser',currentUser);
             return authActions.getCurrentUserSuccess({currentUser});
           }),
           catchError((err) => {

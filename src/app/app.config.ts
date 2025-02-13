@@ -23,6 +23,9 @@ import * as feedEffects from '../app/library/components/feed/store/effects';
 import * as authEffects from '../app/containers/auth/store/effects';
 import * as articleEffects from '../app/containers/article/store/effects';
 import * as popularTagsEffect from './library/components/popularTags/store/effects';
+import * as addToFavoritesEffect from './library/components/addToFavorites/store/effects';
+import * as userProfileEffects from './containers/userProfile/store/effects';
+import * as followUserEffect from './library/components/followButton/store/effects';
 
 import {
   feedFeatureKey,
@@ -34,7 +37,6 @@ import {
   articleFeatureKey,
   articleReducer,
 } from './containers/article/store/reducers';
-import {DrawerService} from './library/components/drawer/services/drawerService.service';
 import {
   drawerFeatureKey,
   drawerReducer,
@@ -43,9 +45,20 @@ import {
   popularTagsFeatureKey,
   popularTagsReducer,
 } from './library/components/popularTags/store/reducers';
-import { settingsFeatureKey, settingsReducer } from './containers/settings/store/reducers';
-import { AddToFavoritesService } from './library/components/addToFavorites/services/addToFavorites.service';
-import * as addToFavoritesEffect from './library/components/addToFavorites/store/effects';
+import {
+  settingsFeatureKey,
+  settingsReducer,
+} from './containers/settings/store/reducers';
+import {
+  userProfileFeatureKey,
+  userProfileReducer,
+} from './containers/userProfile/store/reducers';
+
+import {DrawerService} from './library/components/drawer/services/drawerService.service';
+import {AddToFavoritesService} from './library/components/addToFavorites/services/addToFavorites.service';
+import {UserProfileService} from './containers/userProfile/services/userProfile.service';
+import { FollowButonService } from './library/components/followButton/services/followButton.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 registerLocaleData(en);
 
@@ -69,12 +82,16 @@ export const appConfig: ApplicationConfig = {
     provideState(drawerFeatureKey, drawerReducer),
     provideState(popularTagsFeatureKey, popularTagsReducer),
     provideState(settingsFeatureKey, settingsReducer),
+    provideState(userProfileFeatureKey, userProfileReducer),
     provideEffects(
       authEffects,
       feedEffects,
       articleEffects,
       popularTagsEffect,
-      addToFavoritesEffect
+      addToFavoritesEffect,
+      userProfileEffects,
+      followUserEffect
+
     ),
     provideNzIcons(),
     provideNzI18n(en_US),
@@ -89,6 +106,9 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75,
     }),
     DrawerService,
-    AddToFavoritesService
+    AddToFavoritesService,
+    UserProfileService,
+    FollowButonService,
+    NzModalService
   ],
 };
