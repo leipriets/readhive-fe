@@ -1,3 +1,52 @@
 .pl10 {
-    padding-left: 15px;
+  padding-left: 15px;
+}
+
+
+.content-wrapper {
+  overflow: auto;
+  padding-block: 10px;
+  margin: 0rem 10rem 0rem 10rem;
+}
+
+.content {
+  flex: 1;
+}
+
+.content p {
+  margin-bottom: 1em;
+}
+
+.content-link a {
+  margin-right: 16px;
+}
+
+.content-link a img {
+  margin-right: 8px;
+}
+
+.content-image {
+  margin: 0 0 0 0px;
+  display: flex;
+  align-items: center;
+}
+
+.content-image img {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .content-image {
+    flex: 100%;
+    margin: 24px 0 0;
+  }
+}
+
+
+.user-profile-header {
+  text-align: center;
+}
+
+.user-profile-content h3 {
+  margin-top: 16px;
 }

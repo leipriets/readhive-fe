@@ -78,6 +78,14 @@ export const innerPageRoutes: Route[] = [
             (m) => m.routes
           ),
       },
+      {
+        path: 'profile/:username/favorites',
+        component: UserProfileComponent,
+        loadChildren: () =>
+          import('../../containers/userProfile/userProfile.routes').then(
+            (m) => m.routes
+          ),
+      },
     ],
   },
 ];

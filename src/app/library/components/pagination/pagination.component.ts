@@ -34,10 +34,9 @@ export class PaginationComponent implements OnInit {
   }
 
   onPageIndexChange($event: any) {
-    console.log(this.router.url);    
-
     this.router.navigate([this.currentRoute], {
       queryParams: {page: $event, limit: this.limit},
+      queryParamsHandling: 'merge'
     });
 
     this.scrollToTop();

@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, Injectable, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 
 import {NzAvatarModule} from 'ng-zorro-antd/avatar';
 import {NzButtonModule} from 'ng-zorro-antd/button';
@@ -12,16 +12,21 @@ import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
 import {NzSpaceModule} from 'ng-zorro-antd/space';
 import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzTypographyModule} from 'ng-zorro-antd/typography';
-import {combineLatest} from 'rxjs';
+import {combineLatest, filter, map, Observable, Subscription} from 'rxjs';
 import {
   selectArticleData,
   selectError,
   selectIsLoading,
 } from '../../store/reducers';
 import {articleActions} from '../../store/actions';
-import {CommonModule, TitleCasePipe} from '@angular/common';
+import {CommonModule, Location, TitleCasePipe} from '@angular/common';
 import {DrawerComponent} from '../../../../library/components/drawer/drawer.component';
-import { EditArticleComponent } from '../editArticle/editArticle.component';
+import {EditArticleComponent} from '../editArticle/editArticle.component';
+import {selectCurrentUser} from '../../../auth/store/reducers';
+import {CurrentUserInterface} from '../../../../library/data/types/currentUser.interface';
+import {selectUserProfileData} from '../../../userProfile/store/reducers';
+import {UserProfileInterface} from '../../../userProfile/types/userProfile.interface';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-article-slug',
@@ -42,13 +47,16 @@ import { EditArticleComponent } from '../editArticle/editArticle.component';
     NzTagModule,
     NzTypographyModule,
     DrawerComponent,
-    EditArticleComponent
-  ]
+    EditArticleComponent,
+  ],
 })
 export class ArticleSlugComponent implements OnInit {
   @ViewChild(DrawerComponent, {static: false}) drawerTemplate!: DrawerComponent;
 
   slug = this.route.snapshot.paramMap.get('slug') ?? '';
+  currentUser?: CurrentUserInterface;
+  currentUserSubscription?: Subscription;
+  confirmModal?: NzModalRef;
 
   data$ = combineLatest({
     isLoading: this.store.select(selectIsLoading),
@@ -56,13 +64,38 @@ export class ArticleSlugComponent implements OnInit {
     article: this.store.select(selectArticleData),
   });
 
-  constructor(private store: Store, private route: ActivatedRoute) {}
+  modal = inject(NzModalService);
+
+  constructor(
+    private store: Store,
+    private route: ActivatedRoute,
+    private location: Location,
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(articleActions.getArticle({slug: this.slug}));
-  } 
+
+    this.currentUserSubscription = this.store
+      .pipe(select(selectCurrentUser), filter(Boolean))
+      .subscribe((currentUser: CurrentUserInterface) => {
+        this.currentUser = currentUser;
+      });
+  }
+
+  deleteArticle(): void {
+    this.confirmModal = this.modal.confirm({
+      nzTitle: 'Do you want to delete this article?',
+      nzOnOk: () => {
+        this.store.dispatch(articleActions.deleteArticle({slug: this.slug}));
+      }
+    });
+  }
 
   openDrawerComponent() {
     this.drawerTemplate.toggleDrawer();
+  }
+
+  onBack() {
+    this.location.back();
   }
 }

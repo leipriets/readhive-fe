@@ -11,6 +11,7 @@ import {DrawerComponent} from '../../../library/components/drawer/drawer.compone
 import {DrawerService} from '../../../library/components/drawer/services/drawerService.service';
 import {Store} from '@ngrx/store';
 import {drawerActions} from '../../../library/components/drawer/store/actions';
+import {NzModalService} from 'ng-zorro-antd/modal';
 
 export const getArticleEffect = createEffect(
   (actions$ = inject(Actions), articleService = inject(ArticleService)) => {
@@ -19,7 +20,6 @@ export const getArticleEffect = createEffect(
       switchMap(({slug}) => {
         return articleService.getArticle(slug).pipe(
           map((article: ArticleInterface) => {
-            console.log(article);
             return articleActions.getArticleSuccess({article});
           }),
           catchError(() => {
@@ -60,7 +60,6 @@ export const redirectAfterCreateEffect = createEffect(
     return actions$.pipe(
       ofType(articleActions.createArticleSuccess),
       tap(({article}) => {
-        console.log(article);
         router.navigate(['/articles', article.slug]);
       })
     );
@@ -105,6 +104,52 @@ export const redirectAfterUpdateEffect = createEffect(
       tap(({article}) => {
         store.dispatch(drawerActions.toggleDrawerClose());
         store.dispatch(articleActions.getArticle({slug: article.slug}));
+      })
+    );
+  },
+  {
+    functional: true,
+    dispatch: false,
+  }
+);
+
+export const deleteArticleEffect = createEffect(
+  (actions$ = inject(Actions), articleService = inject(ArticleService)) => {
+    return actions$.pipe(
+      ofType(articleActions.deleteArticle),
+      switchMap(({slug}) => {
+        return articleService.deleteArticle(slug).pipe(
+          map(() => {
+            return articleActions.deleteArticleSuccess();
+          }),
+          catchError(() => {
+            return of(articleActions.deleteArticleFailure());
+          })
+        );
+      })
+    );
+  },
+  {functional: true}
+);
+
+export const showSuccessModalAfterDeleteEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    router = inject(Router),
+    modalService = inject(NzModalService)
+  ) => {
+    return actions$.pipe(
+      ofType(articleActions.deleteArticleSuccess),
+      tap(() => {
+        const modal = modalService.success({
+          nzTitle: 'Article was successfully deleted!',
+        });
+
+        setTimeout(() => {
+          modal.destroy();
+          router.navigateByUrl('/');
+        }, 2000);
+
       })
     );
   },

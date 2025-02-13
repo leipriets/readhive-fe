@@ -14,7 +14,7 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {BackendErrorInterface} from '../../data/types/backendError.interface';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { BackendErrorMessages } from '../backendErrorMessages/backendErrorMessages.component';
 
 @Component({
@@ -40,10 +40,10 @@ export class ArticleFormComponent implements OnInit {
   @Output() articleSubmit = new EventEmitter<ArticleFormValuesInterface>();
 
   form = this.fb.nonNullable.group({
-    title: '',
-    description: '',
-    body: '',
-    tagList: '',
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+    body: ['', Validators.required],
+    tagList: ['', Validators.required],
   });
 
   constructor(private fb: FormBuilder) {}

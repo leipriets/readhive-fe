@@ -1,5 +1,5 @@
 import { PopularTagType } from "./popularTag.type";
-import { ProfileInterace } from "./profile.interface";
+import { ProfileInterface } from "./profile.interface";
 
 export interface ArticleInterface {
     id: string;
@@ -12,6 +12,6 @@ export interface ArticleInterface {
     tagList: PopularTagType[];
     title: string;
     updatedAt: string;
-    author: ProfileInterace;
+    author: ProfileInterface;
     // TODO: Add Author Interface 
 }

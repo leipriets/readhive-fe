@@ -15,7 +15,6 @@ export class BackendErrorMessages {
 
     ngOnInit(): void {
         this.errorMessages = Object.keys(this.backendErrors).map((name: string) => {
-            console.log(this.backendErrors);
             const messages = this.backendErrors[name].join(' ');
             return `${messages}`;
         });
