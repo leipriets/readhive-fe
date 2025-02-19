@@ -92,4 +92,8 @@ export class SettingsComponent implements OnInit{
 
     this.store.dispatch(authActions.updateCurrentUser({currentUserRequest}));
   }
+
+  logout(): void {
+    this.store.dispatch(authActions.logout());
+  }
 }

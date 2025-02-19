@@ -72,6 +72,13 @@
         <input nz-input id="password" formControlName="password" />
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <a nz-button nzType="link" nzDanger (click)="logout()">
+          Or Click here to logout
+        </a>
+      </nz-form-control>
+    </nz-form-item>
     <nz-form-item nz-row class="register-area">
       <nz-form-control [nzSpan]="14" [nzOffset]="6">
         <button

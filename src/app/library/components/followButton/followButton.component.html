@@ -1,0 +1,7 @@
+<div *ngIf="isFollowing else follow;">
+    <button (click)="handleFollow()" nz-button nzType="default">Following <span nz-icon nzType="check-circle"></span></button>
+</div>
+
+<ng-template #follow>
+    <button (click)="handleFollow()" nz-button nzType="primary">Follow <span nz-icon nzType="plus"></span></button>
+</ng-template>

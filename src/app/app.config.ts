@@ -57,8 +57,8 @@ import {
 import {DrawerService} from './library/components/drawer/services/drawerService.service';
 import {AddToFavoritesService} from './library/components/addToFavorites/services/addToFavorites.service';
 import {UserProfileService} from './containers/userProfile/services/userProfile.service';
-import { FollowButonService } from './library/components/followButton/services/followButton.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { FollowButtonService } from './library/components/followButton/services/followButton.service';
 
 registerLocaleData(en);
 
@@ -108,7 +108,7 @@ export const appConfig: ApplicationConfig = {
     DrawerService,
     AddToFavoritesService,
     UserProfileService,
-    FollowButonService,
+    FollowButtonService,
     NzModalService
   ],
 };
