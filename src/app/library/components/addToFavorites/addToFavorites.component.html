@@ -1,4 +1,15 @@
-<button (click)="handleLike()" nz-button nzType="text">
-  <span nz-icon nzType="heart" [nzTheme]="isFavorited ? 'fill' : 'outline'"></span>
-</button>
-<span class="ml-5">{{ favoritesCount }}</span>
+<ng-container *ngIf="currentUser$ | async as currentUser; else redirectToLogin">
+  <button (click)="handleLike()" nz-button nzType="text">
+    <span nz-icon nzType="heart" [nzTheme]="isFavorited ? 'fill' : 'outline'"></span>
+  </button>
+  <span class="ml-5">{{ favoritesCount }}</span>
+</ng-container>
+
+<ng-template #redirectToLogin>
+
+  <button routerLink="/sp/login" nz-button nzType="text">
+    <span nz-icon nzType="heart" [nzTheme]="isFavorited ? 'fill' : 'outline'"></span>
+  </button>
+  <span class="ml-5">{{ favoritesCount }}</span>
+
+</ng-template>

@@ -152,7 +152,7 @@ export const registerEffect = createEffect(
         ofType(authActions.logout),
         tap(() => {
           persistenceService.set('BVaccessToken', '');
-          router.navigateByUrl('/articles');
+          router.navigateByUrl('/global-feed');
         })
       )
     },
