@@ -12,6 +12,7 @@ import {DrawerService} from '../../../library/components/drawer/services/drawerS
 import {Store} from '@ngrx/store';
 import {drawerActions} from '../../../library/components/drawer/store/actions';
 import {NzModalService} from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 export const getArticleEffect = createEffect(
   (actions$ = inject(Actions), articleService = inject(ArticleService)) => {
@@ -157,4 +158,28 @@ export const showSuccessModalAfterDeleteEffect = createEffect(
     functional: true,
     dispatch: false,
   }
+);
+
+
+export const showErrorNotifArticleEffect = createEffect(
+  (actions$ = inject(Actions), notification = inject(NzNotificationService)) => {
+    return actions$.pipe(
+      ofType(articleActions.createArticleFailure),
+      tap(({errors}) => {
+
+        const errorKey = Object.keys(errors)[1];
+        // const errorMessage: string = errors[errorKey][0];
+
+
+        console.log(errorKey);
+
+        notification.error(
+          'Error Article',
+          '',
+          { nzDuration: 0 }
+        );
+      })
+    );
+  },
+  {functional: true, dispatch: false}
 );
