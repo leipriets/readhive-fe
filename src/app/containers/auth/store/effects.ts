@@ -91,6 +91,7 @@ export const registerEffect = createEffect(
         switchMap(({request}) => {
           return authService.login(request).pipe(
             map((currentUser: CurrentUserInterface) => {
+              console.log(currentUser);
               persistenceService.set('BVaccessToken', currentUser.token);
               return authActions.loginSuccess({currentUser});
             }),
