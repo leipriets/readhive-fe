@@ -7,7 +7,7 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
     const token = persistenceService.get('BVaccessToken');
     request = request.clone({
         setHeaders: {
-            Authorization: token ? `Token ${token}` : ''
+            Authorization: token ? `Bearer ${token}` : ''
         }
     });
 

@@ -15,6 +15,6 @@ export class PopularTagService {
     const url = environment.apiUrl + '/tags';
     return this.http
       .get<GetPopularTagsResponseInterface>(url)
-      .pipe(map((response) => response.tags));
+      .pipe(map((response) => response.data));
   }
 }
