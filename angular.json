@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "blog-verse": {
+    "read-hive": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/blog-verse",
+            "outputPath": "dist/read-hive",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "blog-verse:build:production"
+              "buildTarget": "read-hive:build:production"
             },
             "development": {
-              "buildTarget": "blog-verse:build:development"
+              "buildTarget": "read-hive:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -147,11 +147,13 @@ export const registerEffect = createEffect(
     (
       actions$ = inject(Actions),
       router = inject(Router),
-      persistenceService = inject(PersistenceService)
+      persistenceService = inject(PersistenceService),
+      authService = inject(AuthService)
     ) => {
       return actions$.pipe(
         ofType(authActions.logout),
         tap(() => {
+          authService.logout().subscribe();
           persistenceService.set('BVaccessToken', '');
           router.navigateByUrl('/global-feed');
         })
