@@ -40,6 +40,12 @@ export class AuthService {
       .pipe(map(this.getUser));
   }
 
+  logout(): Observable<{ message: string }> {
+    const url = environment.apiUrl + '/user/logout';
+    return this.http
+      .post<{ message: string}>(url, []);
+  }
+
   updateCurrentUser(currentUserRequest: CurrentUserRequestInterface): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/user';
     return this.http

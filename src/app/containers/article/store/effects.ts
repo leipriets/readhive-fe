@@ -168,15 +168,12 @@ export const showErrorNotifArticleEffect = createEffect(
       tap(({errors}) => {
 
         const errorKey = Object.keys(errors)[1];
-        // const errorMessage: string = errors[errorKey][0];
-
-
-        console.log(errorKey);
+        const errorMessage = errors[errorKey].toString();
 
         notification.error(
           'Error Article',
-          '',
-          { nzDuration: 0 }
+          errorMessage,
+          { nzDuration: 3000, nzPlacement: 'topLeft' }
         );
       })
     );
