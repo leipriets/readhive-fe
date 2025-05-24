@@ -14,7 +14,7 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 export class PaginationComponent implements OnInit {
   @Input() total: number = 0;
   @Input() limit: number = 5;
-  @Input() currentPage: number = -1;
+  @Input() currentPage: number = 1;
   @Input() url: string = '';
 
   pagesCount: number = 1;
@@ -28,6 +28,7 @@ export class PaginationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.pagesCount = Math.ceil(this.total / this.limit);
     this.pages =
       this.pagesCount > 0 ? this.utilsService.range(1, this.pagesCount) : [];

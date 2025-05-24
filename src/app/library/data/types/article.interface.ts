@@ -1,8 +1,9 @@
+import { CommentsInterface } from "./comments.interface";
 import { PopularTagType } from "./popularTag.type";
 import { ProfileInterface } from "./profile.interface";
 
 export interface ArticleInterface {
-    id: string;
+    id: number;
     body: string;
     createdAt: string;
     description: string;
@@ -10,6 +11,7 @@ export interface ArticleInterface {
     favoritesCount: number;
     slug: string;
     tagList: PopularTagType[];
+    comments: CommentsInterface[];
     title: string;
     updatedAt: string;
     author: ProfileInterface;

@@ -8,6 +8,7 @@ import { TagFeedComponent } from '../../containers/tagFeed/components/tagFeed.co
 import { SettingsComponent } from '../../containers/settings/components/settings.component';
 import { YourFeedComponent } from '../../containers/yourFeed/components/yourFeed.component';
 import { UserProfileComponent } from '../../containers/userProfile/components/userProfile.component';
+import { AuthGuard } from '../../auth.guard';
 
 export const innerPageRoutes: Route[] = [
   {
@@ -29,6 +30,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/yourFeed/yourFeed.routes').then(
             (m) => m.routes
           ),
+          canActivate: [AuthGuard]
       },
       {
         path: 'articles',
@@ -37,6 +39,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/article/article.routes').then(
             (m) => m.routes
           ),
+          canActivate: [AuthGuard]
       },
       {
         path: 'articles/new',
@@ -45,6 +48,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/article/article.routes').then(
             (m) => m.routes
           ),
+          canActivate: [AuthGuard]
       },
       {
         path: 'articles/:slug',
@@ -53,6 +57,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/article/article.routes').then(
             (m) => m.routes
           ),
+          canActivate: [AuthGuard]
       },
       {
         path: 'tags/:slug',
@@ -69,6 +74,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/settings/settings.routes').then(
             (m) => m.routes
           ),
+          canActivate: [AuthGuard]
       },
       {
         path: 'profile/:username',
@@ -77,6 +83,8 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/userProfile/userProfile.routes').then(
             (m) => m.routes
           ),
+          canActivate: [AuthGuard]
+          
       },
       {
         path: 'profile/:username/favorites',

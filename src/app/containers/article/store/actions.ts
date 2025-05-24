@@ -2,6 +2,8 @@ import { createActionGroup, emptyProps, props } from "@ngrx/store";
 import { ArticleInterface } from "../../../library/data/types/article.interface";
 import { ArticleRequestInterface } from "../../../library/data/types/articleRequest.interface";
 import { BackendErrorInterface } from "../../../library/data/types/backendError.interface";
+import { CommentRequestInterface } from "../../../library/data/types/commentRequest.interface";
+import { CommentsInterface } from "../../../library/data/types/comments.interface";
 
 
 export const articleActions = createActionGroup({

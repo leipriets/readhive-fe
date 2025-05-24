@@ -57,6 +57,7 @@
         id="body"
         name="body"
         formControlName="body"
+        rows="10"
         placeholder="Write your article (in markdown)"
       ></textarea>
     </nz-form-control>
@@ -72,12 +73,23 @@
       <span>Tags</span>
     </nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-      <input
+      <nz-select
+        nzMode="tags"
+        nzPlaceHolder="Tags"
+        formControlName="tagList"
+      >
+        <ng-container *ngIf="data$ | async as data">
+          @for (popularTag of data.popularTags; track $index) {
+          <nz-option [nzLabel]="popularTag" [nzValue]="popularTag"></nz-option>
+          }
+        </ng-container>
+      </nz-select>
+
+      <!-- <input
         nz-input
         id="tagList"
-        formControlName="tagList"
         placeholder="Enter Tags"
-      />
+      /> -->
     </nz-form-control>
   </nz-form-item>
 

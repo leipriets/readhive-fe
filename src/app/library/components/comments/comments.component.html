@@ -1,0 +1,107 @@
+<div nz-row id="comment-container">
+  <div nz-col nzSpan="15">
+    <nz-divider nzPlain nzText="Comments" nzVariant="solid"></nz-divider>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <nz-comment>
+        <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
+        <nz-comment-content>
+          <nz-form-item>
+            <textarea formControlName="body" nz-input rows="4"></textarea>
+          </nz-form-item>
+          <nz-form-item>
+            <button nz-button nzType="primary">Add Comment</button>
+          </nz-form-item>
+        </nz-comment-content>
+      </nz-comment>
+    </form>
+
+    <nz-card>
+      <div *ngIf="data$ | async as data">
+        @for (comment of data.comments; track $index) {
+        <nz-comment
+          [nzAuthor]="comment?.user?.username"
+          [nzDatetime]="getRelativeTime(comment.createdAt)"
+          [attr.id]="'comment-' + comment.id"
+        >
+          <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
+          <nz-comment-content>
+            <div class="pull-right">
+              <button
+                nz-button
+                nzType="text"
+                nz-dropdown
+                [nzDropdownMenu]="menu"
+                nzTrigger="click"
+              >
+                <span *ngIf="!isEditComment" nz-icon nzType="more"></span>
+              </button>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item (click)="onEditComment(comment, $index)">
+                    Edit
+                  </li>
+                  <li nz-menu-item (click)="showConfirm(comment.id)" >Delete</li>
+                </ul>
+              </nz-dropdown-menu>
+            </div>
+
+            @if (isEditComment && isEditIndex === $index) {
+
+            <form
+              nz-form
+              [formGroup]="formEditComment"
+              (ngSubmit)="onUpdateComment($index)"
+            >
+              <nz-form-item>
+                <input
+                  type="hidden"
+                  formControlName="editCommentId"
+                  [value]="comment.id"
+                />
+                <textarea
+                  formControlName="editBody"
+                  nz-input
+                  [nzAutosize]="{minRows: 3, maxRows: 5}"
+                  >{{ comment?.body }}
+                 </textarea
+                >
+              </nz-form-item>
+              <nz-form-item>
+                <a (click)="onCancelEdit()">Cancel</a>
+                &nbsp;&nbsp;
+                <button
+                  nzShape="round"
+                  nzSize="small"
+                  nz-button
+                  nzType="primary"
+                >
+                  <span nz-icon nzType="send"></span>
+                </button>
+              </nz-form-item>
+            </form>
+
+            } @else {
+            <p [attr.id]="'commentBody' + comment.id">
+              {{ comment?.body }}
+            </p>
+            }
+          </nz-comment-content>
+          <nz-comment-action>
+            <app-react-comments
+              [nzType]="'like'"
+              [comment]="comment"
+              [slug]="slug"
+              [isLiked]="comment.isLiked"
+              [isDisliked]="comment.isDisliked"
+              [likesCount]="comment.like_counts"
+              [dislikesCount]="comment.dislike_counts"
+              ></app-react-comments>
+          </nz-comment-action>
+          <!-- <nz-comment-action>Reply to</nz-comment-action> -->
+        </nz-comment>
+        }
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="9"></div>
+</div>

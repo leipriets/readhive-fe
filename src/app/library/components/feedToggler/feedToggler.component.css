@@ -1,0 +1,8 @@
+a[nz-tab-link] {
+  color: black; /* Default color for inactive tab */
+  text-decoration: none;
+}
+
+::ng-deep div.ant-tabs-tab-active a[nz-tab-link] {
+  color: #1890ff !important; /* Color for active tab */
+}

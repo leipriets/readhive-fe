@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {combineLatest} from 'rxjs';
+import {combineLatest, Subscription} from 'rxjs';
 import {ActivatedRoute, Params, Router, RouterLink} from '@angular/router';
 import queryString from 'query-string';
 import {feedActions} from './store/actions';
@@ -8,20 +8,27 @@ import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzListModule} from 'ng-zorro-antd/list';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import { CommonModule } from '@angular/common';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+import {CommonModule} from '@angular/common';
+import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
+import {NzTagModule} from 'ng-zorro-antd/tag';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 import {environment} from '../../../../environments/environment.development';
-import { PaginationComponent } from '../pagination/pagination.component';
-import { selectCurrentUser } from '../../../containers/auth/store/reducers';
-import {selectError, selectFeedData, selectIsLoading} from './store/reducers';
-import { EmptyDataComponent } from '../emptyData/emptyData.component';
-import { AddToFavoritesComponent } from '../addToFavorites/addToFavorites.component';
-import { SkeletonComponent } from '../skeleton/skeleton.component';
+import {PaginationComponent} from '../pagination/pagination.component';
+import {selectCurrentUser} from '../../../containers/auth/store/reducers';
+import {
+  selectError,
+  selectArticlesData,
+  selectIsLoading,
+  selectArticlesCount,
+  selectAllDataLoaded,
+} from './store/reducers';
+import {AddToFavoritesComponent} from '../addToFavorites/addToFavorites.component';
+import {SkeletonComponent} from '../skeleton/skeleton.component';
 
+import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-feed',
@@ -35,58 +42,78 @@ import { SkeletonComponent } from '../skeleton/skeleton.component';
     NzListModule,
     NzIconModule,
     NzButtonModule,
-    // NzAnchorModule,
+    NzTypographyModule,
     NzPageHeaderModule,
     NzTagModule,
     NzAvatarModule,
-    EmptyDataComponent,
-    PaginationComponent,
+    NzCardModule,
     AddToFavoritesComponent,
-    SkeletonComponent
+    SkeletonComponent,
+    InfiniteScrollDirective,
   ],
 })
-export class FeedComponent implements OnInit {
+export class FeedComponent implements OnInit, OnDestroy {
   @Input() apiUrl: string = '';
 
-
+  private subscription: Subscription = new Subscription(); 
+  
   data$ = combineLatest({
     isLoading: this.store.select(selectIsLoading),
     error: this.store.select(selectError),
-    feed: this.store.select(selectFeedData),
-    currentUser: this.store.select(selectCurrentUser)
+    feed: this.store.select(selectArticlesData),
+    articlesCount: this.store.select(selectArticlesCount),
+    currentUser: this.store.select(selectCurrentUser),
+    isLastPage: this.store.select(selectAllDataLoaded)
   });
 
+  offset = 0;
   limit = environment.limit;
   baseUrl = this.router.url.split('?')[0];
-  currentPage: number = 0;
+  currentPage: number = 1;
+  pageSize = 0;
+  noArticles: boolean = false;
 
   constructor(
     private store: Store,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
-  ngOnInit(): void {
-    // this.loadData(1);
-    this.route.queryParams.subscribe((params: Params) => {
-      this.currentPage = Number(params['page'] || '1');
-      this.fetchFeed();
-    });
+  ngOnInit(): void {    
+    // this.fetchFeed();
+    this.onScroll();
   }
 
   fetchFeed(): void {
-    const offset = this.currentPage * this.limit - this.limit;
     const parsedUrl = queryString.parseUrl(this.apiUrl);
     const stringifiedParams = queryString.stringify({
       limit: this.limit,
-      offset,
+      offset: this.offset,
       ...parsedUrl.query,
     });
     const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
-    this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
+
+    const dataSubs = this.data$.subscribe((response) => {
+      this.pageSize = response.articlesCount;
+    });
+
+    if (this.pageSize >= this.offset) {
+      this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
+      this.offset += this.limit;
+    } 
+
+    this.subscription.add(dataSubs);
   }
 
-  trackById(index: number, item: any): any {
-    return item.id;  // Ensure the id is unique for each item
+  onScroll(): void {
+    console.log('scrolled!');
+    setTimeout(() => {
+      this.fetchFeed();
+    }, 1000);
+  }
+
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

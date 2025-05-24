@@ -1,7 +1,20 @@
 <app-header />
 <div class="container-login">
   <nz-card nzTitle="Sign in" style="width: 400px; justify-self: center">
-    <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="onSubmit()">
+    <ng-container *ngIf="data$ | async as data">
+        <nz-alert
+          *ngIf="data.validationErrors"
+          nzType="error"
+          [nzMessage]="errorTpl"
+          nzShowIcon
+        ></nz-alert>
+
+      <ng-template #errorTpl>
+        <span>{{data.validationErrors }} </span>
+      </ng-template>
+    </ng-container>
+
+    <form nz-form [formGroup]="form" class="login-form mt-10" (ngSubmit)="onSubmit()">
       <nz-form-item>
         <nz-form-control nzErrorTip="Please input your email!">
           <nz-input-group nzPrefixIcon="user">

@@ -1,0 +1,20 @@
+  <button nz-button nzType="text" (click)="onSubmitLike()">
+    <span
+      nz-tooltip
+      [nzTooltipTitle]="!isLiked ? 'Like' : 'Unlike'"
+      nz-icon
+      [nzType]="nzType == 'like' ? 'like' : 'dislike'"
+      [nzTheme]="isLiked ? 'fill' : 'outline'"
+    ></span>
+  </button>
+  <span class="count"> {{ likesCount ? likesCount : 0 }}</span>
+  <button nz-button nzType="text" (click)="onSubmitDislike()">
+    <span
+      nz-tooltip
+      [nzTooltipTitle]="!isDisliked ? 'Dislike' : 'Remove dislike'"
+      nz-icon
+      nzType="dislike"
+      [nzTheme]="isDisliked ? 'fill' : 'outline'"
+    ></span>
+  </button>
+  <span class="count">{{ dislikesCount ? dislikesCount : 0 }}</span>

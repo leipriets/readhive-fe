@@ -13,6 +13,7 @@ import {Store} from '@ngrx/store';
 import {drawerActions} from '../../../library/components/drawer/store/actions';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { CommentsInterface } from '../../../library/data/types/comments.interface';
 
 export const getArticleEffect = createEffect(
   (actions$ = inject(Actions), articleService = inject(ArticleService)) => {
@@ -103,8 +104,11 @@ export const redirectAfterUpdateEffect = createEffect(
     return actions$.pipe(
       ofType(articleActions.updateArticleSuccess),
       tap(({article}) => {
+        console.log('editArticle->effects',article);
         store.dispatch(drawerActions.toggleDrawerClose());
-        store.dispatch(articleActions.getArticle({slug: article.slug}));
+        setTimeout(() => {
+          store.dispatch(articleActions.getArticle({slug: article.slug}));
+        }, 1000)
       })
     );
   },

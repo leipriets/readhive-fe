@@ -1,7 +1,7 @@
 import {inject} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import { feedActions } from './actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, delay, map, of, switchMap, tap } from 'rxjs';
 import { FeedService } from '../services/feed.service';
 import { GetFeedResponseInterface } from '../../../data/types/getFeedResponse.interface';
 
@@ -14,12 +14,14 @@ export const getFeedEffect = createEffect(
       ofType(feedActions.getFeed),
       switchMap(({url}) => {
         return feedService.getFeed(url).pipe(
-          map((feed: GetFeedResponseInterface) => {
-            return feedActions.getFeedSuccess({feed});
+          delay(100),
+          map((response: GetFeedResponseInterface) => {
+            const isLastPage = response.articles.length === 0;
+            return feedActions.getFeedSuccess({feed: response, isLastPage});
           }),
           catchError(() => {
             return of(feedActions.getFeedFailure());
-          })
+          } )
         );
       })
     );

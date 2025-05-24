@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
+
 import {ArticleFormComponent} from '../../../../library/components/articleForm/articleForm.component';
+import { CommentComponent } from '../../../../library/components/comments/comments.component';
 import {CommonModule} from '@angular/common';
 import {articleActions} from '../../store/actions';
 import {combineLatest, filter, map, Observable} from 'rxjs';
@@ -48,6 +50,7 @@ export class EditArticleComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(articleActions.getArticle({slug: this.slug}));
+    console.log(this.slug);
   }
 
   onSubmit(articleFormValues: ArticleFormValuesInterface): void {
