@@ -7,6 +7,7 @@ import {
 import {provideRouter, withRouterConfig} from '@angular/router';
 
 import {provideNzIcons} from './icons-provider';
+
 import {en_US, provideNzI18n} from 'ng-zorro-antd/i18n';
 import {registerLocaleData} from '@angular/common';
 import en from '@angular/common/locales/en';
@@ -26,6 +27,9 @@ import * as popularTagsEffect from './library/components/popularTags/store/effec
 import * as addToFavoritesEffect from './library/components/addToFavorites/store/effects';
 import * as userProfileEffects from './containers/userProfile/store/effects';
 import * as followUserEffect from './library/components/followButton/store/effects';
+import * as commentsEffect from './library/components/comments/store/effects';
+import * as reactCommentsEffect from './library/components/reactComments/store/effects';
+
 
 import {
   feedFeatureKey,
@@ -53,12 +57,19 @@ import {
   userProfileFeatureKey,
   userProfileReducer,
 } from './containers/userProfile/store/reducers';
+import {
+  commentsFeatureKey,
+  commentsReducer
+} from './library/components/comments/store/reducers';
+
 
 import {DrawerService} from './library/components/drawer/services/drawerService.service';
 import {AddToFavoritesService} from './library/components/addToFavorites/services/addToFavorites.service';
 import {UserProfileService} from './containers/userProfile/services/userProfile.service';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { FollowButtonService } from './library/components/followButton/services/followButton.service';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {FollowButtonService} from './library/components/followButton/services/followButton.service';
+import { CommentsService } from './library/components/comments/services/comments.service';
+import { ReactCommentService } from './library/components/reactComments/services/reactComment.service';
 
 registerLocaleData(en);
 
@@ -83,6 +94,8 @@ export const appConfig: ApplicationConfig = {
     provideState(popularTagsFeatureKey, popularTagsReducer),
     provideState(settingsFeatureKey, settingsReducer),
     provideState(userProfileFeatureKey, userProfileReducer),
+    provideState(userProfileFeatureKey, userProfileReducer),
+    provideState(commentsFeatureKey, commentsReducer),
     provideEffects(
       authEffects,
       feedEffects,
@@ -90,8 +103,9 @@ export const appConfig: ApplicationConfig = {
       popularTagsEffect,
       addToFavoritesEffect,
       userProfileEffects,
-      followUserEffect
-
+      followUserEffect,
+      commentsEffect,
+      reactCommentsEffect
     ),
     provideNzIcons(),
     provideNzI18n(en_US),
@@ -109,6 +123,8 @@ export const appConfig: ApplicationConfig = {
     AddToFavoritesService,
     UserProfileService,
     FollowButtonService,
-    NzModalService
+    NzModalService,
+    CommentsService,
+    ReactCommentService
   ],
 };

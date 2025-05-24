@@ -1,84 +1,103 @@
-<nz-list nzItemLayout="vertical" *ngIf="data$ | async as data">
-  <app-skeleton *ngIf="data.isLoading"></app-skeleton>
-  <div *ngIf="data.feed">
-    @for (article of data.feed.articles; track article) {
-    <nz-list-item>
-      <nz-list-item-meta>
-        <!-- <nz-list-item-meta-avatar
-            nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          ></nz-list-item-meta-avatar> -->
-        <nz-list-item-meta-avatar>
-          <nz-avatar nzIcon="user"></nz-avatar>
-        </nz-list-item-meta-avatar>
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="3"
+  [infiniteScrollThrottle]="1000"
+  (scrolled)="onScroll()"
+>
+  <nz-list nzItemLayout="vertical" *ngIf="data$ | async as data">
+    <div *ngIf="data.feed">
+      @for (article of data.feed; track article) {
 
-        <nz-list-item-meta-title>
-          <nz-page-header-subtitle *ngIf="data.currentUser; else redirectToLoginUsername">
+      <nz-list-item>
+        <nz-list-item-meta>
+          <nz-list-item-meta-avatar *ngIf="data.currentUser; else redirectToLoginUsername">
             <a
               [routerLink]="['/profile', article.author.username]"
               [queryParams]="{tab: 'posts'}"
               class="username"
             >
-              {{ article.author.username }}
+              <nz-avatar nzIcon="user"></nz-avatar>
             </a>
-          </nz-page-header-subtitle>
 
-          <ng-template #redirectToLoginUsername>
-            <a [routerLink]="['/sp/login']">{{ article.author.username }}</a>
-          </ng-template>
-        </nz-list-item-meta-title>
+          </nz-list-item-meta-avatar>
+          <nz-list-item-meta-title>
 
-        <nz-list-item-meta-description>
-          <h4 *ngIf="data.currentUser; else redirectToLoginTitle">
-            <a [routerLink]="['/articles', article.slug]">{{
-              article.title
-            }}</a>
-          </h4>
+            <h4 *ngIf="data.currentUser; else redirectToLoginTitle">
+              <a [routerLink]="['/articles', article.slug]">{{
+                article.title
+              }}</a>
+            </h4>
 
-          <ng-template #redirectToLoginTitle>
-            <nz-list-item-meta-title>
-              <a routerLink="/sp/login">{{ article.title }}</a
-              ><span></span>
-            </nz-list-item-meta-title>
-          </ng-template>
+            <ng-template #redirectToLoginTitle>
+                <a routerLink="/sp/login">
+                  {{ article.title }}
+                </a>
+            </ng-template>
 
-          <div class="mt10">
+          </nz-list-item-meta-title>
+          <nz-list-item-meta-description>
             {{ article.description }}
-          </div>
-          <br />
-          <i class="font12">Read more...</i>
-        </nz-list-item-meta-description>
-      </nz-list-item-meta>
-      <ul nz-list-item-actions>
-        <nz-list-item-action>
-          <app-add-to-favorites
-            [isFavorited]="article.favorited"
-            [articleSlug]="article.slug"
-            [favoritesCount]="article.favoritesCount"
-          ></app-add-to-favorites>
-        </nz-list-item-action>
-      </ul>
-      <nz-list-item-extra>
-        <a *ngIf="article.tagList[0]" [routerLink]="['/tags', article.tagList[0]]">
-          <nz-tag nzColor="blue">
-            <span nz-icon nzType="borderless-table"></span>
-            {{ article.tagList }}</nz-tag
-          >
-        </a>
-      </nz-list-item-extra>
-    </nz-list-item>
+          </nz-list-item-meta-description>
+        </nz-list-item-meta>
+        {{ article.body }}
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <app-add-to-favorites
+              [isFavorited]="article.favorited"
+              [articleSlug]="article.slug"
+              [favoritesCount]="article.favoritesCount"
+            ></app-add-to-favorites>
+          </nz-list-item-action>
+          <nz-list-item-action>
+            <span nz-icon nzType="retweet"></span>
+          </nz-list-item-action>
+          <nz-list-item-action>
+            <span nz-icon nzType="comment"></span>
+          </nz-list-item-action>
+        </ul>
+        <nz-list-item-extra>
+          @for (tag of article.tagList; track $index) {
+              <a *ngIf="tag" [routerLink]="['/tags', tag]">
+                <nz-tag nzColor="blue">
+                  <span nz-icon nzType="borderless-table"></span>
+                  {{ tag }}</nz-tag
+                >
+              </a>
+          }
+        </nz-list-item-extra>
+        <nz-list-item-extra>
+          <img
+            width="272"
+            alt="logo"
+            src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+          />
+        </nz-list-item-extra>
+      </nz-list-item>
 
-    }
-    <ng-container *ngIf="data.feed.articlesCount == 0">
-      <app-empty-data></app-empty-data>
-    </ng-container>
-    <br />
-    <app-pagination
+      <ng-template #redirectToLoginUsername>
+        <nz-list-item-meta-avatar>
+          <a [routerLink]="['/sp/login']">
+            <nz-avatar nzIcon="user"></nz-avatar>
+          </a>
+        </nz-list-item-meta-avatar>
+      </ng-template>
+
+      }
+      <app-skeleton *ngIf="data.isLoading"></app-skeleton>
+      <ng-container *ngIf="data.isLastPage">
+        <nz-list-item>
+          <nz-list-item-meta>
+            <nz-list-item-meta-title>
+              <span nz-typography nzType="danger"><i>No more data.</i></span>
+            </nz-list-item-meta-title>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </ng-container>
+      <br />
+      <!-- <app-pagination
       [total]="data.feed.articlesCount"
       [currentPage]="currentPage"
-    ></app-pagination>
-  </div>
-
-  <ng-template #emptyData>
-    <app-empty-data></app-empty-data>
-  </ng-template>
-</nz-list>
+    ></app-pagination> -->
+    </div>
+  </nz-list>
+</div>

@@ -32,6 +32,7 @@
   </nz-card>
 
   <div class="content-wrapper">
+    <app-new-post *ngIf="isNewPostTab"></app-new-post>
     <nz-tabset nzLinkRouter>
       <nz-tab>
         <a
@@ -59,7 +60,6 @@
         </a>
       </nz-tab>
     </nz-tabset>
-    <app-new-post *ngIf="isNewPostTab"></app-new-post>
 
     <app-feed [apiUrl]="getApiUrl()"></app-feed>
   </div>

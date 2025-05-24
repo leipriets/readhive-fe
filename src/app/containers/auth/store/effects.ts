@@ -28,8 +28,11 @@ export const getCurrentUserEffect = createEffect(
             return authActions.getCurrentUserSuccess({currentUser});
           }),
           catchError((err) => {
+            if (err?.status == 401) {
+              localStorage.removeItem('BVaccessToken');
+            }
+            
             return of(authActions.getCurrentUserFailure());
-            console.log(err);
           })
         );
       })

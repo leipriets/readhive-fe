@@ -6,7 +6,9 @@ import { FeedStateInterface } from '../types/feedState.interface';
 const initialState: FeedStateInterface = {
   isLoading: false,
   error: null,
-  data: null,
+  articles: [],
+  articlesCount: 0,
+  allDataLoaded: false
 };
 
 const feedFeature = createFeature({
@@ -14,10 +16,12 @@ const feedFeature = createFeature({
   reducer: createReducer(
     initialState,
     on(feedActions.getFeed, (state) => ({...state, isLoading: true})),
-    on(feedActions.getFeedSuccess, (state, action) => ({
+    on(feedActions.getFeedSuccess, (state, {feed, isLastPage}) => ({
       ...state,
       isLoading: false,
-      data: action.feed,
+      articles: [...state.articles, ...feed.articles],
+      articlesCount: feed.articlesCount,
+      allDataLoaded: isLastPage
     })),
     on(feedActions.getFeedFailure, (state) => ({...state, isLoading: false})),
     on(routerNavigatedAction, () => initialState),
@@ -29,5 +33,7 @@ export const {
     reducer: feedReducer,
     selectIsLoading,
     selectError,
-    selectData: selectFeedData
+    selectArticles: selectArticlesData,
+    selectArticlesCount,
+    selectAllDataLoaded
 } = feedFeature

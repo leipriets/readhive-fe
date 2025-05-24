@@ -17,7 +17,7 @@
           nzMode="horizontal"
           class="header-menu pull-right"
         >
-          <li nz-menu-item routerLink="/">Home</li>
+          <li nz-menu-item routerLink="/global-feed" [queryParams]="{tab: 'globalFeed'}" >Home</li>
           <li *ngIf="!data.currentUser" nz-menu-item routerLink="/sp/login">Sign in</li>
           <ng-container *ngIf="data.currentUser">
             <li nz-menu-item routerLink="/settings">

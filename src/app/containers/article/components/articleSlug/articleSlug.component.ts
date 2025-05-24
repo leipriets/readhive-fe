@@ -1,4 +1,4 @@
-import {Component, inject, Injectable, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, Injectable, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 
@@ -26,7 +26,11 @@ import {selectCurrentUser} from '../../../auth/store/reducers';
 import {CurrentUserInterface} from '../../../../library/data/types/currentUser.interface';
 import {selectUserProfileData} from '../../../userProfile/store/reducers';
 import {UserProfileInterface} from '../../../userProfile/types/userProfile.interface';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
+import {CommentComponent} from '../../../../library/components/comments/comments.component';
+import {CommentRequestInterface} from '../../../../library/data/types/commentRequest.interface';
+import {CommentFormValuesInterface} from '../../../../library/data/types/commentFormValues.interface';
+import { CommentsInterface } from '../../../../library/data/types/comments.interface';
 
 @Component({
   selector: 'app-article-slug',
@@ -48,9 +52,10 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     NzTypographyModule,
     DrawerComponent,
     EditArticleComponent,
+    CommentComponent,
   ],
 })
-export class ArticleSlugComponent implements OnInit {
+export class ArticleSlugComponent implements OnInit, OnDestroy {
   @ViewChild(DrawerComponent, {static: false}) drawerTemplate!: DrawerComponent;
 
   slug = this.route.snapshot.paramMap.get('slug') ?? '';
@@ -69,7 +74,7 @@ export class ArticleSlugComponent implements OnInit {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-    private location: Location,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -87,7 +92,7 @@ export class ArticleSlugComponent implements OnInit {
       nzTitle: 'Do you want to delete this article?',
       nzOnOk: () => {
         this.store.dispatch(articleActions.deleteArticle({slug: this.slug}));
-      }
+      },
     });
   }
 
@@ -97,5 +102,9 @@ export class ArticleSlugComponent implements OnInit {
 
   onBack() {
     this.location.back();
+  }
+
+  ngOnDestroy(): void {
+    this.currentUserSubscription?.unsubscribe();
   }
 }

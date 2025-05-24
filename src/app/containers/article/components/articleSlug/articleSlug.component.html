@@ -1,19 +1,11 @@
 <ng-container *ngIf="data$ | async as data">
   <nz-page-header (nzBack)="onBack()" nzBackIcon>
     <!--avatar-->
-    <nz-avatar
-      nz-page-header-avatar
-      nzIcon="user"
-    ></nz-avatar>
-
-    <!--title-->
-    <nz-page-header-title>{{
-      data.article?.title | titlecase
-    }}</nz-page-header-title>
+    <nz-avatar nz-page-header-avatar nzIcon="user"></nz-avatar>
 
     <!--subtitle-->
     <nz-page-header-subtitle>{{
-      data.article?.description
+      data.article?.author?.username
     }}</nz-page-header-subtitle>
 
     <!--tags-->
@@ -23,23 +15,36 @@
 
     <!--extra-->
     <nz-page-header-extra>
-        <nz-space *ngIf="data.article?.author?.username == currentUser?.username">
-          <button *nzSpaceItem nz-button nzType="primary" (click)="openDrawerComponent()">Edit Article</button>
-          <button *nzSpaceItem nz-button nzType="primary" nzDanger (click)="deleteArticle()">
-            Delete Article
-          </button>
-          <button
-            *nzSpaceItem
-            nz-button
-            nzNoAnimation
-            nz-dropdown
-            [nzDropdownMenu]="menu"
-            nzPlacement="bottomRight"
-            style="border: none; padding: 0"
-          >
-            <!-- <nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;" /> -->
-          </button>
-        </nz-space>
+      <nz-space *ngIf="data.article?.author?.username == currentUser?.username">
+        <button
+          *nzSpaceItem
+          nz-button
+          nzType="primary"
+          (click)="openDrawerComponent()"
+        >
+          Edit Article
+        </button>
+        <button
+          *nzSpaceItem
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="deleteArticle()"
+        >
+          Delete Article
+        </button>
+        <button
+          *nzSpaceItem
+          nz-button
+          nzNoAnimation
+          nz-dropdown
+          [nzDropdownMenu]="menu"
+          nzPlacement="bottomRight"
+          style="border: none; padding: 0"
+        >
+          <!-- <nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;" /> -->
+        </button>
+      </nz-space>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
           <li nz-menu-item>1st menu item length</li>
@@ -52,23 +57,42 @@
     <!--content-->
     <nz-page-header-content>
       <div nz-row>
-        <div class="content">
-          <p nz-paragraph>
-            {{ data.article?.body }}
-          </p>
-          <div class="content-link">
-            <a>
-              <span nz-icon nzType="heart"></span>&nbsp;{{ data.article?.favoritesCount }}
-            </a>
+        <div nz-col nzSpan="18">
+          <div class="content">
+            <h4 nz-typography>{{ data.article?.title | titlecase }}</h4>
+            <span nz-typography nzType="secondary">
+              <strong><i>About:</i> &nbsp;</strong
+              >{{ data.article?.description }}</span
+            >
+            <br /><br />
+            <p
+              nz-typography
+              nz-paragraph
+              nzEllipsis
+              nzEllipsisRows="2"
+              nzExpandable
+              [nzContent]="data.article?.body"
+            ></p>
+            <div class="content-link">
+              <a>
+                <span nz-icon nzType="heart"></span>&nbsp;{{
+                  data.article?.favoritesCount
+                }}
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </nz-page-header-content>
   </nz-page-header>
+  <app-comment
+    [articleId]="data.article?.id"
+    [slug]="slug"
+  ></app-comment>
 </ng-container>
 
 <ng-container>
-    <app-drawer [title]="'Edit Article'">
-        <app-edit-article content></app-edit-article>
-    </app-drawer>
+  <app-drawer [title]="'Edit Article'">
+    <app-edit-article content></app-edit-article>
+  </app-drawer>
 </ng-container>

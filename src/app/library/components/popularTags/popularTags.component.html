@@ -3,7 +3,7 @@
   <nz-card [nzBordered]="false">
     <ng-container *ngIf="data$ | async as data">
       @for (popularTag of data.popularTags; track $index) {
-      <nz-tag nzColor="#818a91">
+      <nz-tag nzColor="#818a91" class="mt-5">
         <a
           [routerLink]="['/tags', popularTag]"
           [queryParams]="{tab: popularTag}"
