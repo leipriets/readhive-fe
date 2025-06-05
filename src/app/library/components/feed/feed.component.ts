@@ -1,6 +1,6 @@
 import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {combineLatest, Subscription} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {combineLatest, filter, Subscription} from 'rxjs';
 import {ActivatedRoute, Params, Router, RouterLink} from '@angular/router';
 import queryString from 'query-string';
 import {feedActions} from './store/actions';
@@ -12,8 +12,9 @@ import {CommonModule} from '@angular/common';
 import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
 import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzAvatarModule} from 'ng-zorro-antd/avatar';
-import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { NzCardModule } from 'ng-zorro-antd/card';
+import {NzTypographyModule} from 'ng-zorro-antd/typography';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 import {environment} from '../../../../environments/environment.development';
 import {PaginationComponent} from '../pagination/pagination.component';
@@ -29,6 +30,7 @@ import {AddToFavoritesComponent} from '../addToFavorites/addToFavorites.componen
 import {SkeletonComponent} from '../skeleton/skeleton.component';
 
 import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
+import {CurrentUserInterface} from '../../data/types/currentUser.interface';
 
 @Component({
   selector: 'app-feed',
@@ -38,6 +40,7 @@ import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
   imports: [
     CommonModule,
     RouterLink,
+    NzAnchorModule,
     NzDividerModule,
     NzListModule,
     NzIconModule,
@@ -55,15 +58,16 @@ import {InfiniteScrollDirective} from 'ngx-infinite-scroll';
 export class FeedComponent implements OnInit, OnDestroy {
   @Input() apiUrl: string = '';
 
-  private subscription: Subscription = new Subscription(); 
-  
+  private subscription: Subscription = new Subscription();
+  private currentUserSubscription?: Subscription;
+
   data$ = combineLatest({
     isLoading: this.store.select(selectIsLoading),
     error: this.store.select(selectError),
     feed: this.store.select(selectArticlesData),
     articlesCount: this.store.select(selectArticlesCount),
     currentUser: this.store.select(selectCurrentUser),
-    isLastPage: this.store.select(selectAllDataLoaded)
+    isLastPage: this.store.select(selectAllDataLoaded),
   });
 
   offset = 0;
@@ -72,21 +76,30 @@ export class FeedComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   pageSize = 0;
   noArticles: boolean = false;
+  currentSessionId: string | null = null;
 
   constructor(
     private store: Store,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     // this.fetchFeed();
     this.onScroll();
+
+    this.currentUserSubscription = this.store
+      .pipe(select(selectCurrentUser), filter(Boolean))
+      .subscribe((currentUser: CurrentUserInterface) => {
+        console.log('app component current user ->', currentUser);
+        this.currentSessionId = currentUser.id
+      });
   }
 
   fetchFeed(): void {
     const parsedUrl = queryString.parseUrl(this.apiUrl);
     const stringifiedParams = queryString.stringify({
+      userId: this.currentSessionId,
       limit: this.limit,
       offset: this.offset,
       ...parsedUrl.query,
@@ -100,7 +113,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     if (this.pageSize >= this.offset) {
       this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
       this.offset += this.limit;
-    } 
+    }
 
     this.subscription.add(dataSubs);
   }
@@ -112,8 +125,8 @@ export class FeedComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.currentUserSubscription?.unsubscribe();
   }
 }

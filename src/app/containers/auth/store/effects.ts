@@ -131,8 +131,8 @@ export const registerEffect = createEffect(
     ) => {
       return actions$.pipe(
         ofType(authActions.updateCurrentUser),
-        switchMap(({currentUserRequest}) => {
-          return authService.updateCurrentUser(currentUserRequest).pipe(
+        switchMap(({currentUserRequest, filename}) => {
+          return authService.updateCurrentUser(currentUserRequest, filename).pipe(
             map((currentUser: CurrentUserInterface) => {
               return authActions.updateCurrentUserSuccess({currentUser});
             }),

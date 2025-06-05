@@ -29,3 +29,15 @@ nz-header {
 .padding10 { 
   padding: 10px;
 }
+
+::ng-deep li.no-hover:hover {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.ant-badge {
+  color: #fff;
+}
+
+
+/* .ant-dropdown-menu  */

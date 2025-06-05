@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FeedComponent} from '../../../library/components/feed/feed.component';
 import {Store} from '@ngrx/store';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -10,6 +10,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { PopularTagsComponent } from '../../../library/components/popularTags/popularTags.component';
 import { NewPostComponent } from '../../../library/components/newPost/newPost.component';
+import { notificationCountActions } from '../../../library/components/header/store/actions';
 
 @Component({
   selector: 'app-global-feed',
@@ -27,13 +28,11 @@ import { NewPostComponent } from '../../../library/components/newPost/newPost.co
     NewPostComponent
   ],
 })
-export class GlobalFeedComponent {
+export class GlobalFeedComponent implements OnInit {
   @ViewChild(FeedComponent, {static: false}) feedComponent!: FeedComponent;
 
   apiUrl = '/articles';
   currentPage: number = 0;
-
-  currentUser$ = this.store.select(selectCurrentUser);
 
   constructor(
     private store: Store,
@@ -42,6 +41,9 @@ export class GlobalFeedComponent {
   ) {}
 
   ngOnInit(): void {
+    this.store.dispatch(notificationCountActions.getNotificationCount());
+
+
     this.route.queryParams.subscribe((params) => {
       if (!params['tab']) {
         // Add default query params if missing

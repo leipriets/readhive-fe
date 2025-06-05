@@ -10,36 +10,60 @@
 
       <nz-list-item>
         <nz-list-item-meta>
-          <nz-list-item-meta-avatar *ngIf="data.currentUser; else redirectToLoginUsername">
+          <nz-list-item-meta-avatar
+            *ngIf="data.currentUser; else redirectToLoginUsername"
+          >
             <a
               [routerLink]="['/profile', article.author.username]"
               [queryParams]="{tab: 'posts'}"
               class="username"
             >
-              <nz-avatar nzIcon="user"></nz-avatar>
+              <nz-avatar
+                [nzSrc]="article.author.image"
+                nzIcon="user"
+              ></nz-avatar>
             </a>
-
           </nz-list-item-meta-avatar>
           <nz-list-item-meta-title>
+            <ng-container *ngIf="data.currentUser; else redirectToLogin">
+              <strong>
+                <a
+                  [routerLink]="['/profile', article.author.username]"
+                  [queryParams]="{tab: 'posts'}"
+                  >{{ article.author.username }}</a
+                >
+              </strong>
+            </ng-container>
 
-            <h4 *ngIf="data.currentUser; else redirectToLoginTitle">
-              <a [routerLink]="['/articles', article.slug]">{{
-                article.title
-              }}</a>
-            </h4>
-
-            <ng-template #redirectToLoginTitle>
-                <a routerLink="/sp/login">
-                  {{ article.title }}
-                </a>
+            <ng-template #redirectToLogin>
+              <strong>
+                <a routerLink="/sp/login" [queryParams]="{tab: 'posts'}">{{
+                  article.author.username
+                }}</a>
+              </strong>
             </ng-template>
-
           </nz-list-item-meta-title>
           <nz-list-item-meta-description>
-            {{ article.description }}
+            <ng-container>
+              <a [routerLink]="['/articles', article.slug]">
+                {{ article.title }}
+              </a>
+            </ng-container>
+
+            <ng-template #redirectToLoginTitle>
+              <a routerLink="/sp/login">{{ article.title }}</a>
+            </ng-template>
           </nz-list-item-meta-description>
         </nz-list-item-meta>
-        {{ article.body }}
+        <p
+          nz-typography
+          nz-paragraph
+          nzEllipsis
+          nzEllipsisRows="2"
+          nzExpandable
+        >
+          {{ article.body }}
+        </p>
         <ul nz-list-item-actions>
           <nz-list-item-action>
             <app-add-to-favorites
@@ -57,12 +81,12 @@
         </ul>
         <nz-list-item-extra>
           @for (tag of article.tagList; track $index) {
-              <a *ngIf="tag" [routerLink]="['/tags', tag]">
-                <nz-tag nzColor="blue">
-                  <span nz-icon nzType="borderless-table"></span>
-                  {{ tag }}</nz-tag
-                >
-              </a>
+          <a *ngIf="tag" [routerLink]="['/tags', tag]">
+            <nz-tag nzColor="blue">
+              <span nz-icon nzType="borderless-table"></span>
+              {{ tag }}</nz-tag
+            >
+          </a>
           }
         </nz-list-item-extra>
         <nz-list-item-extra>

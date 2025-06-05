@@ -9,8 +9,10 @@
     >
       <nz-avatar
         [nzSize]="96"
-        nzSrc="https://via.placeholder.com/150"
-        style="margin-bottom: 12px"
+        [nzSrc]="data.userProfile?.image"
+        class="avatar-pointer-cursor"
+        style="margin-bottom: 12px" 
+        (click)="previewAvatar(data.userProfile!.image)"
       ></nz-avatar>
       <h2>{{ data.userProfile?.username }}</h2>
       <ng-container *ngIf="!data.isCurrentUserProfile">

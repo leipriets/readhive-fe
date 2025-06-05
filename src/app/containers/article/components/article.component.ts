@@ -25,7 +25,6 @@ import { FeedTogglerComponent } from '../../../library/components/feedToggler/fe
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     NzGridModule,
     NzTabsModule,
     NzButtonModule,

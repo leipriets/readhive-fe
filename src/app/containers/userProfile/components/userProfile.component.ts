@@ -13,6 +13,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzImage, NzImageModule, NzImageService } from 'ng-zorro-antd/image';
 
 import {combineLatest, filter, map} from 'rxjs';
 import {selectCurrentUser} from '../../auth/store/reducers';
@@ -41,6 +42,7 @@ import { NewPostComponent } from '../../../library/components/newPost/newPost.co
     NzCardModule,
     NzDividerModule,
     NzTabsModule,
+    NzImageModule,
     FeedComponent,
     FollowButtonComponent,
     NewPostComponent,
@@ -81,7 +83,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private nzImageService: NzImageService
   ) {}
 
   ngOnInit(): void {
@@ -113,5 +116,17 @@ export class UserProfileComponent implements OnInit {
 
   logout(): void {
     this.store.dispatch(authActions.logout());
+  }
+
+  previewAvatar(image: string) {
+
+    const nzImage = [{
+      src: image,
+      width: '250px',
+      height: '350px',
+      alt: 'angular'
+    }]
+
+    this.nzImageService.preview(nzImage, { nzZoom: 1.5, nzRotate: 0 });
   }
 }
