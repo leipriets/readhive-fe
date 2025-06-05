@@ -6,6 +6,7 @@ import { LikeCommentsInterface } from "../../../data/types/likeComments.interfac
 import { ReactCommentService } from "../services/reactComment.service";
 import { commentsActions } from "../../comments/store/actions";
 import { Store } from "@ngrx/store";
+import { LikeCommentsResponseInterface } from "../../../data/types/likeCommentsResponse.interface";
 
 
 export const likeCommentEffect = createEffect(
@@ -16,7 +17,8 @@ export const likeCommentEffect = createEffect(
         const likeComment$ = reactCommentsService.likeComment(request);
 
         return likeComment$.pipe(
-          map((response: LikeCommentsInterface) => {
+          map((response: LikeCommentsResponseInterface) => {
+            // console.log('react comments data liked', response);
             return reactCommentsActions.likeCommentSuccess({data: response});
           }),
           catchError(() => {
@@ -37,7 +39,9 @@ export const dislikeCommentEffect = createEffect(
           const dislikeComment$ = reactCommentsService.dislikeComment(request);
   
           return dislikeComment$.pipe(
-            map((response: LikeCommentsInterface) => {
+            map((response: LikeCommentsResponseInterface) => {
+            // console.log('react comments data disliked', response);
+
               return reactCommentsActions.dislikeCommentSuccess({data: response});
             }),
             catchError(() => {
@@ -48,25 +52,4 @@ export const dislikeCommentEffect = createEffect(
       );
     },
     {functional: true}
-  );
-
-
-  export const reloadAfterCommentEffect = createEffect(
-    (actions$ = inject(Actions), store = inject(Store)) => {
-      return actions$.pipe(
-        ofType(commentsActions.commentArticleSuccess, commentsActions.deleteCommentSuccess),
-        tap(({comment}) => {
-          // store.dispatch(
-          //   commentsActions.getComment({
-          //     articleId: comment.article_id,
-          //     slug: comment.slug,
-          //   })
-          // );
-        })
-      );
-    },
-    {
-      functional: true,
-      dispatch: false,
-    }
   );

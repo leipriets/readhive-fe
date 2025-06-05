@@ -12,7 +12,7 @@ export class ReactCommentService {
 
     likeComment(
       request: LikeCommentsRequestInterface
-    ): Observable<LikeCommentsInterface> {
+    ): Observable<LikeCommentsResponseInterface> {
       const {slug} = request;
   
       const url = this.getUrl(slug) + '/like-comment';
@@ -23,7 +23,7 @@ export class ReactCommentService {
   
     dislikeComment(
       request: LikeCommentsRequestInterface
-    ): Observable<LikeCommentsInterface> {
+    ): Observable<LikeCommentsResponseInterface> {
       const {slug} = request;
   
       const url = this.getUrl(slug) + '/dislike-comment';
@@ -38,8 +38,8 @@ export class ReactCommentService {
   
     getLikeResponse(
       response: LikeCommentsResponseInterface
-    ): LikeCommentsInterface {
-      return response.data;
+    ): LikeCommentsResponseInterface {
+      return response;
     }
 
 }

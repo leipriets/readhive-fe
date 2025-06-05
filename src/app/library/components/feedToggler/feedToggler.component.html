@@ -9,7 +9,7 @@
   <ng-container *ngIf="currentUser$ | async as currentUser">
     <nz-tab >
       <a *nzTabLink nz-tab-link routerLink="/feed" [queryParams]="{tab: 'feed'}"
-        >Your Feed
+        >Following
       </a>
     </nz-tab>
   </ng-container>
@@ -20,7 +20,7 @@
       nz-tab-link
       routerLink="/global-feed"
       [queryParams]="{tab: 'globalFeed'}"
-      >Global Feed
+      >For you
     </a>
   </nz-tab>
 

@@ -52,35 +52,10 @@ export class CommentsService {
     return this.http.delete<CommentsInterface>(fullUrl);
   }
 
-  likeComment(
-    request: LikeCommentsRequestInterface
-  ): Observable<LikeCommentsInterface> {
-    const {slug} = request;
-
-    const url = this.getUrl(slug) + '/like-comment';
-    return this.http
-      .post<LikeCommentsResponseInterface>(url, request)
-      .pipe(map(this.getLikeResponse));
-  }
-
-  dislikeComment(
-    request: LikeCommentsRequestInterface
-  ): Observable<LikeCommentsInterface> {
-    const {slug} = request;
-
-    const url = this.getUrl(slug) + '/dislike-comment';
-    return this.http
-      .post<LikeCommentsResponseInterface>(url, request)
-      .pipe(map(this.getLikeResponse));
-  }
 
   getUrl(slug: string): string {
     return `${environment.apiUrl}/articles/${slug}`;
   }
 
-  getLikeResponse(
-    response: LikeCommentsResponseInterface
-  ): LikeCommentsInterface {
-    return response.data;
-  }
+
 }

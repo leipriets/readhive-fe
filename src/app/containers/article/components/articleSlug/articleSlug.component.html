@@ -1,7 +1,7 @@
 <ng-container *ngIf="data$ | async as data">
   <nz-page-header (nzBack)="onBack()" nzBackIcon>
     <!--avatar-->
-    <nz-avatar nz-page-header-avatar nzIcon="user"></nz-avatar>
+    <nz-avatar [nzSrc]="data.article?.author?.image" nz-page-header-avatar nzIcon="user"></nz-avatar>
 
     <!--subtitle-->
     <nz-page-header-subtitle>{{

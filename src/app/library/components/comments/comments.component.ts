@@ -44,6 +44,7 @@ import {CommentRequestInterface} from '../../data/types/commentRequest.interface
 import {ReactCommentsComponent} from '../reactComments/reactComments.component';
 import {EditCommentFormValuesInterface} from './types/editCommentFormValues.interface';
 import {EditCommentRequestInterface} from './types/editCommentRequest.interface';
+import { getRelativeTime } from '../../utils/helper';
 
 @Component({
   selector: 'app-comment',
@@ -148,9 +149,8 @@ export class CommentComponent implements OnInit, OnChanges  {
     }
   }
 
-
-  getRelativeTime(dateString: string): string {
-    return formatDistanceToNow(new Date(dateString), {addSuffix: true});
+  getTimeDiff(dateString: string) {
+    return getRelativeTime(dateString);
   }
 
   onSubmit(): void {
