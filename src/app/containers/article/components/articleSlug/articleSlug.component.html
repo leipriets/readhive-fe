@@ -1,7 +1,11 @@
 <ng-container *ngIf="data$ | async as data">
   <nz-page-header (nzBack)="onBack()" nzBackIcon>
     <!--avatar-->
-    <nz-avatar [nzSrc]="data.article?.author?.image" nz-page-header-avatar nzIcon="user"></nz-avatar>
+    <nz-avatar
+      [nzSrc]="data.article?.author?.image"
+      nz-page-header-avatar
+      nzIcon="user"
+    ></nz-avatar>
 
     <!--subtitle-->
     <nz-page-header-subtitle>{{
@@ -56,6 +60,28 @@
 
     <!--content-->
     <nz-page-header-content>
+      <div nz-row [nzGutter]="{xs: 8, sm: 16, md: 24, lg: 32}">
+        @for (articleMedia of data.article?.article_media[0]?.files; track
+        $index) {
+        <div nz-col class="gutter-row" [nzSpan]="4.5">
+          <nz-card nzHoverable style="width: 240px">
+            <img
+              nz-image
+              width="200px"
+              height="210vh"
+              [nzSrc]="pathUrl + '/' + articleMedia?.filename"
+              alt=""
+            />
+          </nz-card>
+        </div>
+
+        }
+      </div>
+      <div nz-row>
+        <div nz-col nzSpan="18">
+          <nz-divider></nz-divider>
+        </div>
+      </div>
       <div nz-row>
         <div nz-col nzSpan="18">
           <div class="content">
@@ -65,30 +91,46 @@
               >{{ data.article?.description }}</span
             >
             <br /><br />
-            <p
+            <!-- <p
               nz-typography
               nz-paragraph
               nzEllipsis
               nzEllipsisRows="2"
               nzExpandable
               [nzContent]="data.article?.body"
-            ></p>
+            ></p> -->
+
+            <!-- <div [innerHTML]="data.article?.body"></div> -->
+            <div
+              class="rich-text-container quill-content"
+              [class.collapsed]="isCollapse"
+              *ngIf="safeContent$ | async as safeContent"
+              [innerHTML]="safeContent"
+            ></div>
+
+            <a (click)="toggleCollapse()">
+              {{ isCollapse ? 'Read more' : 'Show less' }}
+            </a>
+
             <div class="content-link">
-              <a>
+              <app-add-to-favorites
+              [isFavorited]="data.article!.favorited"
+              [articleSlug]="data.article!.slug"
+              [favoritesCount]="data.article!.favoritesCount"
+            ></app-add-to-favorites>
+
+              <!-- <a>
                 <span nz-icon nzType="heart"></span>&nbsp;{{
                   data.article?.favoritesCount
                 }}
-              </a>
+              </a> -->
             </div>
           </div>
         </div>
       </div>
     </nz-page-header-content>
   </nz-page-header>
-  <app-comment
-    [articleId]="data.article?.id"
-    [slug]="slug"
-  ></app-comment>
+  <app-comment [articleId]="data.article?.id" [slug]="slug"></app-comment>
 </ng-container>
 
 <ng-container>

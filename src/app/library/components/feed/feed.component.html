@@ -6,7 +6,7 @@
 >
   <nz-list nzItemLayout="vertical" *ngIf="data$ | async as data">
     <div *ngIf="data.feed">
-      @for (article of data.feed; track article) {
+      @for (article of data.feed; track article.id) {
 
       <nz-list-item>
         <nz-list-item-meta>
@@ -28,6 +28,7 @@
             <ng-container *ngIf="data.currentUser; else redirectToLogin">
               <strong>
                 <a
+                  style="color: black !important"
                   [routerLink]="['/profile', article.author.username]"
                   [queryParams]="{tab: 'posts'}"
                   >{{ article.author.username }}</a
@@ -37,17 +38,34 @@
 
             <ng-template #redirectToLogin>
               <strong>
-                <a routerLink="/sp/login" [queryParams]="{tab: 'posts'}">{{
-                  article.author.username
-                }}</a>
+                <a
+                  style="color: black !important"
+                  routerLink="/sp/login"
+                  [queryParams]="{tab: 'posts'}"
+                  >{{ article.author.username }}</a
+                >
               </strong>
             </ng-template>
           </nz-list-item-meta-title>
           <nz-list-item-meta-description>
             <ng-container>
+              @if (isProfileTab) {
               <a [routerLink]="['/articles', article.slug]">
                 {{ article.title }}
               </a>
+              } @if (!isProfileTab) {
+              <a (click)="showArticleModal(article, userAvatarModal)">
+                {{ article.title }}
+              </a>
+
+              }
+
+              <!-- Time -->
+              <div nz-col>
+                <app-tooltip-date
+                  [createdDate]="article.createdAt"
+                ></app-tooltip-date>
+              </div>
             </ng-container>
 
             <ng-template #redirectToLoginTitle>
@@ -55,15 +73,18 @@
             </ng-template>
           </nz-list-item-meta-description>
         </nz-list-item-meta>
-        <p
-          nz-typography
-          nz-paragraph
-          nzEllipsis
-          nzEllipsisRows="2"
-          nzExpandable
+
+        <div
+          class="rich-text-container quill-content"
+          [class.collapsed]="collapsedMap[article.id]"
         >
-          {{ article.body }}
-        </p>
+          <div [innerHTML]="article.body"></div>
+        </div>
+
+        <a *ngIf="showToggle" (click)="toggleCollapse(article.id)">
+          {{ collapsedMap[article.id] ? 'Read more' : 'Show less' }}
+        </a>
+
         <ul nz-list-item-actions>
           <nz-list-item-action>
             <app-add-to-favorites
@@ -73,10 +94,9 @@
             ></app-add-to-favorites>
           </nz-list-item-action>
           <nz-list-item-action>
-            <span nz-icon nzType="retweet"></span>
-          </nz-list-item-action>
-          <nz-list-item-action>
-            <span nz-icon nzType="comment"></span>
+            <a (click)="showArticleModal(article, userAvatarModal, true)">
+              <span nz-icon nzType="comment"></span>
+            </a>
           </nz-list-item-action>
         </ul>
         <nz-list-item-extra>
@@ -89,13 +109,40 @@
           </a>
           }
         </nz-list-item-extra>
-        <nz-list-item-extra>
-          <img
-            width="272"
-            alt="logo"
-            src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-          />
-        </nz-list-item-extra>
+        <!-- <nz-list-item-extra>
+          <ng-container *ngIf="article.article_media[0]?.files.length > 0">
+            <nz-badge
+              [nzCount]="article.article_media[0]?.files.length"
+              [nzOverflowCount]="article.article_media[0]?.files.length - 1"
+              [nzStyle]="{
+                backgroundColor: '#fff',
+                color: '#999',
+                boxShadow: '0 0 0 1px #6883ab inset',
+                fontWeight: 'bold',
+                fontSize: '12px'
+              }"
+            >
+              <nz-card
+                nzHoverable
+                style="width: 240px"
+                [nzCover]="coverTemplate"
+              >
+                <nz-card-meta [nzTitle]="article.title"></nz-card-meta>
+              </nz-card>
+              <ng-template #coverTemplate>
+                <img
+                  width="272"
+                  alt="example"
+                  [src]="
+                    backendApi +
+                    '/src/images/' +
+                    article.article_media[0]?.files[0].filename
+                  "
+                />
+              </ng-template>
+            </nz-badge>
+          </ng-container>
+        </nz-list-item-extra> -->
       </nz-list-item>
 
       <ng-template #redirectToLoginUsername>
@@ -104,6 +151,27 @@
             <nz-avatar nzIcon="user"></nz-avatar>
           </a>
         </nz-list-item-meta-avatar>
+      </ng-template>
+
+      <ng-template #userAvatarModal>
+        <div nz-row>
+          <div nz-col [nzSpan]="18">
+            <nz-avatar
+              [nzSrc]="article.author.image"
+              nz-page-header-avatar
+              nzIcon="user"
+            ></nz-avatar>
+            &nbsp;
+            <span nz-typography nzType="secondary">{{
+              article.author.username
+            }}</span>
+          </div>
+          <div nz-col>
+            <app-tooltip-date
+              [createdDate]="article.createdAt"
+            ></app-tooltip-date>
+          </div>
+        </div>
       </ng-template>
 
       }

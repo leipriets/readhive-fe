@@ -9,7 +9,9 @@ import {notificationCountActions} from './actions';
 const initialState: NotificationCountStateInterface = {
   isLoading: false,
   error: null,
-  data: {count: 0},
+  data: {
+    count: 0
+  },
 };
 
 const notificationCountFeature = createFeature({

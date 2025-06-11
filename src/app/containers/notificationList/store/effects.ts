@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import { NotificationService } from '../../../library/data/services/notification.service';
 import { NotificationListResponseInterface } from '../../../library/data/types/notificationListResponse.interface';
 
-export const getNotificationCountEffect = createEffect(
+export const getUserNotificationsEffect = createEffect(
   (
     actions$ = inject(Actions),
     notifService = inject(NotificationService)

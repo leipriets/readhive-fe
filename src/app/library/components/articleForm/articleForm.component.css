@@ -1,0 +1,27 @@
+.editor {
+  padding: 8px;
+  min-height: 250px;
+  height: auto;
+  overflow-y: auto;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+  white-space: pre-wrap;
+  display: block;
+}
+
+:host ::ng-deep .quill-editor,
+.ql-container {
+  min-height: 200px;
+  resize: vertical;
+}
+
+:host ::ng-deep .ql-container {
+  height: auto !important;
+}
+
+:host ::ng-deep .ql-editor {
+  min-height: 200px;
+  height: 100%;
+  overflow-y: auto;
+}

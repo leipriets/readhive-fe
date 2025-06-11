@@ -6,6 +6,7 @@ import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzMenuModule} from 'ng-zorro-antd/menu';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 import {combineLatest, filter, Subscription} from 'rxjs';
 import {selectCurrentUser} from '../../../containers/auth/store/reducers';
@@ -28,6 +29,7 @@ import {selectNotifData} from './store/reducers';
     NzIconModule,
     NzGridModule,
     NzBadgeModule,
+    NzAffixModule
   ],
 })
 export class HeaderComponent implements OnInit {
