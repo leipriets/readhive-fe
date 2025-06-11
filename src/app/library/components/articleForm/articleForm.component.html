@@ -3,107 +3,153 @@
     *ngIf="errors"
     [backendErrors]="errors"
   ></app-backend-error-messages>
-  <nz-form-item>
-    <nz-form-label
-      [nzSm]="6"
-      [nzXs]="24"
-      nzFor="title"
-      nzRequired
-      nzTooltipTitle="What is your article title?"
-    >
-      <span>Title</span>
-    </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-      <input
-        nz-input
-        id="title"
-        formControlName="title"
-        placeholder="Article title"
-      />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label
-      [nzSm]="6"
-      [nzXs]="24"
-      nzFor="description"
-      nzRequired
-      nzTooltipTitle="What is your article about?"
-    >
-      <span>About</span>
-    </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-      <input
-        nz-input
-        id="description"
-        formControlName="description"
-        placeholder="Article about"
-      />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label
-      [nzSm]="6"
-      [nzXs]="24"
-      nzFor="body"
-      nzRequired
-      nzTooltipTitle="Content of your article?"
-    >
-      <span>Body</span>
-    </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-      <textarea
-        nz-input
-        id="body"
-        name="body"
-        formControlName="body"
-        rows="10"
-        placeholder="Write your article (in markdown)"
-      ></textarea>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label
-      [nzSm]="6"
-      [nzXs]="24"
-      nzFor="tagList"
-      nzRequired
-      nzTooltipTitle="Enter your article tags, e.g: news"
-    >
-      <span>Tags</span>
-    </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-      <nz-select
-        nzMode="tags"
-        nzPlaceHolder="Tags"
-        formControlName="tagList"
-      >
-        <ng-container *ngIf="data$ | async as data">
-          @for (popularTag of data.popularTags; track $index) {
-          <nz-option [nzLabel]="popularTag" [nzValue]="popularTag"></nz-option>
-          }
-        </ng-container>
-      </nz-select>
 
-      <!-- <input
-        nz-input
-        id="tagList"
-        placeholder="Enter Tags"
-      /> -->
-    </nz-form-control>
-  </nz-form-item>
+  <div nz-row [nzGutter]="32">
+    <div nz-col class="gutter-row" [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label
+          nzFor="title"
+          nzRequired
+          nzTooltipTitle="What is your article title?"
+        >
+          <span>Title</span>
+        </nz-form-label>
+        <nz-form-control nzErrorTip="">
+          <input
+            nz-input
+            id="title"
+            formControlName="title"
+            placeholder="Article title"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col class="gutter-row" [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label
+          nzFor="description"
+          nzRequired
+          nzTooltipTitle="What is your article about?"
+        >
+          <span>About</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="16" nzErrorTip="">
+          <input
+            nz-input
+            id="description"
+            formControlName="description"
+            placeholder="Article about"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
 
-  <nz-form-item nz-row class="register-area">
-    <nz-form-control [nzSpan]="14" [nzOffset]="6">
-      <button
-        type="submit"
-        nz-button
-        nzType="primary"
-        [disabled]="form.invalid || isSubmitting"
+  <div nz-row [nzGutter]="32">
+    <div nz-col class="gutter-row" [nzSpan]="32">
+      <nz-form-item>
+        <nz-form-label
+          nzFor="body"
+          nzRequired
+          nzTooltipTitle="Content of your article?"
+        >
+          <span>Body</span>
+        </nz-form-label>
+      </nz-form-item>
+      <nz-form-control  [nzOffset]="1">
+        <div class="ql-container">
+          <div class="ql-editor">
+            <quill-editor
+              class="editor"
+              formControlName="body"
+              placeholder="Write your article (in markdown)"
+            ></quill-editor>
+          </div>
+        </div>
+      </nz-form-control>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="32">
+    <div nz-col class="gutter-row" [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label
+          nzFor="tagList"
+          nzRequired
+          nzTooltipTitle="Enter your article tags, e.g: news"
+        >
+          <span>Tags</span>
+        </nz-form-label>
+        <nz-form-control nzErrorTip="">
+          <nz-select nzMode="tags" nzPlaceHolder="Tags" formControlName="tagList">
+            <ng-container *ngIf="data$ | async as data">
+              @for (popularTag of data.popularTags; track $index) {
+              <nz-option
+                [nzLabel]="popularTag"
+                [nzValue]="popularTag"
+              ></nz-option>
+              }
+            </ng-container>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <!-- <nz-form-item>
+    <nz-form-label
+      [nzSm]="6"
+      [nzXs]="24"
+      nzFor="Image upload"
+      nzTooltipTitle="You can upload photos for your article"
+    >
+      <span>Image upload</span>
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <nz-upload
+        [nzAction]="fakeUploadAction"
+        [nzFileList]="fileList"
+        nzListType="picture-card"
+        [nzShowButton]="true"
+        [nzMultiple]="true"
+        [nzLimit]="4"
+        [nzBeforeUpload]="beforeUpload"
+        [nzPreview]="handlePreview"
+        (nzChange)="handleChange($event)"
       >
-        <span *ngIf=""></span>
-        Publish Article
-      </button>
+        <div>
+          <span nz-icon nzType="upload"></span>
+          <div style="margin-top: 8px">Upload</div>
+        </div>
+      </nz-upload>
     </nz-form-control>
-  </nz-form-item>
+  </nz-form-item> -->
+
+  <br />
+
+  <div nz-row [nzGutter]="32">
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzOffset]="17">
+        <button
+          type="submit"
+          nz-button
+          nzType="primary"
+          [disabled]="form.invalid || isSubmitting"
+        >
+          Publish Article
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
 </form>
+
+<nz-modal
+  [nzVisible]="previewVisible"
+  [nzContent]="modalContent"
+  [nzFooter]="null"
+  (nzOnCancel)="previewVisible = false"
+>
+  <ng-template #modalContent>
+    <img [src]="previewImage" style="width: 100%" />
+  </ng-template>
+</nz-modal>

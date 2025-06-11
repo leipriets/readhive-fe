@@ -4,9 +4,9 @@
 
 
 .content-wrapper {
-  overflow: auto;
+  /* overflow: auto; */
   padding-block: 10px;
-  margin: 0rem 10rem 0rem 10rem;
+  margin: 0rem 3rem 0rem 3rem;
 }
 
 .content {

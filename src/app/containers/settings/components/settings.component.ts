@@ -80,6 +80,11 @@ export class SettingsComponent implements OnInit {
       .pipe(select(selectCurrentUser), filter(Boolean))
       .subscribe((currentUser) => {
         this.currentUser = currentUser;
+
+        if (this.currentUser.image !== '') {
+          this.avatarUrl = this.currentUser.image;
+        }
+
         this.initializeForm();
       });
   }
@@ -126,7 +131,7 @@ export class SettingsComponent implements OnInit {
     _fileList: NzUploadFile[]
   ): Observable<boolean> =>
     new Observable((observer: Observer<boolean>) => {
-      this.fileList = this.fileList.concat(file);
+      // this.fileList = this.fileList.concat(file);
       // console.log('fileList', this.fileList);
       const isJpgOrPng =
         file.type === 'image/jpeg' || file.type === 'image/png';

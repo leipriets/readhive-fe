@@ -1,6 +1,9 @@
+import { ArticleMedia } from "./articleMedia.interface";
 import { CommentsInterface } from "./comments.interface";
 import { PopularTagType } from "./popularTag.type";
 import { ProfileInterface } from "./profile.interface";
+
+
 
 export interface ArticleInterface {
     id: number;
@@ -15,5 +18,5 @@ export interface ArticleInterface {
     title: string;
     updatedAt: string;
     author: ProfileInterface;
-    // TODO: Add Author Interface 
+    article_media: any;
 }

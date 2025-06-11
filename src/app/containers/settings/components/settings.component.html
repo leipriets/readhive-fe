@@ -46,8 +46,8 @@
       <nz-form-control nzSm="6" nzXs="24" nzFor="URL of profile picture">
         <!-- URL of profile picture -->
         </nz-form-control>
-      <nz-form-control nzSm="14" nzXs="24">
-        <nz-alert nzType="info" nzMessage="(Hover and click image to re-upload new photo)" nzShowIcon></nz-alert>
+      <nz-form-control nzSm="14" nzXs="24" *ngIf="avatarUrl">
+        <nz-alert nzType="info" nzMessage="(Hover and click image to re-upload a new photo)" nzShowIcon></nz-alert>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

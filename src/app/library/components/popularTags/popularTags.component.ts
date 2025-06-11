@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 
 import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzAffixModule} from 'ng-zorro-antd/affix';
+
 import {combineLatest, take} from 'rxjs';
 
 import {
@@ -19,7 +21,7 @@ import {RouterLink} from '@angular/router';
   templateUrl: './popularTags.component.html',
   styleUrls: ['./popularTags.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterLink, NzTagModule, NzCardModule],
+  imports: [CommonModule, RouterLink, NzTagModule, NzCardModule, NzAffixModule],
 })
 export class PopularTagsComponent implements OnInit {
   data$ = combineLatest({

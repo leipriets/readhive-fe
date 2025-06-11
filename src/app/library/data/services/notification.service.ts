@@ -9,6 +9,7 @@ import {NotificationListResponseInterface} from '../types/notificationListRespon
 import {NotificationMessagePart} from '../types/notifMessagePart.interface';
 import {Store} from '@ngrx/store';
 import {notificationCountActions} from '../../components/header/store/actions';
+import { notificationActions } from '../../../containers/notificationList/store/actions';
 
 @Injectable({providedIn: 'root'})
 export class NotificationService {
@@ -41,6 +42,8 @@ export class NotificationService {
         });
 
         this.store.dispatch(notificationCountActions.getNotificationCount());
+        this.store.dispatch(notificationActions.getNotifications());
+
       });
     });
   }

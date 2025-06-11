@@ -1,0 +1,13 @@
+<a
+  [nzTooltipTitle]="createdDate | date : 'medium'"
+  nzTooltipPlacement="bottom"
+  nz-tooltip
+>
+  <span
+    nz-typography
+    nzType="secondary"
+    style="font-size: 12px; font-weight: italic"
+  >
+    {{ timeDiff }}
+  </span>
+</a>

@@ -8,6 +8,7 @@ import { authActions } from "./actions";
 import { CurrentUserInterface } from "../../../library/data/types/currentUser.interface";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { NzMessageService } from "ng-zorro-antd/message";
 
 export const getCurrentUserEffect = createEffect(
   (
@@ -145,6 +146,25 @@ export const registerEffect = createEffect(
     },
     {functional: true}
   );
+
+  
+  export const notifUpdateCurrentUser = createEffect(
+    (
+      actions$ = inject(Actions),
+      messageService = inject(NzMessageService),
+    ) => {
+      return actions$.pipe(
+        ofType(authActions.updateCurrentUserSuccess),
+        tap(() => {
+          return messageService.success("Profile updated successfully.");
+        })
+      )
+    },
+    {
+      functional: true,
+      dispatch: false
+    }
+  )
 
   export const logoutEffect = createEffect(
     (

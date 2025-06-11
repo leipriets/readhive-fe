@@ -33,6 +33,7 @@ export class EditArticleComponent implements OnInit {
         description: article.description,
         body: article.body,
         tagList: article.tagList,
+        images: article.article_media
       };
     })
   );

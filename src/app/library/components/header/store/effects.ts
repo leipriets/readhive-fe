@@ -4,40 +4,38 @@ import {notificationCountActions} from './actions';
 import {catchError, map, of, switchMap, tap} from 'rxjs';
 
 import {Router} from '@angular/router';
-import { NotificationService } from '../../../data/services/notification.service';
-import { NotifCountResponseInterface } from '../types/notifCountResponse.interface';
-import { notificationActions } from '../../../../containers/notificationList/store/actions';
-import { Store } from '@ngrx/store';
+import {NotificationService} from '../../../data/services/notification.service';
+import {NotifCountResponseInterface} from '../types/notifCountResponse.interface';
+import {notificationActions} from '../../../../containers/notificationList/store/actions';
+import {Store} from '@ngrx/store';
 
 export const getNotificationCountEffect = createEffect(
-  (
-    actions$ = inject(Actions),
-    notifService = inject(NotificationService)
-  ) => {
+  (actions$ = inject(Actions), notifService = inject(NotificationService)) => {
     return actions$.pipe(
       ofType(notificationCountActions.getNotificationCount),
       switchMap(() => {
         return notifService.getNotificationBadge().pipe(
           map((response) => {
             console.log('notification count -> ', response);
-            return notificationCountActions.getNotificationCountSuccess({data: response})
+            return notificationCountActions.getNotificationCountSuccess({
+              data: response,
+            });
           }),
           catchError(() => {
-            return of(notificationCountActions.getNotificationCountFailure())
+            return of(notificationCountActions.getNotificationCountFailure());
           })
-        )
+        );
       })
-    )
+    );
   },
   {functional: true}
-)
-
+);
 
 export const clearNotificationsEffect = createEffect(
   (
     actions$ = inject(Actions),
     router = inject(Router),
-    store = inject(Store),
+    store = inject(Store)
   ) => {
     return actions$.pipe(
       ofType(notificationActions.clearNotifications),
@@ -51,5 +49,4 @@ export const clearNotificationsEffect = createEffect(
     dispatch: false,
   }
 );
-
 // export const clearNotificationsEffect = createEffect()
