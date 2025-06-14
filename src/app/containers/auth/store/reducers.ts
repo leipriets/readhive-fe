@@ -43,6 +43,7 @@ const authFeature = createFeature({
     })),
     on(authActions.loginFailure, (state, action) => ({
       ...state,
+      isLoading: false,
       isSubmitting: false,
       validationErrors: action.errors,
     })),

@@ -11,6 +11,7 @@ const initialState: NotificationStateInterface = {
     count: 0,
     data: []
   },
+  actionData: []
 }
 
 const notificationFeature = createFeature({
@@ -24,7 +25,11 @@ const notificationFeature = createFeature({
     on(notificationActions.getNotificationsSuccess, (state, action) => ({
       ...state,
       isLoading: false,
-      data: action.data,
+      data: {
+        count: action.data.count,
+        data: [...state.data.data, ...action.data.data]
+      },
+      actionData: action.data.data         
     })),
     on(notificationActions.getNotificationsFailure, (state) => ({
       ...state,
@@ -43,6 +48,7 @@ const notificationFeature = createFeature({
       ...state,
       isLoading: false,
     })),
+    on(routerNavigationAction, () => initialState)
   ),
 })
 
@@ -52,4 +58,5 @@ export const {
   selectIsLoading,
   selectError,
   selectData: selectNotifData,
+  selectActionData
 } = notificationFeature

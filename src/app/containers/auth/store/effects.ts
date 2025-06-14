@@ -100,9 +100,10 @@ export const registerEffect = createEffect(
               return authActions.loginSuccess({currentUser});
             }),
             catchError((errorResponse: HttpErrorResponse) => {
+              console.log(errorResponse);
               return of(
                 authActions.loginFailure({
-                  errors: errorResponse.error.errors,
+                  errors: errorResponse.error.error,
                 })
               );
             })

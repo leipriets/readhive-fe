@@ -1,19 +1,26 @@
 <div nz-row id="comment-container">
   <div nz-col nzSpan="20">
     <nz-divider nzPlain nzText="Comments" nzVariant="solid"></nz-divider>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <nz-comment>
-        <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
-        <nz-comment-content>
-          <nz-form-item>
-            <textarea #commentInput formControlName="body" nz-input rows="4"></textarea>
-          </nz-form-item>
-          <nz-form-item>
-            <button nz-button nzType="primary">Comment</button>
-          </nz-form-item>
-        </nz-comment-content>
-      </nz-comment>
-    </form>
+    <ng-container *ngIf="data$ | async as data">
+      <form *ngIf="data.currentUser" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <nz-comment>
+          <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
+          <nz-comment-content>
+            <nz-form-item>
+              <textarea
+                #commentInput
+                formControlName="body"
+                nz-input
+                rows="4"
+              ></textarea>
+            </nz-form-item>
+            <nz-form-item>
+              <button nz-button nzType="primary">Comment</button>
+            </nz-form-item>
+          </nz-comment-content>
+        </nz-comment>
+      </form>
+    </ng-container>
 
     <div *ngIf="data$ | async as data">
       <nz-card *ngIf="data.comments.length > 0">

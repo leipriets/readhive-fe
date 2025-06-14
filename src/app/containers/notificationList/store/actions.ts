@@ -5,7 +5,7 @@ import { NotificationListResponseInterface } from "../../../library/data/types/n
 export const notificationActions = createActionGroup({
     source: 'notification',
     events: {
-        'Get notifications': emptyProps(),
+        'Get notifications': props<{ limit: number, offset: number }>(),
         'Get notifications success': props<{data: NotificationListResponseInterface}>(),
         'Get notifications failure': emptyProps(),
 

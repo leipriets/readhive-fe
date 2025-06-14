@@ -50,8 +50,8 @@ import {CurrentUserInterface} from '../../../../library/data/types/currentUser.i
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  private isSubmittingSubs?: Subscription;
-  isSubmitting = false;
+
+  isSubmitting$ = this.store.select(selectIsSubmitting);
 
   data$ = combineLatest({
     isLoading: this.store.select(selectIsLoading),
@@ -78,13 +78,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (token) {
       this.router.navigateByUrl('/');
     }
-
-    this.isSubmittingSubs = this.store
-      .pipe(select(selectIsSubmitting), filter(Boolean))
-      .subscribe((submitting: boolean) => {
-        this.isSubmitting = submitting;
-      });
   }
+
 
   onSubmit() {
     const request: LoginRequestInterface = {
@@ -94,7 +89,5 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.store.dispatch(authActions.login({request}));
   }
 
-  ngOnDestroy(): void {
-    this.isSubmittingSubs?.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

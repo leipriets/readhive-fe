@@ -1,3 +1,10 @@
-<app-new-post></app-new-post>
-<app-feed-toggler [tagName]="tagName"></app-feed-toggler>
-<app-feed [apiUrl]="apiUrl"></app-feed>
+<div nz-row>
+    <div nz-col [nzXs]="{ span: 16 }" [nzLg]="{ span: 15}">
+      <!-- <app-feed-toggler></app-feed-toggler> -->
+      <app-feed [apiUrl]="apiUrl"></app-feed>
+    </div>
+    <div nz-col [nzXs]="{ span: 8 }  " [nzLg]="{ span: 8}">
+      <app-popular-tags></app-popular-tags>
+    </div>
+  </div>
+  

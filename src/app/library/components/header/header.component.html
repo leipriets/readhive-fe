@@ -1,117 +1,73 @@
-<ng-container *ngIf="data$ | async as data">
-  <nz-affix [nzOffsetTop]="0">
-    <nz-header nzTheme="dark">
-      <div nz-row nzTheme="dark">
-        <div
-          nzTheme="dark"
-          nz-col
-          [nzXs]="{span: 5, offset: 1}"
-          [nzLg]="{span: 6, offset: 2}"
-        >
-          <div class="logo"></div>
-          <h3 class="banner-title">ReadHive</h3>
-        </div>
-        <div
-          nz-col
-          [nzXs]="{span: 10, offset: 1}"
-          [nzLg]="{span: 11, offset: 2}"
-        >
-          <ul
-            nz-menu
-            nzTheme="dark"
-            nzMode="horizontal"
-            class="header-menu pull-right"
+<nz-header nzTheme="dark">
+  <div>
+    <a routerLink="/global-feed" [queryParams]="{tab: 'globalFeed'}">
+      <h3 class="banner-title">ReadHive</h3>
+    </a>
+  </div>
+  <div nz-flex [nzJustify]="'flex-end'" [nzAlign]="'flex-end'">
+    <ng-container *ngIf="data$ | async as data">
+      <ul
+        nz-menu
+        nzMode="horizontal"
+        nzTheme="dark"
+        class="header-menu pull-right"
+      >
+        <li *ngIf="data.currentUser" nz-menu-item [nzMatchRouter]="true">
+          <a
+            nz-button
+            nzType="text"
+            nzPlacement="bottomRight"
+            [routerLink]="['notification', data.currentUser.username]"
           >
-            <li
-              nz-menu-item
-              routerLink="/global-feed"
-              [nzSelected]="isSelected"
-              [queryParams]="{tab: 'globalFeed'}"
-            >
-              <span nz-icon nzType="home"></span>
-            </li>
-            <li *ngIf="!data.currentUser" nz-menu-item routerLink="/sp/login">
-              Sign in
-            </li>
-            <ng-container *ngIf="data.currentUser">
-              <li nz-menu-item>
-                <a
-                  nz-button
-                  nzType="text"
-                  nzPlacement="bottomRight"
-                  [routerLink]="['notification', data.currentUser.username]"
-                >
-                  <nz-badge nzSize="small" [nzCount]="data?.notif_count?.count">
-                    <span nz-icon nzType="bell"></span>
-                  </nz-badge>
-                </a>
-                <nz-dropdown-menu #menu="nzDropdownMenu">
-                  <!-- <app-notification-list></app-notification-list> -->
-                </nz-dropdown-menu>
-              </li>
-              <li
-                nz-submenu
-                [nzTitle]="data.currentUser.username"
-                nzIcon="caret-down"
-              >
-                <ul>
-                  <li
-                    nz-menu-item
-                    [routerLink]="['profile', data.currentUser.username]"
-                    [queryParams]="{tab: 'posts'}"
-                  >
-                    <span nz-icon nzType="user"></span>&nbsp;Profile
-                  </li>
-                  <li nz-menu-item routerLink="/settings">
-                    <span nz-icon nzType="setting"></span>&nbsp;Settings
-                  </li>
-                  <li nz-menu-item (click)="logout()" nzDanger>
-                    <span nz-icon nzType="logout"></span>
-                    Logout
-                  </li>
-                </ul>
-              </li>
+            <nz-badge nzSize="small" [nzCount]="data?.notif_count?.count">
+              <span nz-icon nzType="bell"></span>
+            </nz-badge>
+          </a>
+        </li>
 
-              <!-- <li nz-menu-item [nzSelected]="false" [class.no-hover]="true">
-              <a
-                nz-dropdown
-                [nzOverlayStyle]="{marginTop: '20px'}"
-                nzPlacement="bottomCenter"
-                nzTrigger="click"
-                [nzDropdownMenu]="menuProfile"
-              >
-                <span nz-icon nzType="caret-down"></span>
-              </a>
-              <nz-dropdown-menu id="menuProfile" #menuProfile="nzDropdownMenu">
-                <ul nz-menu>
-                  <li
-                    nz-menu-item
-                    [routerLink]="['profile', data.currentUser.username]"
-                    [queryParams]="{tab: 'posts'}"
-                  >
-                    <span nz-icon nzType="user"></span>&nbsp;Profile
-                  </li>
-                  <li nz-menu-divider></li>
-                  <li nz-menu-item routerLink="/settings">
-                    <span nz-icon nzType="setting"></span>&nbsp;Settings
-                  </li>
-                  <li nz-menu-divider></li>
-                  <li nz-menu-item (click)="logout()" nzDanger>
-                    <span nz-icon nzType="logout"></span>
-                    Logout
-                  </li>
-                </ul>
-              </nz-dropdown-menu>
-            </li> -->
-              <!-- <li nz-menu-item class="no-hover" nzDisabled>
-              <strong>
-                {{ data.currentUser.username }}
-              </strong>
-            </li> -->
+        <li *ngIf="!data.currentUser" nz-menu-item routerLink="/sp/login">
+          Sign in
+        </li>
+      </ul>
+
+      <ul
+        nz-menu
+        nzMode="horizontal"
+        nzTheme="dark"
+        class="header-menu pull-right"
+        [nzSelectable]="false"
+      >
+        <li nz-menu-item class="no-hover">
+          <a
+            class="pull-right"
+            nz-dropdown
+            nzTrigger="click"
+            [nzDropdownMenu]="menu"
+            [nzPlacement]="'bottomRight'"
+          >
+            <ng-container *ngIf="data.currentUser">
+              <nz-avatar
+                nzSize="small"
+                [nzSrc]="data.currentUser.image"
+                nzIcon="user"
+              ></nz-avatar>
             </ng-container>
-          </ul>
-        </div>
-      </div>
-    </nz-header>
-  </nz-affix>
-</ng-container>
+          </a>
+
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item routerLink="/settings">
+                <span nz-icon nzType="setting"></span>&nbsp;Edit Profile
+              </li>
+              <li nz-menu-divider></li>
+              <li nz-menu-item (click)="logout()" nzDanger>
+                <span nz-icon nzType="logout"></span>
+                Logout
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+</nz-header>

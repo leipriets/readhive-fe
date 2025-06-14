@@ -4,4 +4,5 @@ export interface NotificationStateInterface {
   isLoading: boolean;
   error: string | null;
   data: NotificationListResponseInterface;
+  actionData: any;
 }
