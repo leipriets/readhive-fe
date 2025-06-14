@@ -93,10 +93,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(
-      routes
-      // withRouterConfig({
-      //   onSameUrlNavigation: 'ignore',
-      // })
+      routes,
+      withRouterConfig({
+        onSameUrlNavigation: 'ignore',
+      })
     ),
     provideStore({
       router: routerReducer,

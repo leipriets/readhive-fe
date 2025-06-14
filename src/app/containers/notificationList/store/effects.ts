@@ -14,8 +14,8 @@ export const getUserNotificationsEffect = createEffect(
   ) => {
     return actions$.pipe(
       ofType(notificationActions.getNotifications),
-      switchMap(() => {
-        return notifService.getUserNotifications().pipe(
+      switchMap(({limit, offset}) => {
+        return notifService.getUserNotifications(limit, offset).pipe(
           map((response: NotificationListResponseInterface) => {
             return notificationActions.getNotificationsSuccess({data: response})
           }),

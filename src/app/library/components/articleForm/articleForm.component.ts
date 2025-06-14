@@ -103,22 +103,21 @@ export class ArticleFormComponent implements OnInit {
   }
 
   initializeForm(): void {
-    const fileImages = this.initialValues?.images[0].files.map((response: any) => {
-      const filepath = `${environment.apiPath}/src/images/${response.filename}`;
+    // const fileImages = this.initialValues?.images[0].files.map((response: any) => {
+    //   const filepath = `${environment.apiPath}/src/images/${response.filename}`;
 
-      return {
-        uid: uuidv4(),
-        name: response.filename,
-        size: response.size,
-        thumbUrl: filepath,
-        url: filepath,
-      };
-    });
+    //   return {
+    //     uid: uuidv4(),
+    //     name: response.filename,
+    //     size: response.size,
+    //     thumbUrl: filepath,
+    //     url: filepath,
+    //   };
+    // });
 
-    console.log('initialize form', fileImages);
 
     // this.fileList = [...JSON.parse(JSON.stringify(fileImages))];
-    this.fileList = [...fileImages];
+    // this.fileList = [...fileImages];
 
     if (!this.initialValues) {
       throw new Error('Inputs are not provided');
@@ -128,7 +127,7 @@ export class ArticleFormComponent implements OnInit {
       description: this.initialValues.description,
       body: this.initialValues.body,
       tagList: this.initialValues.tagList,
-      images: [...fileImages],
+      // images: [...fileImages],
     });
   }
 

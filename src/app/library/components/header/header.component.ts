@@ -6,7 +6,8 @@ import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzMenuModule} from 'ng-zorro-antd/menu';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
-import { NzAffixModule } from 'ng-zorro-antd/affix';
+import {NzAffixModule} from 'ng-zorro-antd/affix';
+import {NzAlign, NzFlexModule, NzJustify} from 'ng-zorro-antd/flex';
 
 import {combineLatest, filter, Subscription} from 'rxjs';
 import {selectCurrentUser} from '../../../containers/auth/store/reducers';
@@ -14,6 +15,8 @@ import {CommonModule} from '@angular/common';
 import {authActions} from '../../../containers/auth/store/actions';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {selectNotifData} from './store/reducers';
+import {FeedTogglerComponent} from '../feedToggler/feedToggler.component';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
 
 @Component({
   selector: 'app-header',
@@ -29,13 +32,16 @@ import {selectNotifData} from './store/reducers';
     NzIconModule,
     NzGridModule,
     NzBadgeModule,
-    NzAffixModule
+    NzAffixModule,
+    NzFlexModule,
+    NzAvatarModule,
   ],
 })
 export class HeaderComponent implements OnInit {
   @Input() isCollapsed: boolean = false;
   currentRoute: string = '';
   isSelected = false;
+  isSelectedNotif = false;
   notifCount = 0;
 
   getUserNotifCountSubs?: Subscription;
@@ -50,7 +56,13 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.currentRoute = this.router.url;
 
-    console.log('header commponent current route',this.currentRoute);
+    // console.log('header commponent current route', this.currentRoute);
+
+
+  }
+
+  ngAfterViewInit(): void {
+    const notificationRoute = this.currentRoute.split('/')[1];
 
     if (
       this.currentRoute == '/global-feed?tab=globalFeed' ||
@@ -59,6 +71,10 @@ export class HeaderComponent implements OnInit {
       this.isSelected = true;
     }
 
+
+    if (notificationRoute == 'notification') {
+      this.isSelectedNotif = true;
+    }
   }
 
   logout(): void {

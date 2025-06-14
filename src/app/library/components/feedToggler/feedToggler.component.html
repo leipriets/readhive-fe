@@ -1,36 +1,42 @@
-<br/>
-<nz-tabset
-  nzHideAdd
-  nzType="editable-card"
-  nzLinkRouter
-  (nzAdd)="newTab()"
-  (nzClose)="closeTab()"
->
-  <ng-container *ngIf="currentUser$ | async as currentUser">
-    <nz-tab >
-      <a *nzTabLink nz-tab-link routerLink="/feed" [queryParams]="{tab: 'feed'}"
-        >Following
+<br />
+<!-- <nz-affix [nzOffsetTop]="70"> -->
+  <nz-tabset
+    nzHideAdd
+    nzType="editable-card"
+    nzLinkRouter
+    (nzAdd)="newTab()"
+    (nzClose)="closeTab()"
+  >
+    <ng-container *ngIf="currentUser$ | async as currentUser">
+      <nz-tab>
+        <a
+          *nzTabLink
+          nz-tab-link
+          routerLink="/feed"
+          [queryParams]="{tab: 'feed'}"
+          >Following
+        </a>
+      </nz-tab>
+    </ng-container>
+
+    <nz-tab>
+      <a
+        *nzTabLink
+        nz-tab-link
+        routerLink="/global-feed"
+        [queryParams]="{tab: 'globalFeed'}"
+        >For you
       </a>
     </nz-tab>
-  </ng-container>
 
-  <nz-tab>
-    <a
-      *nzTabLink
-      nz-tab-link
-      routerLink="/global-feed"
-      [queryParams]="{tab: 'globalFeed'}"
-      >For you
-    </a>
-  </nz-tab>
-
-  <nz-tab *ngIf="tagName" nzClosable>
-    <a
-      *nzTabLink
-      nz-tab-link
-      [routerLink]="['/tags', tagName]"
-      [queryParams]="{tab: tagName}"
-      ><span nz-icon nzType="borderless-table"></span>&nbsp;{{ tagName }}
-    </a>
-  </nz-tab>
-</nz-tabset>
+    <nz-tab *ngIf="tagName" nzClosable>
+      <a
+        *nzTabLink
+        nz-tab-link
+        [routerLink]="['/tags', tagName]"
+        [queryParams]="{tab: tagName}"
+        ><span nz-icon nzType="borderless-table"></span>&nbsp;{{ tagName }}
+      </a>
+    </nz-tab>
+  </nz-tabset>
+<!-- </nz-affix> -->

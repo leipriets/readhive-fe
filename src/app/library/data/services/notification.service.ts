@@ -9,7 +9,8 @@ import {NotificationListResponseInterface} from '../types/notificationListRespon
 import {NotificationMessagePart} from '../types/notifMessagePart.interface';
 import {Store} from '@ngrx/store';
 import {notificationCountActions} from '../../components/header/store/actions';
-import { notificationActions } from '../../../containers/notificationList/store/actions';
+import {notificationActions} from '../../../containers/notificationList/store/actions';
+import queryString from 'query-string';
 
 @Injectable({providedIn: 'root'})
 export class NotificationService {
@@ -42,8 +43,9 @@ export class NotificationService {
         });
 
         this.store.dispatch(notificationCountActions.getNotificationCount());
-        this.store.dispatch(notificationActions.getNotifications());
-
+        this.store.dispatch(
+          notificationActions.getNotifications({limit: 5, offset: 0})
+        );
       });
     });
   }
@@ -53,8 +55,16 @@ export class NotificationService {
     return this.http.get<NotifCountResponseInterface>(fullUrl);
   }
 
-  getUserNotifications(): Observable<NotificationListResponseInterface> {
-    const fullUrl = environment.apiUrl + '/user-notifications';
+  getUserNotifications(
+    limit?: number,
+    offset?: number
+  ): Observable<NotificationListResponseInterface> {
+    const stringifiedParams = queryString.stringify({
+      limit,
+      offset,
+    });
+
+    const fullUrl = `${environment.apiUrl}/user-notifications?${stringifiedParams}`;
     return this.http.get<NotificationListResponseInterface>(fullUrl);
   }
 

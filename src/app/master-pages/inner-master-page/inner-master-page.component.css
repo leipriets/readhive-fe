@@ -1,4 +1,4 @@
-.logo {
+/* .logo {
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
@@ -21,4 +21,31 @@
   
   nz-footer {
     text-align: center;
+  } */
+
+  .logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(255, 255, 255, 0.2);
+    /* background-image: url('/logo/20250613_0817_ReadHive_Logo Design_simple_compose_01.png'); */
+    margin: 16px 30px 16px 0;
+    float: left;
+  }
+
+  .header-menu {
+    line-height: 64px;
+  }
+
+  .inner-layout {
+    padding: 0 24px 24px;
+  }
+
+  nz-breadcrumb {
+    margin: 16px 0;
+  }
+
+  nz-content {
+    background: #fff;
+    padding: 24px;
+    min-height: 280px;
   }

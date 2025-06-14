@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 import {select, Store} from '@ngrx/store';
@@ -50,6 +51,7 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {selectArticleContent} from '../../../containers/article/store/selectors';
 import {getRelativeTime} from '../../utils/helper';
 import { ToolTipDateComponent } from '../tooltipDate/toolTipDate.component';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
   selector: 'app-feed',
@@ -73,6 +75,7 @@ import { ToolTipDateComponent } from '../tooltipDate/toolTipDate.component';
     NzImageModule,
     NzBadgeModule,
     NzToolTipModule,
+    NzBreadCrumbModule,
     AddToFavoritesComponent,
     SkeletonComponent,
     ToolTipDateComponent,
@@ -99,6 +102,8 @@ export class FeedComponent implements OnInit, OnDestroy {
       for (const article of data.feed) {
         // if (!(article.id in this.collapsedMap)) {
         this.collapsedMap[article.id] = true; // or true if you want collapsed initially
+
+        this.safeContent = this.sanitizer.bypassSecurityTrustHtml(article.body);
         // }
       }
     })
@@ -115,6 +120,9 @@ export class FeedComponent implements OnInit, OnDestroy {
   showToggle = true;
   safeContent: SafeHtml | undefined;
   isProfileTab = false;
+  queryParams: Params = {};
+  currentRoute = '';
+  currentRouteParam: string | null = null;
 
   constructor(
     private store: Store,
@@ -125,8 +133,16 @@ export class FeedComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.fetchFeed();
-    this.onScroll();
+    const parsedUrl = queryString.parseUrl(this.apiUrl);
+    const stringifiedParams = queryString.stringify({
+      userId: this.currentSessionId,
+      limit: this.limit,
+      offset: this.offset,
+      ...parsedUrl.query,
+    });
+
+    const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
+    this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
 
     this.currentUserSubscription = this.store
       .pipe(select(selectCurrentUser), filter(Boolean))
@@ -135,28 +151,50 @@ export class FeedComponent implements OnInit, OnDestroy {
         this.currentSessionId = currentUser.id;
       });
 
-    this.store.select(selectArticleContent).subscribe((articleBody) => {
-      console.log('selector', articleBody);
-      this.safeContent = this.sanitizer.bypassSecurityTrustHtml(articleBody);
-    });
-
-    const queryParams = this.route.snapshot.queryParams;
+    this.queryParams = this.route.snapshot.queryParams;
 
     if (
-      queryParams['tab'] &&
-      queryParams['tab'].trim() !== '' &&
-      queryParams['tab'] == 'posts'
+      this.queryParams['tab'] &&
+      this.queryParams['tab'].trim() !== '' &&
+      this.queryParams['tab'] == 'posts'
     ) {
       this.isProfileTab = true;
     }
+
+    this.currentRoute = this.router.url.split('?')[0];
+
+    this.currentRouteParam = this.route.snapshot.paramMap.get('slug');
   }
 
-  fetchFeed(): void {
-    const parsedUrl = queryString.parseUrl(this.apiUrl);
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (changes['apiUrl'] && !changes['apiUrl'].firstChange) {
+      const newUrl = changes['apiUrl'].currentValue;
+      const parsedUrl = queryString.parseUrl(newUrl);
+      const stringifiedParams = queryString.stringify({
+        userId: this.currentSessionId,
+        limit: this.limit,
+        offset: 0,
+        ...parsedUrl.query,
+      });
+        
+      const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
+      this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
+    }
+
+    console.log('feed component')
+
+    this.queryParams = this.route.snapshot.queryParams;
+  }
+
+
+
+  fetchFeed(apiUrl: string): void {
+    const parsedUrl = queryString.parseUrl(apiUrl);
     const stringifiedParams = queryString.stringify({
       userId: this.currentSessionId,
       limit: this.limit,
-      offset: this.offset,
+      offset: 0,
       ...parsedUrl.query,
     });
     const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
@@ -164,6 +202,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     const dataSubs = this.data$.subscribe((response) => {
       this.pageSize = response.articlesCount;
     });
+    
 
     if (this.pageSize >= this.offset) {
       this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
@@ -176,7 +215,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   onScroll(): void {
     console.log('scrolled!');
     setTimeout(() => {
-      this.fetchFeed();
+      this.fetchFeed(this.apiUrl);
     }, 1000);
   }
 

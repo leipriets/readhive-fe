@@ -1,3 +1,23 @@
+<nz-breadcrumb>
+  <nz-breadcrumb-item>
+    <span nz-icon nzType="home"></span>
+  </nz-breadcrumb-item>
+
+  <nz-breadcrumb-item>
+    
+    @if (currentRoute == '/global-feed') {
+    <span>For You</span>
+    } @if (currentRoute == '/feed') {
+      <span>Following</span>
+    } 
+     
+    @if (currentRouteParam) {
+    <span>#{{ queryParams['tab'] }}</span>
+    }
+  </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<br />
 <div
   infiniteScroll
   [infiniteScrollDistance]="3"
@@ -6,84 +26,28 @@
 >
   <nz-list nzItemLayout="vertical" *ngIf="data$ | async as data">
     <div *ngIf="data.feed">
-      @for (article of data.feed; track article.id) {
+      @for (article of data.feed; track $index) {
 
-      <nz-list-item>
-        <nz-list-item-meta>
-          <nz-list-item-meta-avatar
-            *ngIf="data.currentUser; else redirectToLoginUsername"
-          >
-            <a
-              [routerLink]="['/profile', article.author.username]"
-              [queryParams]="{tab: 'posts'}"
-              class="username"
-            >
-              <nz-avatar
-                [nzSrc]="article.author.image"
-                nzIcon="user"
-              ></nz-avatar>
-            </a>
-          </nz-list-item-meta-avatar>
-          <nz-list-item-meta-title>
-            <ng-container *ngIf="data.currentUser; else redirectToLogin">
-              <strong>
-                <a
-                  style="color: black !important"
-                  [routerLink]="['/profile', article.author.username]"
-                  [queryParams]="{tab: 'posts'}"
-                  >{{ article.author.username }}</a
-                >
-              </strong>
-            </ng-container>
-
-            <ng-template #redirectToLogin>
-              <strong>
-                <a
-                  style="color: black !important"
-                  routerLink="/sp/login"
-                  [queryParams]="{tab: 'posts'}"
-                  >{{ article.author.username }}</a
-                >
-              </strong>
-            </ng-template>
-          </nz-list-item-meta-title>
-          <nz-list-item-meta-description>
-            <ng-container>
-              @if (isProfileTab) {
-              <a [routerLink]="['/articles', article.slug]">
-                {{ article.title }}
-              </a>
-              } @if (!isProfileTab) {
-              <a (click)="showArticleModal(article, userAvatarModal)">
-                {{ article.title }}
-              </a>
-
-              }
-
-              <!-- Time -->
-              <div nz-col>
-                <app-tooltip-date
-                  [createdDate]="article.createdAt"
-                ></app-tooltip-date>
-              </div>
-            </ng-container>
-
-            <ng-template #redirectToLoginTitle>
-              <a routerLink="/sp/login">{{ article.title }}</a>
-            </ng-template>
-          </nz-list-item-meta-description>
-        </nz-list-item-meta>
+      <nz-card>
+        <nz-card-meta
+          [nzTitle]="username"
+          [nzDescription]="articleTitle"
+          [nzAvatar]="avatarTemplate"
+        ></nz-card-meta>
 
         <div
           class="rich-text-container quill-content"
           [class.collapsed]="collapsedMap[article.id]"
         >
-          <div [innerHTML]="article.body"></div>
+          <br />
+          <div [innerHTML]="this.safeContent"></div>
         </div>
 
         <a *ngIf="showToggle" (click)="toggleCollapse(article.id)">
           {{ collapsedMap[article.id] ? 'Read more' : 'Show less' }}
         </a>
+
+        <nz-divider></nz-divider>
 
         <ul nz-list-item-actions>
           <nz-list-item-action>
@@ -99,56 +63,81 @@
             </a>
           </nz-list-item-action>
         </ul>
-        <nz-list-item-extra>
-          @for (tag of article.tagList; track $index) {
-          <a *ngIf="tag" [routerLink]="['/tags', tag]">
-            <nz-tag nzColor="blue">
-              <span nz-icon nzType="borderless-table"></span>
-              {{ tag }}</nz-tag
-            >
-          </a>
-          }
-        </nz-list-item-extra>
-        <!-- <nz-list-item-extra>
-          <ng-container *ngIf="article.article_media[0]?.files.length > 0">
-            <nz-badge
-              [nzCount]="article.article_media[0]?.files.length"
-              [nzOverflowCount]="article.article_media[0]?.files.length - 1"
-              [nzStyle]="{
-                backgroundColor: '#fff',
-                color: '#999',
-                boxShadow: '0 0 0 1px #6883ab inset',
-                fontWeight: 'bold',
-                fontSize: '12px'
-              }"
-            >
-              <nz-card
-                nzHoverable
-                style="width: 240px"
-                [nzCover]="coverTemplate"
+      </nz-card>
+      <ng-template #username>
+        <div nz-row>
+          <div nz-col>
+            @if (data.currentUser) {
+            <strong>
+              <a
+                style="color: black !important"
+                [routerLink]="['/profile', article.author.username]"
+                [queryParams]="{tab: 'posts'}"
+                >{{ article.author.username }}</a
               >
-                <nz-card-meta [nzTitle]="article.title"></nz-card-meta>
-              </nz-card>
-              <ng-template #coverTemplate>
-                <img
-                  width="272"
-                  alt="example"
-                  [src]="
-                    backendApi +
-                    '/src/images/' +
-                    article.article_media[0]?.files[0].filename
-                  "
-                />
-              </ng-template>
-            </nz-badge>
-          </ng-container>
-        </nz-list-item-extra> -->
-      </nz-list-item>
+            </strong>
+            } @if (!data.currentUser) {
+            <strong>
+              <a style="color: black !important" routerLink="/sp/login">{{
+                article.author.username
+              }}</a>
+            </strong>
+            }
+          </div>
+
+          <div nz-col nzOffset="1">
+            @for (tag of article.tagList; track $index) {
+            <a *ngIf="tag" [routerLink]="['/tags', tag]">
+              <nz-tag nzColor="blue">
+                <span nz-icon nzType="borderless-table"></span>
+                {{ tag }}</nz-tag
+              >
+            </a>
+            }
+          </div>
+          <div nz-col [nzPush]="16">
+            <app-tooltip-date
+              [createdDate]="article.createdAt"
+            ></app-tooltip-date>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #avatarTemplate>
+        <nz-avatar [nzSrc]="article.author.image" nzIcon="user"></nz-avatar>
+      </ng-template>
+
+      <ng-template #articleTitle>
+        @if (isProfileTab) {
+        <a [routerLink]="['/articles', article.slug]">
+          {{ article.title }}
+        </a>
+        } @if (!isProfileTab) {
+        <a (click)="showArticleModal(article, userAvatarModal)">
+          {{ article.title }}
+        </a>
+        }
+      </ng-template>
+
+      <ng-template #favoritedSetting>
+        <app-add-to-favorites
+          [isFavorited]="article.favorited"
+          [articleSlug]="article.slug"
+          [favoritesCount]="article.favoritesCount"
+        ></app-add-to-favorites>
+      </ng-template>
+
+      <ng-template #commentSetting>
+        <a (click)="showArticleModal(article, userAvatarModal, true)">
+          <span nz-icon nzType="comment"></span>
+        </a>
+      </ng-template>
+
+      <!-- **************** -->
 
       <ng-template #redirectToLoginUsername>
         <nz-list-item-meta-avatar>
           <a [routerLink]="['/sp/login']">
-            <nz-avatar nzIcon="user"></nz-avatar>
+            <nz-avatar [nzSrc]="article.author.image" nzIcon="user"></nz-avatar>
           </a>
         </nz-list-item-meta-avatar>
       </ng-template>
@@ -174,6 +163,7 @@
         </div>
       </ng-template>
 
+      <br />
       }
       <app-skeleton *ngIf="data.isLoading"></app-skeleton>
       <ng-container *ngIf="data.isLastPage">

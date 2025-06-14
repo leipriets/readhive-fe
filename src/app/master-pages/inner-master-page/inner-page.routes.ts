@@ -3,13 +3,13 @@ import {InnerMasterPageComponent} from './inner-master-page.component';
 import {ArticleComponent} from '../../containers/article/components/article.component';
 import {CreateArticleComponent} from '../../containers/article/components/createArticle/createArticle.component';
 import {ArticleSlugComponent} from '../../containers/article/components/articleSlug/articleSlug.component';
-import { GlobalFeedComponent } from '../../containers/globalFeed/components/globalFeed.component';
-import { TagFeedComponent } from '../../containers/tagFeed/components/tagFeed.component';
-import { SettingsComponent } from '../../containers/settings/components/settings.component';
-import { YourFeedComponent } from '../../containers/yourFeed/components/yourFeed.component';
-import { UserProfileComponent } from '../../containers/userProfile/components/userProfile.component';
-import { NotificationListComponent } from '../../containers/notificationList/components/notification-list.component';
-import { AuthGuard } from '../../auth.guard';
+import {GlobalFeedComponent} from '../../containers/globalFeed/components/globalFeed.component';
+import {TagFeedComponent} from '../../containers/tagFeed/components/tagFeed.component';
+import {SettingsComponent} from '../../containers/settings/components/settings.component';
+import {YourFeedComponent} from '../../containers/yourFeed/components/yourFeed.component';
+import {UserProfileComponent} from '../../containers/userProfile/components/userProfile.component';
+import {NotificationListComponent} from '../../containers/notificationList/components/notification-list.component';
+import {AuthGuard} from '../../auth.guard';
 
 export const innerPageRoutes: Route[] = [
   {
@@ -31,7 +31,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/yourFeed/yourFeed.routes').then(
             (m) => m.routes
           ),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'articles',
@@ -40,7 +40,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/article/article.routes').then(
             (m) => m.routes
           ),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'articles/new',
@@ -49,7 +49,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/article/article.routes').then(
             (m) => m.routes
           ),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'articles/:slug',
@@ -58,7 +58,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/article/article.routes').then(
             (m) => m.routes
           ),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'tags/:slug',
@@ -75,7 +75,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/settings/settings.routes').then(
             (m) => m.routes
           ),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'profile/:username',
@@ -84,8 +84,7 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/userProfile/userProfile.routes').then(
             (m) => m.routes
           ),
-          canActivate: [AuthGuard]
-          
+        canActivate: [AuthGuard],
       },
       {
         path: 'profile/:username/favorites',
@@ -94,17 +93,16 @@ export const innerPageRoutes: Route[] = [
           import('../../containers/userProfile/userProfile.routes').then(
             (m) => m.routes
           ),
-          canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'notification/:username',
         component: NotificationListComponent,
         loadChildren: () =>
-          import('../../containers/notificationList/notificationList.routes').then(
-            (m) => m.routes
-          ),
-          // canActivate: [AuthGuard]
-          
+          import(
+            '../../containers/notificationList/notificationList.routes'
+          ).then((m) => m.routes),
+        // canActivate: [AuthGuard]
       },
     ],
   },
