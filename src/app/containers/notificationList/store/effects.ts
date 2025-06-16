@@ -29,6 +29,28 @@ export const getUserNotificationsEffect = createEffect(
   {functional: true}
 )
 
+export const getUserNotificationsLoadMoreEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    notifService = inject(NotificationService)
+  ) => {
+    return actions$.pipe(
+      ofType(notificationActions.getNotificationsLoadMore),
+      switchMap(({limit, offset}) => {
+        return notifService.getUserNotifications(limit, offset).pipe(
+          map((response: NotificationListResponseInterface) => {
+            return notificationActions.getNotificationsLoadMoreSuccess({data: response})
+          }),
+          catchError(() => {
+            return of(notificationActions.getNotificationsLoadMoreFailure())
+          })
+        )
+      })
+    )
+  },
+  {functional: true}
+)
+
 export const clearUserNotifications = createEffect(
   (
     actions$ = inject(Actions),

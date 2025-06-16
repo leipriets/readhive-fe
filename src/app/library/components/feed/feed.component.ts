@@ -1,14 +1,16 @@
 import {
   Component,
+  ElementRef,
   inject,
   Input,
   OnDestroy,
   OnInit,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {combineLatest, filter, map, Observable, Subscription, tap} from 'rxjs';
+import {combineLatest, filter, map, Observable, Subscription, take, tap} from 'rxjs';
 import {ActivatedRoute, Params, Router, RouterLink} from '@angular/router';
 import queryString from 'query-string';
 import {feedActions} from './store/actions';
@@ -25,7 +27,7 @@ import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzAnchorModule} from 'ng-zorro-antd/anchor';
 import {NzImageModule} from 'ng-zorro-antd/image';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 
 import {environment} from '../../../../environments/environment.development';
 import {PaginationComponent} from '../pagination/pagination.component';
@@ -36,6 +38,7 @@ import {
   selectIsLoading,
   selectArticlesCount,
   selectAllDataLoaded,
+  selectHasMore,
 } from './store/reducers';
 import {AddToFavoritesComponent} from '../addToFavorites/addToFavorites.component';
 import {SkeletonComponent} from '../skeleton/skeleton.component';
@@ -50,8 +53,8 @@ import {ArticleSlugModalComponent} from '../articleSlugModal/articleSlugModal.co
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {selectArticleContent} from '../../../containers/article/store/selectors';
 import {getRelativeTime} from '../../utils/helper';
-import { ToolTipDateComponent } from '../tooltipDate/toolTipDate.component';
-import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import {ToolTipDateComponent} from '../tooltipDate/toolTipDate.component';
+import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
 
 @Component({
   selector: 'app-feed',
@@ -83,6 +86,8 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
   ],
 })
 export class FeedComponent implements OnInit, OnDestroy {
+  @ViewChild('divArticleContent') divArticleContent?: ElementRef;
+  
   @Input() apiUrl: string = '';
 
   private subscription: Subscription = new Subscription();
@@ -100,14 +105,22 @@ export class FeedComponent implements OnInit, OnDestroy {
     tap((data) => {
       // Initialize collapsedMap when articles are loaded
       for (const article of data.feed) {
-        // if (!(article.id in this.collapsedMap)) {
-        this.collapsedMap[article.id] = true; // or true if you want collapsed initially
+        if (!(article.id in this.collapsedMap)) {
+          this.collapsedMap[article.id] = true; // or true if you want collapsed initially
 
-        this.safeContent = this.sanitizer.bypassSecurityTrustHtml(article.body);
-        // }
+          if (this.currentSessionUsername !== article.author.username) {
+            this.isProfileTab = false;
+          } 
+
+      //     this.safeContent = this.sanitizer.bypassSecurityTrustHtml(
+      //       article.body
+      //     );
+        }
       }
     })
   );
+
+  hasMore$ = this.store.select(selectHasMore);
 
   offset = 0;
   limit = environment.limit;
@@ -116,13 +129,14 @@ export class FeedComponent implements OnInit, OnDestroy {
   pageSize = 0;
   noArticles: boolean = false;
   currentSessionId: string | null = null;
+  currentSessionUsername: string | null = null;
   backendApi = `${environment.apiPath}`;
-  showToggle = true;
   safeContent: SafeHtml | undefined;
   isProfileTab = false;
   queryParams: Params = {};
   currentRoute = '';
   currentRouteParam: string | null = null;
+
 
   constructor(
     private store: Store,
@@ -133,30 +147,17 @@ export class FeedComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const parsedUrl = queryString.parseUrl(this.apiUrl);
-    const stringifiedParams = queryString.stringify({
-      userId: this.currentSessionId,
-      limit: this.limit,
-      offset: this.offset,
-      ...parsedUrl.query,
-    });
 
-    const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
-    this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
-
-    this.currentUserSubscription = this.store
-      .pipe(select(selectCurrentUser), filter(Boolean))
-      .subscribe((currentUser: CurrentUserInterface) => {
-        console.log('app component current user ->', currentUser);
-        this.currentSessionId = currentUser.id;
-      });
+    this.setCurrentSession();
+    this.fetchFeed();
 
     this.queryParams = this.route.snapshot.queryParams;
 
     if (
       this.queryParams['tab'] &&
       this.queryParams['tab'].trim() !== '' &&
-      this.queryParams['tab'] == 'posts'
+      this.queryParams['tab'] == 'posts' &&
+      this.queryParams['tab'] !== 'favorites'
     ) {
       this.isProfileTab = true;
     }
@@ -167,8 +168,9 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
     if (changes['apiUrl'] && !changes['apiUrl'].firstChange) {
+      this.setCurrentSession();
+
       const newUrl = changes['apiUrl'].currentValue;
       const parsedUrl = queryString.parseUrl(newUrl);
       const stringifiedParams = queryString.stringify({
@@ -177,46 +179,60 @@ export class FeedComponent implements OnInit, OnDestroy {
         offset: 0,
         ...parsedUrl.query,
       });
-        
+
       const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
       this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
     }
 
-    console.log('feed component')
+    console.log('feed component');
 
     this.queryParams = this.route.snapshot.queryParams;
   }
 
 
-
-  fetchFeed(apiUrl: string): void {
-    const parsedUrl = queryString.parseUrl(apiUrl);
+  fetchFeed(): void {
+    const parsedUrl = queryString.parseUrl(this.apiUrl);
     const stringifiedParams = queryString.stringify({
       userId: this.currentSessionId,
       limit: this.limit,
-      offset: 0,
+      offset: this.offset,
       ...parsedUrl.query,
     });
     const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
+    console.log('this.currentSessionId', this.currentSessionId);
 
     const dataSubs = this.data$.subscribe((response) => {
       this.pageSize = response.articlesCount;
     });
+
+    this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
+
+    if (this.pageSize >= this.offset) this.offset += this.limit;
     
-
-    if (this.pageSize >= this.offset) {
-      this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
-      this.offset += this.limit;
-    }
-
     this.subscription.add(dataSubs);
   }
 
   onScroll(): void {
     console.log('scrolled!');
     setTimeout(() => {
-      this.fetchFeed(this.apiUrl);
+      combineLatest([this.hasMore$])
+      .pipe(take(1))
+      .subscribe(([hasMore]) => {
+        if (hasMore) {
+          this.fetchFeed();
+        }
+      });
     }, 1000);
+  }
+
+  setCurrentSession() {
+    this.currentUserSubscription = this.store
+      .pipe(select(selectCurrentUser), filter(Boolean), take(1))
+      .subscribe((currentUser: CurrentUserInterface) => {
+        console.log('app component current user ->', currentUser);
+        this.currentSessionId = currentUser.id;
+        this.currentSessionUsername = currentUser.username;
+      });
   }
 
   showArticleModal(
@@ -224,7 +240,6 @@ export class FeedComponent implements OnInit, OnDestroy {
     userTitleAvatar?: TemplateRef<{}>,
     directComment?: boolean | undefined
   ): void {
-
     this.safeContent = this.sanitizer.bypassSecurityTrustHtml(article.body);
 
     const modal: NzModalRef = this.modalService.create({
@@ -237,7 +252,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         articleBody: this.safeContent,
         articleUsername: article?.author.username,
         articleAvatar: article?.author?.image,
-        isDirectComment: directComment
+        isDirectComment: directComment,
       },
       nzFooter: [
         {

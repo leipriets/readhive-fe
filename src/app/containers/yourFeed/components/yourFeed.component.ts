@@ -17,10 +17,8 @@ import { NewPostComponent } from "../../../library/components/newPost/newPost.co
         NzIconModule,
         NzButtonModule,
         NzGridModule,
-        FeedTogglerComponent,
         FeedComponent,
         PopularTagsComponent,
-        NewPostComponent
     ]
 })
 export class YourFeedComponent {

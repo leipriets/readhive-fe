@@ -1,5 +1,6 @@
 import {
   Component,
+  ElementRef,
   inject,
   Injectable,
   OnDestroy,
@@ -76,6 +77,7 @@ import { AddToFavoritesComponent } from '../../../../library/components/addToFav
 })
 export class ArticleSlugComponent implements OnInit, OnDestroy {
   @ViewChild(DrawerComponent, {static: false}) drawerTemplate!: DrawerComponent;
+  @ViewChild('divArticleContent') divArticleContent?: ElementRef;
 
   slug = this.route.snapshot.paramMap.get('slug') ?? '';
   currentUser?: CurrentUserInterface;
@@ -84,6 +86,7 @@ export class ArticleSlugComponent implements OnInit, OnDestroy {
   pathUrl = environment.apiPath + '/src/images';
   showToggle = false;
   isCollapse = true;
+  isViewReadMore = true;
 
   data$ = combineLatest({
     isLoading: this.store.select(selectIsLoading),
@@ -114,6 +117,22 @@ export class ArticleSlugComponent implements OnInit, OnDestroy {
       .subscribe((currentUser: CurrentUserInterface) => {
         this.currentUser = currentUser;
       });
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.divArticleContent) {
+      const native = this.divArticleContent.nativeElement;
+
+      // Check if a class exists
+      const hasClass = native.classList.contains('rich-text-container');
+      // Add a class conditionally
+      if (native.offsetHeight >= 500) {
+        this.isViewReadMore = true;
+      } else {
+        this.isViewReadMore = false;
+      }
+    }
+
   }
 
   deleteArticle(): void {

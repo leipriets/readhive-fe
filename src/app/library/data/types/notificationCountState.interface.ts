@@ -1,4 +1,4 @@
-import { NotifCountResponseInterface } from "../../components/header/types/notifCountResponse.interface";
+import { NotifCountResponseInterface } from "../../components/searchProfile/types/notifCountResponse.interface";
 
 export interface NotificationCountStateInterface {
   isLoading: boolean;

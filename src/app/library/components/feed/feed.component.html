@@ -26,7 +26,7 @@
 >
   <nz-list nzItemLayout="vertical" *ngIf="data$ | async as data">
     <div *ngIf="data.feed">
-      @for (article of data.feed; track $index) {
+      @for (article of data.feed; track article.id) {
 
       <nz-card>
         <nz-card-meta
@@ -37,13 +37,14 @@
 
         <div
           class="rich-text-container quill-content"
+          #divArticleContent
           [class.collapsed]="collapsedMap[article.id]"
         >
           <br />
-          <div [innerHTML]="this.safeContent"></div>
+          <div [innerHTML]="article.body"></div>
         </div>
 
-        <a *ngIf="showToggle" (click)="toggleCollapse(article.id)">
+        <a (click)="toggleCollapse(article.id)">
           {{ collapsedMap[article.id] ? 'Read more' : 'Show less' }}
         </a>
 
@@ -59,7 +60,7 @@
           </nz-list-item-action>
           <nz-list-item-action>
             <a (click)="showArticleModal(article, userAvatarModal, true)">
-              <span nz-icon nzType="comment"></span>
+              <span nz-icon nzType="comment"></span> {{ ( article.commentsCount == 0 ? '' : article.commentsCount ) }}
             </a>
           </nz-list-item-action>
         </ul>
@@ -119,6 +120,7 @@
       </ng-template>
 
       <ng-template #favoritedSetting>
+
         <app-add-to-favorites
           [isFavorited]="article.favorited"
           [articleSlug]="article.slug"

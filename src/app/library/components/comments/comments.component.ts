@@ -45,6 +45,7 @@ import {ReactCommentsComponent} from '../reactComments/reactComments.component';
 import {EditCommentFormValuesInterface} from './types/editCommentFormValues.interface';
 import {EditCommentRequestInterface} from './types/editCommentRequest.interface';
 import {getRelativeTime} from '../../utils/helper';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'app-comment',
@@ -65,6 +66,7 @@ import {getRelativeTime} from '../../utils/helper';
     NzDividerModule,
     NzDropDownModule,
     NzModalModule,
+    NzTypographyModule,
     ReactiveFormsModule,
     ReactCommentsComponent,
   ],

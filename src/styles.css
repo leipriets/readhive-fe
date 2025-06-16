@@ -1,5 +1,17 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* .mt-10 {
+    margin-top: 10px;
+} */
+
 /* You can add global styles to this file, and also import other style files */
 .error-messages {
   color: #b85c5c !important;
   font-weight: bold;
 }
+

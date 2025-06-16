@@ -48,13 +48,12 @@ export class ReactCommentsComponent implements OnInit, OnDestroy {
     this.likesCount = this.comment!.like_counts;
     this.dislikesCount = this.comment!.dislike_counts;
 
-    this.commentReactSubs = this.store
-      .pipe(select(selectData), filter(Boolean))
-      .subscribe((data) => {
-        // this.likesCount = data.data?.like_counts;
-        // this.dislikesCount = data.data?.dislike_counts;
-        console.log('react comments data', data);
-      });
+    // this.commentReactSubs = this.store
+    //   .pipe(select(selectData), filter(Boolean))
+    //   .subscribe((data) => {
+    //     // this.likesCount = data.data?.like_counts;
+    //     // this.dislikesCount = data.data?.dislike_counts;
+    //   });
 
   }
 

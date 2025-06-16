@@ -1,5 +1,13 @@
-import {Component, inject, Input, OnInit, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewEncapsulation,
+} from '@angular/core';
 import {select, Store} from '@ngrx/store';
+
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
@@ -8,23 +16,46 @@ import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzBadgeModule} from 'ng-zorro-antd/badge';
 import {NzAffixModule} from 'ng-zorro-antd/affix';
 import {NzAlign, NzFlexModule, NzJustify} from 'ng-zorro-antd/flex';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
 
-import {combineLatest, filter, Subscription} from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  debounceTime,
+  filter,
+  of,
+  Subject,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import {selectCurrentUser} from '../../../containers/auth/store/reducers';
 import {CommonModule} from '@angular/common';
 import {authActions} from '../../../containers/auth/store/actions';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {selectNotifData} from './store/reducers';
-import {FeedTogglerComponent} from '../feedToggler/feedToggler.component';
-import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {SearchProfileService} from '../searchProfile/services/searchProfile.service';
+import {SearchProfileInterface} from '../searchProfile/types/searchProfile.interface';
+import {GetSearchResponseInterface} from '../searchProfile/types/getSearchResponse.interface';
+import {FormsModule} from '@angular/forms';
+import { SearchProfileComponent } from '../searchProfile/components/searchProfile.component';
+
+interface Option {
+  label: string;
+  value: string;
+  age: number;
+}
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
   imports: [
     CommonModule,
+    FormsModule,
     NzMenuModule,
     NzDropDownModule,
     RouterLink,
@@ -35,15 +66,15 @@ import {NzAvatarModule} from 'ng-zorro-antd/avatar';
     NzAffixModule,
     NzFlexModule,
     NzAvatarModule,
+    NzInputModule,
+    NzAutocompleteModule
   ],
 })
 export class HeaderComponent implements OnInit {
-  @Input() isCollapsed: boolean = false;
   currentRoute: string = '';
   isSelected = false;
   isSelectedNotif = false;
   notifCount = 0;
-
   getUserNotifCountSubs?: Subscription;
 
   data$ = combineLatest({
@@ -55,10 +86,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentRoute = this.router.url;
-
-    // console.log('header commponent current route', this.currentRoute);
-
-
   }
 
   ngAfterViewInit(): void {
@@ -71,7 +98,6 @@ export class HeaderComponent implements OnInit {
       this.isSelected = true;
     }
 
-
     if (notificationRoute == 'notification') {
       this.isSelectedNotif = true;
     }
@@ -80,4 +106,6 @@ export class HeaderComponent implements OnInit {
   logout(): void {
     this.store.dispatch(authActions.logout());
   }
+
+  ngOnDestroy(): void {}
 }

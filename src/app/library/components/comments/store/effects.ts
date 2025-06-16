@@ -19,7 +19,7 @@ export const getCommentsEffect = createEffect(
             return commentsActions.getCommentSuccess({data: response});
           }),
           catchError(() => {
-            return of(commentsActions.likeCommentFailure());
+            return of(commentsActions.getCommentFailure());
           })
         );
       })

@@ -24,4 +24,7 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
     SidebarComponent
   ]
 })
-export class InnerMasterPageComponent {}
+export class InnerMasterPageComponent {
+  isCollapsed = false;
+
+}

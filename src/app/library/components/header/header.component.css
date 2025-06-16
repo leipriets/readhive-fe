@@ -16,6 +16,12 @@ nz-header {
   transition: color 0.3s;
 }
 
+.mt {
+  margin-top: 15px !important;
+}
+
+
+
 .trigger:hover {
   color: #1890ff;
 }
@@ -32,7 +38,7 @@ nz-header {
   padding: 10px;
 }
 
-::ng-deep li.no-hover:hover {
+:host ::ng-deep li.no-hover:hover {
   background-color: transparent !important;
   color: inherit !important;
 }

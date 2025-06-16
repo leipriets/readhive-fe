@@ -1,88 +1,112 @@
-<app-header />
-<div class="container-register">
-  <nz-card nzTitle="Sign up" style="width: 600px; justify-self: center">
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
-        <nz-form-control
-          [nzSpan]="12"
-          nzHasFeedback
-          nzValidatingTip="Validating..."
-          [nzErrorTip]="userErrorTpl"
-        >
-          <input
-            nz-input
-            formControlName="username"
-            placeholder="username"
-          />
-          <ng-template #userErrorTpl let-control>
-            @if (control.errors?.['required']) { Please input your username! }
-            @if (control.errors?.['duplicated']) { The username is redundant! }
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
-        <nz-form-control
-          [nzSpan]="12"
-          nzHasFeedback
-          [nzErrorTip]="emailErrorTpl"
-        >
-          <input
-            nz-input
-            formControlName="email"
-            placeholder="email"
-            type="email"
-          />
-          <ng-template #emailErrorTpl let-control>
-            @if (control.errors?.['email']) { The input is not valid E-mail! }
-            @if (control.errors?.['required']) { Please input your E-mail! }
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
-        <nz-form-control
-          [nzSpan]="12"
-          nzHasFeedback
-          nzErrorTip="Please input your password!"
-        >
-          <input nz-input type="password" formControlName="password" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label [nzSpan]="7" nzRequired>Confirm Password</nz-form-label>
-        <nz-form-control
-          [nzSpan]="12"
-          nzHasFeedback
-          [nzErrorTip]="passwordErrorTpl"
-        >
-          <input
-            nz-input
-            type="password"
-            formControlName="confirmPassword"
-            placeholder="confirm your password"
-          />
-          <ng-template #passwordErrorTpl let-control>
-            @if (validateForm.get('confirmPassword')?.hasError('required')) { Please confirm your password! }
-            @if (validateForm.get('confirmPassword')?.hasError('mismatch')) { Passwords do not match }
-          </ng-template>
-        </nz-form-control>
-      </nz-form-item>   
-      <nz-form-item>
-        <nz-form-control [nzOffset]="7" [nzSpan]="12"> 
-            <a routerLink="/sp/login">Have an account?</a>
-        </nz-form-control>
-      </nz-form-item>
+<div class="flex flex-col md:flex-row min-h-screen">
+  <!-- Left Section -->
+  <div
+    class="bg-blue-500 text-white p-8 md:p-12 md:w-1/2 relative overflow-hidden"
+  >
+    <app-left-section-auth />
 
-      <nz-form-item>
-        <nz-form-control [nzOffset]="7" [nzSpan]="12">
-          <button nz-button type="submit" nzType="primary" [disabled]="!validateForm.valid">
-            Submit
-          </button>
-          <button nz-button (click)="resetForm($event)">Reset</button>
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </nz-card>
+    <!-- Decorative Elements -->
+    <app-decor />
+  </div>
+
+  <div class="p-8 md:p-12 md:w-1/2 flex items justify-center">
+    <div class="w-full bg-white rounded-3xl shadow-lg p-8">
+      <div class="mb-12">
+        <p class="text-gray-600 mb-1">
+          Welcome to <span class="text-blue-500 font-bold">ReadHive</span>
+        </p>
+        <h1 class="text-4xl font-bold">Sign up</h1>
+      </div>
+
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
+          <nz-form-control
+            [nzSpan]="12"
+            nzHasFeedback
+            nzValidatingTip="Validating..."
+            [nzErrorTip]="userErrorTpl"
+          >
+            <input nz-input formControlName="username" placeholder="username" />
+            <ng-template #userErrorTpl let-control>
+              @if (control.errors?.['required']) { Please input your username! }
+              @if (control.errors?.['duplicated']) { The username is redundant!
+              }
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
+          <nz-form-control
+            [nzSpan]="12"
+            nzHasFeedback
+            [nzErrorTip]="emailErrorTpl"
+          >
+            <input
+              nz-input
+              formControlName="email"
+              placeholder="email"
+              type="email"
+            />
+            <ng-template #emailErrorTpl let-control>
+              @if (control.errors?.['email']) { The input is not valid E-mail! }
+              @if (control.errors?.['required']) { Please input your E-mail! }
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
+          <nz-form-control
+            [nzSpan]="12"
+            nzHasFeedback
+            nzErrorTip="Please input your password!"
+          >
+            <input nz-input type="password" formControlName="password" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired
+            >Confirm Password</nz-form-label
+          >
+          <nz-form-control
+            [nzSpan]="12"
+            nzHasFeedback
+            [nzErrorTip]="passwordErrorTpl"
+          >
+            <input
+              nz-input
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="confirm your password"
+            />
+            <ng-template #passwordErrorTpl let-control>
+              @if (validateForm.get('confirmPassword')?.hasError('required')) {
+              Please confirm your password! } @if
+              (validateForm.get('confirmPassword')?.hasError('mismatch')) {
+              Passwords do not match }
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <a routerLink="/sp/login">Have an account?</a>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <button
+              nz-button
+              type="submit"
+              nzType="primary"
+              [disabled]="!validateForm.valid"
+            >
+              Submit
+            </button>
+            <button nz-button (click)="resetForm($event)">Reset</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
 </div>

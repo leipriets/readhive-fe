@@ -9,6 +9,10 @@ export const notificationActions = createActionGroup({
         'Get notifications success': props<{data: NotificationListResponseInterface}>(),
         'Get notifications failure': emptyProps(),
 
+        'Get notifications load more': props<{ limit: number, offset: number }>(),
+        'Get notifications load more success': props<{data: NotificationListResponseInterface}>(),
+        'Get notifications load more failure': emptyProps(),
+
         'Clear notifications': emptyProps(),
         'Clear notifications success': props<{data: any, message: string}>(),
         'Clear notifications failure': emptyProps(),

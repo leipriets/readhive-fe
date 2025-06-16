@@ -15,6 +15,7 @@ export interface ArticleInterface {
     slug: string;
     tagList: PopularTagType[];
     comments: CommentsInterface[];
+    commentsCount: number;
     title: string;
     updatedAt: string;
     author: ProfileInterface;

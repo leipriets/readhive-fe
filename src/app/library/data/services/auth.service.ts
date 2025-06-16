@@ -44,7 +44,7 @@ export class AuthService {
 
   updateCurrentUser(
     currentUserRequest: CurrentUserRequestInterface,
-    filename: string
+    filename?: string
   ): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/user-update';
 
@@ -52,7 +52,10 @@ export class AuthService {
     userData.append("username", currentUserRequest.user.username);
     userData.append("bio", currentUserRequest.user.bio);
     userData.append("email", currentUserRequest.user.email);
-    userData.append("image", currentUserRequest.user.image, filename);
+    if (currentUserRequest.user.image) {
+      userData.append("image", currentUserRequest.user.image, filename);
+    }
+      
 
     return this.http
       .post<AuthResponseInterface>(url, userData)

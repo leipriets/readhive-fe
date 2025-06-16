@@ -5,7 +5,7 @@
     </nz-header>
   </nz-affix>
   <nz-layout>
-    <nz-sider nzWidth="200px" nzTheme="light">
+    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzTheme="light">
       <nz-affix [nzOffsetTop]="70">
         <app-sider />
       </nz-affix>

@@ -5,7 +5,7 @@ import {catchError, map, of, switchMap, tap} from 'rxjs';
 
 import {Router} from '@angular/router';
 import {NotificationService} from '../../../data/services/notification.service';
-import {NotifCountResponseInterface} from '../types/notifCountResponse.interface';
+import {NotifCountResponseInterface} from '../../searchProfile/types/notifCountResponse.interface';
 import {notificationActions} from '../../../../containers/notificationList/store/actions';
 import {Store} from '@ngrx/store';
 

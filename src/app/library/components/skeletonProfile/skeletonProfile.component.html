@@ -1,0 +1,20 @@
+<div *ngIf="isLoading">
+  <nz-card
+    nzBordered
+    [nzBodyStyle]="{width: '100%', maxWidth: '600px', margin: 'auto'}"
+  >
+    <div class="text-center">
+      <nz-skeleton-element
+        nzType="avatar"
+        [nzActive]="true"
+        nzSize="large"
+        nzShape="circle"
+      ></nz-skeleton-element>
+      <div>
+        <nz-skeleton [nzActive]="true" [nzParagraph]="{rows: 3}"></nz-skeleton>
+      </div>
+    </div>
+  </nz-card>
+  <br />
+  <nz-skeleton [nzActive]="true" [nzParagraph]="{rows: 4}"></nz-skeleton>
+</div>

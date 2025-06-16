@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
-import { NotifCountResponseInterface } from "../types/notifCountResponse.interface";
+import { NotifCountResponseInterface } from "../../searchProfile/types/notifCountResponse.interface";
 
 export const notificationCountActions = createActionGroup({
     source: 'notification',

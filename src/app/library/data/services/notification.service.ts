@@ -4,7 +4,7 @@ import {io, Socket} from 'socket.io-client';
 import {environment} from '../../../../environments/environment.development';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {NotifCountResponseInterface} from '../../components/header/types/notifCountResponse.interface';
+import {NotifCountResponseInterface} from '../../components/searchProfile/types/notifCountResponse.interface';
 import {NotificationListResponseInterface} from '../types/notificationListResponse.interface';
 import {NotificationMessagePart} from '../types/notifMessagePart.interface';
 import {Store} from '@ngrx/store';
@@ -33,6 +33,7 @@ export class NotificationService {
 
     events.forEach((event) => {
       this.socket.on(event, (data: NotificationMessagePart[]) => {
+        console.log(event);
         let messagePart = this.extractMsgParts(data, 'message') ?? '';
         let username = this.extractMsgParts(data, 'user') ?? '';
 

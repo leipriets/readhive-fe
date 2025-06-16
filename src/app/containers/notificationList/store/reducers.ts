@@ -27,11 +27,31 @@ const notificationFeature = createFeature({
       isLoading: false,
       data: {
         count: action.data.count,
-        data: [...state.data.data, ...action.data.data]
+        // data: [...state.data.data, ...action.data.data]
+        data: action.data.data
       },
       actionData: action.data.data         
     })),
     on(notificationActions.getNotificationsFailure, (state) => ({
+      ...state,
+      isLoading: false,
+    })),
+
+    // notification load more
+    on(notificationActions.getNotificationsLoadMore, (state) => ({
+      ...state,
+      isLoading: true,
+    })),
+    on(notificationActions.getNotificationsLoadMoreSuccess, (state, action) => ({
+      ...state,
+      isLoading: false,
+      data: {
+        count: action.data.count,
+        data: [...state.data.data, ...action.data.data]
+      },
+      actionData: action.data.data         
+    })),
+    on(notificationActions.getNotificationsLoadMoreFailure, (state) => ({
       ...state,
       isLoading: false,
     })),

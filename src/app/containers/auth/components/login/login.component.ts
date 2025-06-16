@@ -29,6 +29,9 @@ import {combineLatest, filter, Subscription, tap} from 'rxjs';
 import {PersistenceService} from '../../../../library/data/services/persitence.service';
 import {CommonModule} from '@angular/common';
 import {CurrentUserInterface} from '../../../../library/data/types/currentUser.interface';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { LeftSectionComponent } from '../leftSection/leftSection.component';
+import { DecorComponent } from '../decor/decor.component';
 
 @Component({
   selector: 'login',
@@ -45,8 +48,11 @@ import {CurrentUserInterface} from '../../../../library/data/types/currentUser.i
     NzLayoutModule,
     NzCardModule,
     NzAlertModule,
+    NzGridModule,
     HeaderComponent,
     CommonModule,
+    LeftSectionComponent,
+    DecorComponent
   ],
 })
 export class LoginComponent implements OnInit, OnDestroy {

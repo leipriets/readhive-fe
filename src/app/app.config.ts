@@ -85,6 +85,7 @@ import {FollowButtonService} from './library/components/followButton/services/fo
 import {CommentsService} from './library/components/comments/services/comments.service';
 import {ReactCommentService} from './library/components/reactComments/services/reactComment.service';
 import { NotificationService } from './library/data/services/notification.service';
+import { SearchProfileService } from './library/components/searchProfile/services/searchProfile.service';
 
 registerLocaleData(en);
 
@@ -146,6 +147,7 @@ export const appConfig: ApplicationConfig = {
     NzModalService,
     CommentsService,
     ReactCommentService,
-    NotificationService
+    NotificationService,
+    SearchProfileService
   ],
 };

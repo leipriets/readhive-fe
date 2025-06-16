@@ -6,6 +6,7 @@ export interface CommentsInterface {
     body: string;
     author: number;
     user: UserProfileInterface;
+    user_id: number;
     article_id: number;
     like_counts: number;
     dislike_counts: number;

@@ -1,7 +1,12 @@
 <div nz-row id="comment-container">
-  <div nz-col nzSpan="20">
+  <div nz-col nzSpan="22">
     <nz-divider nzPlain nzText="Comments" nzVariant="solid"></nz-divider>
-    <ng-container *ngIf="data$ | async as data">
+
+    <ng-container *ngIf="data$ | async as data; else loginFirst">
+      <div *ngIf="data.error">
+        <span nz-typography nzType="warning">Log in to unlock the comments section.</span>     
+      </div>
+
       <form *ngIf="data.currentUser" [formGroup]="form" (ngSubmit)="onSubmit()">
         <nz-comment>
           <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
@@ -22,6 +27,11 @@
       </form>
     </ng-container>
 
+    <ng-template #loginFirst>
+      test
+    </ng-template>
+    
+
     <div *ngIf="data$ | async as data">
       <nz-card *ngIf="data.comments.length > 0">
         @for (comment of data.comments; track $index) {
@@ -37,6 +47,7 @@
           ></nz-avatar>
           <nz-comment-content>
             <div class="pull-right">
+              @if (data.currentUser?.id == comment?.user_id) {
               <button
                 nz-button
                 nzType="text"
@@ -54,6 +65,7 @@
                   <li nz-menu-item (click)="showConfirm(comment.id)">Delete</li>
                 </ul>
               </nz-dropdown-menu>
+              }
             </div>
 
             @if (isEditComment && isEditIndex === $index) {
@@ -114,5 +126,6 @@
       </nz-card>
     </div>
   </div>
-  <div nz-col nzSpan="9"></div>
 </div>
+
+

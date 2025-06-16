@@ -12,6 +12,7 @@ import { CreateArticleComponent } from '../../../containers/article/components/c
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { RouterLink } from '@angular/router';
 import { NewPostComponent } from '../newPost/newPost.component';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 @Component({
   selector: 'app-sider',
@@ -27,6 +28,7 @@ import { NewPostComponent } from '../newPost/newPost.component';
     NzButtonModule,
     NzDividerModule,
     NzAvatarModule,
+    NzAffixModule,
     DrawerComponent,
     CreateArticleComponent,
     NewPostComponent

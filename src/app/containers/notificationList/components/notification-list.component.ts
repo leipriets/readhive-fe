@@ -72,7 +72,7 @@ export class NotificationListComponent implements OnInit, OnDestroy {
   onLoadMore(): void {
     this.offset += 5;
     this.store.dispatch(
-      notificationActions.getNotifications({
+      notificationActions.getNotificationsLoadMore({
         limit: this.limit,
         offset: this.offset,
       })

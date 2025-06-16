@@ -103,12 +103,13 @@
             <!-- <div [innerHTML]="data.article?.body"></div> -->
             <div
               class="rich-text-container quill-content"
+              #divArticleContent
               [class.collapsed]="isCollapse"
               *ngIf="safeContent$ | async as safeContent"
               [innerHTML]="safeContent"
             ></div>
 
-            <a (click)="toggleCollapse()">
+            <a *ngIf="isViewReadMore" (click)="toggleCollapse()">
               {{ isCollapse ? 'Read more' : 'Show less' }}
             </a>
 
