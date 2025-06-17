@@ -91,14 +91,18 @@
           </nz-list-item>
           }
         </nz-list>
-        <div *ngIf="data.actionData.length > 0; else emptyNotification" class="loadmore">
-            <button nz-button (click)="onLoadMore()">loading more</button>
+        <div *ngIf="data.actionData.length > 0" class="loadmore">
+          <button nz-button (click)="onLoadMore()">loading more</button>
         </div>
-        <ng-template #emptyNotification>
-            <nz-list>
-                <nz-list-empty></nz-list-empty>
-            </nz-list>
-        </ng-template>
+        <br />
+        <nz-skeleton
+          [nzLoading]="data.isLoading"
+          [nzActive]="data.isLoading"
+          [nzParagraph]="{rows: 6}"
+        ></nz-skeleton>
+        <nz-list *ngIf="!data.isLoading && data.actionData.length === 0">
+          <nz-list-empty></nz-list-empty>
+        </nz-list>
       </nz-card>
     </div>
   </div>
