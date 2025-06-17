@@ -96,11 +96,11 @@
             </a>
             }
           </div>
-          <div nz-col [nzPush]="16">
-            <app-tooltip-date
-              [createdDate]="article.createdAt"
-            ></app-tooltip-date>
-          </div>
+        </div>
+        <div nz-row>
+          <app-tooltip-date
+            [createdDate]="article.createdAt"
+          ></app-tooltip-date>
         </div>
       </ng-template>
       <ng-template #avatarTemplate>
