@@ -1,20 +1,29 @@
 <nz-input-group [nzSuffix]="suffixIconSearch">
-    <input
-      type="text"
-      nz-input
-      placeholder="Search user profile"
-      [(ngModel)]="inputValue"
-      (input)="onInput($event)"
-      (keydown.enter)="onSelect()"
-      [nzAutocomplete]="auto"
-    />
-  </nz-input-group>
-  <nz-autocomplete #auto>
-    @for (option of options; track $index) {
-      <nz-auto-option (click)="onSelect()" [nzValue]="option.username">{{ option.username }}</nz-auto-option>
-    }
-  </nz-autocomplete>
-  
-  <ng-template #suffixIconSearch>
-    <span nz-icon nzType="search"></span>
-  </ng-template>
+  <input
+    type="text"
+    nz-input
+    placeholder="Search user profile"
+    [(ngModel)]="inputValue"
+    (input)="onInput($event)"
+    (keydown.enter)="onSelect()"
+    [nzAutocomplete]="auto"
+  />
+</nz-input-group>
+<nz-autocomplete #auto>
+  <nz-auto-option *ngIf="searchingProfile">
+    <nz-skeleton  
+      [nzLoading]="searchingProfile"
+      [nzActive]="searchingProfile"
+      [nzParagraph]="{rows: 1}"
+    ></nz-skeleton>
+  </nz-auto-option>
+  @for (option of options; track $index) {
+  <nz-auto-option (click)="onSelect()" [nzValue]="option.username">{{
+    option.username
+  }}</nz-auto-option>
+  }
+</nz-autocomplete>
+
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>
