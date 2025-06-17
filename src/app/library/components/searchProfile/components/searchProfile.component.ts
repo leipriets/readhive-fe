@@ -16,6 +16,7 @@ import {SearchProfileInterface} from '../types/searchProfile.interface';
 import {SearchProfileService} from '../services/searchProfile.service';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {Router} from '@angular/router';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'app-search-profile',
@@ -28,6 +29,7 @@ import {Router} from '@angular/router';
     NzIconModule,
     NzInputModule,
     NzAutocompleteModule,
+    NzSkeletonModule
   ],
 })
 export class SearchProfileComponent implements OnInit, OnDestroy {
@@ -36,6 +38,7 @@ export class SearchProfileComponent implements OnInit, OnDestroy {
 
   options: SearchProfileInterface[] = [];
   inputValue?: string;
+  searchingProfile = false;
 
   constructor(
     private searchService: SearchProfileService,
@@ -54,6 +57,7 @@ export class SearchProfileComponent implements OnInit, OnDestroy {
       )
       .subscribe((results) => {
         this.options = results;
+        this.searchingProfile = false;
       });
   }
 
@@ -61,6 +65,7 @@ export class SearchProfileComponent implements OnInit, OnDestroy {
 
   onInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
+    this.searchingProfile = true;
     this.searchSubject.next(value);
   }
 
