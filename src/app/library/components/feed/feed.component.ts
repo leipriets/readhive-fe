@@ -219,6 +219,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(([hasMore]) => {
         if (hasMore) {
+          console.log(hasMore);
           this.fetchFeed();
         }
       });

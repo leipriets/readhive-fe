@@ -1,0 +1,1 @@
+import{xa as o,ya as i,za as t}from"./chunk-KYAOKWVV.js";var c=i({source:"notification",events:{"Get notification count":t(),"Get notification count success":o(),"Get notification count failure":t(),"reset notification count":t(),"reset notification count success":o(),"reset notification count failure":t()}});export{c as a};
