@@ -17,6 +17,7 @@ import { articleActions } from '../store/actions';
 import { selectCurrentUser } from '../../auth/store/reducers';
 import { CommonModule } from '@angular/common';
 import { FeedTogglerComponent } from '../../../library/components/feedToggler/feedToggler.component';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 @Component({
   selector: 'app-article',
@@ -25,11 +26,11 @@ import { FeedTogglerComponent } from '../../../library/components/feedToggler/fe
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     NzGridModule,
     NzTabsModule,
     NzButtonModule,
     NzIconModule,
+    NzAffixModule,
     DrawerComponent,
     CreateArticleComponent,
     FeedTogglerComponent

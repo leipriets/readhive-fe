@@ -1,0 +1,50 @@
+<ul *ngIf="currentUser$ | async as currentUser" nz-menu nzMode="inline" class="sider-menu" [nzSelectable]="false">
+  <li nz-menu-item [nzDisabled]="true">
+    <nz-divider></nz-divider>
+  </li>
+  <li
+    
+    nz-menu-item
+    [routerLink]="['profile', currentUser.username]"
+    [queryParams]="{tab: 'posts'}"
+  >
+    <ng-container>
+      <nz-avatar [nzSrc]="currentUser.image"></nz-avatar>
+      &nbsp;&nbsp;
+      <span
+        ><strong>{{ currentUser.username }}</strong></span
+      >
+    </ng-container>
+  </li>
+  <li nz-menu-item [nzDisabled]="true">
+    <nz-divider></nz-divider>
+  </li>
+</ul>
+
+<ul nz-menu nzMode="inline" class="sider-menu">
+  <li
+    nz-menu-item
+    routerLink="/global-feed"
+    [nzMatchRouter]="true"
+  >
+    <span nz-icon nzType="home"></span>&nbsp;&nbsp; For You
+  </li>
+  <li
+    *ngIf="currentUser$ | async as currentUser"
+    nz-menu-item
+    routerLink="/feed"
+    [queryParams]="{tab: 'feed'}"
+    [nzMatchRouter]="true"
+  >
+    <span nz-icon nzType="usergroup-add"></span>&nbsp;&nbsp; Following
+  </li>
+</ul>
+
+<ul *ngIf="currentUser$ | async as currentUser" nz-menu  class="sider-menu" [nzSelectable]="false">
+  <li nz-menu-item [nzDisabled]="true">
+    <nz-divider></nz-divider>
+  </li>
+  <li nz-menu-item [nzDisabled]="true">
+    <app-new-post />
+  </li>
+</ul>

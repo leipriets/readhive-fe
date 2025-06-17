@@ -1,16 +1,18 @@
-<ng-container *ngIf="data$ | async as data">
+<ng-container *ngIf="data$ | async as data; else noProfile">
+  <div *ngIf="data?.isLoading">
+    <app-skeleton-profile [isLoading]="data?.isLoading" />
+  </div>
   <nz-card
     nzBordered
     [nzBodyStyle]="{width: '100%', maxWidth: '600px', margin: 'auto'}"
   >
-    <div
-      class="user-profile-header"
-      style="text-align: center; margin-bottom: 16px"
-    >
+    <div class="user-profile-header" style="margin-bottom: 16px">
       <nz-avatar
         [nzSize]="96"
-        nzSrc="https://via.placeholder.com/150"
+        [nzSrc]="data.userProfile?.image"
+        class="avatar-pointer-cursor"
         style="margin-bottom: 12px"
+        (click)="previewAvatar(data.userProfile!.image)"
       ></nz-avatar>
       <h2>{{ data.userProfile?.username }}</h2>
       <ng-container *ngIf="!data.isCurrentUserProfile">
@@ -23,12 +25,46 @@
 
     <nz-divider></nz-divider>
 
-    <div class="user-profile-content" style="padding: 0 24px">
-      <h3>Bio</h3>
-      <p>{{ data.userProfile?.bio }}</p>
+    <nz-row [nzGutter]="24" [nzJustify]="'center'">
+      <nz-col [nzSpan]="6" [nzOffset]="2">
+        <nz-statistic
+          [nzValueStyle]="{fontSize: '20px'}"
+          [nzValue]="(data.userProfile?.followersCount | number)!"
+          nzTitle="Followers"
+          [nzPrefix]="prefixTpl"
+        ></nz-statistic>
+        <ng-template #prefixTpl></ng-template>
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <nz-statistic
+          [nzValueStyle]="{fontSize: '20px'}"
+          [nzValue]="data.userProfile?.followingCount"
+          nzTitle="Following"
+        ></nz-statistic>
+      </nz-col>
+    </nz-row>
 
-      <nz-divider></nz-divider>
+    <nz-divider></nz-divider>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="1">
+        <h3>Bio:</h3>
+      </div>
+
+      <div nz-col [nzSpan]="20">
+        <div style="text-align: center">
+          <p *ngIf="data.userProfile?.bio; else noBio">
+            {{ data.userProfile?.bio }}
+          </p>
+        </div>
+      </div>
     </div>
+
+    <ng-template #noBio>
+      <p><i>No bio yet.</i></p>
+    </ng-template>
+
+    <nz-divider></nz-divider>
   </nz-card>
 
   <div class="content-wrapper">
@@ -64,3 +100,23 @@
     <app-feed [apiUrl]="getApiUrl()"></app-feed>
   </div>
 </ng-container>
+
+<ng-template #noProfile>
+  @if (!data$) {
+  <ng-container>
+    <div nz-flex [nzJustify]="'center'">
+      <nz-result
+        nzStatus="404"
+        nzTitle="404"
+        nzSubTitle="Sorry, the profile you visited does not exist."
+      >
+        <div nz-result-extra>
+          <button routerLink="/global-feed" nz-button nzType="primary">
+            Back Home
+          </button>
+        </div>
+      </nz-result>
+    </div>
+  </ng-container>
+  }
+</ng-template>

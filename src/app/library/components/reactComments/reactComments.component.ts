@@ -1,12 +1,14 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {NzCommentModule} from 'ng-zorro-antd/comment';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import {CommentsInterface} from '../../data/types/comments.interface';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {reactCommentsActions} from './store/actions';
-import { LikeCommentsRequestInterface } from '../../data/types/likeCommentsRequest.interface';
+import {LikeCommentsRequestInterface} from '../../data/types/likeCommentsRequest.interface';
+import {filter, Subscription} from 'rxjs';
+import {selectData} from './store/reducers';
 
 @Component({
   selector: 'app-react-comments',
@@ -15,8 +17,7 @@ import { LikeCommentsRequestInterface } from '../../data/types/likeCommentsReque
   standalone: true,
   imports: [NzCommentModule, NzToolTipModule, NzIconModule, NzButtonModule],
 })
-export class ReactCommentsComponent implements OnInit {
-
+export class ReactCommentsComponent implements OnInit, OnDestroy {
   @Input() nzType?: string | undefined;
   @Input() comment?: CommentsInterface;
   @Input() slug?: string;
@@ -27,6 +28,8 @@ export class ReactCommentsComponent implements OnInit {
   commentId?: number = undefined;
   articleId?: number = undefined;
 
+  commentReactSubs?: Subscription;
+
   constructor(private store: Store) {}
 
   ngOnInit(): void {
@@ -36,14 +39,22 @@ export class ReactCommentsComponent implements OnInit {
     this.dislikesCount = this.comment!.dislike_counts;
     this.commentId = this.comment?.id;
     this.articleId = this.comment?.article_id;
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-  
     this.isLiked = this.comment!.isLiked;
     this.isDisliked = this.comment!.isDisliked;
     this.likesCount = this.comment!.like_counts;
     this.dislikesCount = this.comment!.dislike_counts;
+
+    // this.commentReactSubs = this.store
+    //   .pipe(select(selectData), filter(Boolean))
+    //   .subscribe((data) => {
+    //     // this.likesCount = data.data?.like_counts;
+    //     // this.dislikesCount = data.data?.dislike_counts;
+    //   });
+
   }
 
   onSubmitLike() {
@@ -62,7 +73,6 @@ export class ReactCommentsComponent implements OnInit {
         this.dislikesCount = this.dislikesCount! - 1;
       }
     }
-
 
     const likeRequest: LikeCommentsRequestInterface = {
       liked: this.isLiked,
@@ -95,16 +105,19 @@ export class ReactCommentsComponent implements OnInit {
     }
 
     const likeRequest: LikeCommentsRequestInterface = {
-        liked: this.isLiked,
-        disliked: this.isDisliked,
-        slug: this.slug!,
-        commentId: this.commentId!,
-        articleId: this.articleId!,
-      };
-  
-      this.store.dispatch(
-        reactCommentsActions.dislikeComment({request: likeRequest})
-      );
+      liked: this.isLiked,
+      disliked: this.isDisliked,
+      slug: this.slug!,
+      commentId: this.commentId!,
+      articleId: this.articleId!,
+    };
 
+    this.store.dispatch(
+      reactCommentsActions.dislikeComment({request: likeRequest})
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.commentReactSubs?.unsubscribe();
   }
 }

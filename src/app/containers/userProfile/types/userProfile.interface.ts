@@ -2,6 +2,8 @@ export interface UserProfileInterface {
     username: string
     bio: string
     image: string
-    following: boolean
+    following: boolean;
+    followersCount: number;
+    followingCount: number;
   }
   

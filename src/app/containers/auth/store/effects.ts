@@ -8,6 +8,7 @@ import { authActions } from "./actions";
 import { CurrentUserInterface } from "../../../library/data/types/currentUser.interface";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { NzMessageService } from "ng-zorro-antd/message";
 
 export const getCurrentUserEffect = createEffect(
   (
@@ -99,9 +100,10 @@ export const registerEffect = createEffect(
               return authActions.loginSuccess({currentUser});
             }),
             catchError((errorResponse: HttpErrorResponse) => {
+              console.log(errorResponse);
               return of(
                 authActions.loginFailure({
-                  errors: errorResponse.error.errors,
+                  errors: errorResponse.error.error,
                 })
               );
             })
@@ -131,8 +133,8 @@ export const registerEffect = createEffect(
     ) => {
       return actions$.pipe(
         ofType(authActions.updateCurrentUser),
-        switchMap(({currentUserRequest}) => {
-          return authService.updateCurrentUser(currentUserRequest).pipe(
+        switchMap(({currentUserRequest, filename}) => {
+          return authService.updateCurrentUser(currentUserRequest, filename).pipe(
             map((currentUser: CurrentUserInterface) => {
               return authActions.updateCurrentUserSuccess({currentUser});
             }),
@@ -146,6 +148,25 @@ export const registerEffect = createEffect(
     {functional: true}
   );
 
+  
+  export const notifUpdateCurrentUser = createEffect(
+    (
+      actions$ = inject(Actions),
+      messageService = inject(NzMessageService),
+    ) => {
+      return actions$.pipe(
+        ofType(authActions.updateCurrentUserSuccess),
+        tap(() => {
+          return messageService.success("Profile updated successfully.");
+        })
+      )
+    },
+    {
+      functional: true,
+      dispatch: false
+    }
+  )
+
   export const logoutEffect = createEffect(
     (
       actions$ = inject(Actions),
@@ -158,7 +179,7 @@ export const registerEffect = createEffect(
         tap(() => {
           authService.logout().subscribe();
           persistenceService.set('BVaccessToken', '');
-          router.navigateByUrl('/global-feed');
+          router.navigateByUrl('/sp/login');
         })
       )
     },

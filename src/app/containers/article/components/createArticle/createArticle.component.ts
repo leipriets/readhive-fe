@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'create-article',
   templateUrl: './createArticle.component.html',
+  styleUrls: ['./createArticle.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -33,6 +34,7 @@ export class CreateArticleComponent {
     description: '',
     body: '',
     tagList: [],
+    images: []
   };
 
   data$ = combineLatest({

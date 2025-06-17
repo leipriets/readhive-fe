@@ -1,4 +1,13 @@
-import {Component, inject, Injectable, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  Injectable,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 
@@ -12,6 +21,8 @@ import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
 import {NzSpaceModule} from 'ng-zorro-antd/space';
 import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzTypographyModule} from 'ng-zorro-antd/typography';
+import {NzImageModule} from 'ng-zorro-antd/image';
+
 import {combineLatest, filter, map, Observable, Subscription} from 'rxjs';
 import {
   selectArticleData,
@@ -30,7 +41,12 @@ import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {CommentComponent} from '../../../../library/components/comments/comments.component';
 import {CommentRequestInterface} from '../../../../library/data/types/commentRequest.interface';
 import {CommentFormValuesInterface} from '../../../../library/data/types/commentFormValues.interface';
-import { CommentsInterface } from '../../../../library/data/types/comments.interface';
+import {CommentsInterface} from '../../../../library/data/types/comments.interface';
+import {environment} from '../../../../../environments/environment.development';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import { selectArticleContent } from '../../store/selectors';
+import { AddToFavoritesComponent } from '../../../../library/components/addToFavorites/addToFavorites.component';
 
 @Component({
   selector: 'app-article-slug',
@@ -50,18 +66,27 @@ import { CommentsInterface } from '../../../../library/data/types/comments.inter
     NzSpaceModule,
     NzTagModule,
     NzTypographyModule,
+    NzImageModule,
+    NzCardModule,
+    NzDividerModule,
     DrawerComponent,
     EditArticleComponent,
+    AddToFavoritesComponent,
     CommentComponent,
   ],
 })
 export class ArticleSlugComponent implements OnInit, OnDestroy {
   @ViewChild(DrawerComponent, {static: false}) drawerTemplate!: DrawerComponent;
+  @ViewChild('divArticleContent') divArticleContent?: ElementRef;
 
   slug = this.route.snapshot.paramMap.get('slug') ?? '';
   currentUser?: CurrentUserInterface;
   currentUserSubscription?: Subscription;
   confirmModal?: NzModalRef;
+  pathUrl = environment.apiPath + '/src/images';
+  showToggle = false;
+  isCollapse = true;
+  isViewReadMore = true;
 
   data$ = combineLatest({
     isLoading: this.store.select(selectIsLoading),
@@ -69,22 +94,45 @@ export class ArticleSlugComponent implements OnInit, OnDestroy {
     article: this.store.select(selectArticleData),
   });
 
+  safeContent$!: Observable<SafeHtml>;
+
   modal = inject(NzModalService);
 
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
     this.store.dispatch(articleActions.getArticle({slug: this.slug}));
+
+    this.safeContent$ = this.store.select(selectArticleContent).pipe(
+      map(html => this.sanitizer.bypassSecurityTrustHtml(html))
+    );
 
     this.currentUserSubscription = this.store
       .pipe(select(selectCurrentUser), filter(Boolean))
       .subscribe((currentUser: CurrentUserInterface) => {
         this.currentUser = currentUser;
       });
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.divArticleContent) {
+      const native = this.divArticleContent.nativeElement;
+
+      // Check if a class exists
+      const hasClass = native.classList.contains('rich-text-container');
+      // Add a class conditionally
+      if (native.offsetHeight >= 500) {
+        this.isViewReadMore = true;
+      } else {
+        this.isViewReadMore = false;
+      }
+    }
+
   }
 
   deleteArticle(): void {
@@ -102,6 +150,10 @@ export class ArticleSlugComponent implements OnInit, OnDestroy {
 
   onBack() {
     this.location.back();
+  }
+
+  toggleCollapse(){
+    this.isCollapse = !this.isCollapse;    
   }
 
   ngOnDestroy(): void {

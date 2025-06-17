@@ -7,4 +7,5 @@ export interface FeedStateInterface {
     articles: ArticleInterface[];
     articlesCount: number;
     allDataLoaded: boolean;
+    hasMore: boolean;
 }

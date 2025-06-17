@@ -1,4 +1,10 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzCardModule} from 'ng-zorro-antd/card';
@@ -6,17 +12,26 @@ import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
+import {NzAlertModule} from 'ng-zorro-antd/alert';
 
 import {HeaderComponent} from '../../../../library/components/header/header.component';
 import {Router, RouterLink} from '@angular/router';
 import {LoginRequestInterface} from '../../types/loginRequest.interface';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {authActions} from '../../store/actions';
-import {selectIsLoading, selectIsSubmitting, selectValidationErrors} from '../../store/reducers';
-import {combineLatest, tap} from 'rxjs';
+import {
+  selectCurrentUser,
+  selectIsLoading,
+  selectIsSubmitting,
+  selectValidationErrors,
+} from '../../store/reducers';
+import {combineLatest, filter, Subscription, tap} from 'rxjs';
 import {PersistenceService} from '../../../../library/data/services/persitence.service';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
+import {CurrentUserInterface} from '../../../../library/data/types/currentUser.interface';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { LeftSectionComponent } from '../leftSection/leftSection.component';
+import { DecorComponent } from '../decor/decor.component';
 
 @Component({
   selector: 'login',
@@ -33,17 +48,21 @@ import { CommonModule } from '@angular/common';
     NzLayoutModule,
     NzCardModule,
     NzAlertModule,
+    NzGridModule,
     HeaderComponent,
     CommonModule,
+    LeftSectionComponent,
+    DecorComponent
   ],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+
+  isSubmitting$ = this.store.select(selectIsSubmitting);
 
   data$ = combineLatest({
-    isSubmitting: this.store.select(selectIsSubmitting),
     isLoading: this.store.select(selectIsLoading),
-    validationErrors: this.store.select(selectValidationErrors)
-  })
+    validationErrors: this.store.select(selectValidationErrors),
+  });
 
   form = this.formBuilder.nonNullable.group({
     email: ['', Validators.required],
@@ -75,4 +94,6 @@ export class LoginComponent implements OnInit {
 
     this.store.dispatch(authActions.login({request}));
   }
+
+  ngOnDestroy(): void {}
 }

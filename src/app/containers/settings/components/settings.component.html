@@ -18,10 +18,36 @@
   <form nz-form [formGroup]="form" (ngSubmit)="submit()">
     <nz-form-item>
       <nz-form-label nzSm="6" nzXs="24" nzFor="URL of profile picture"
-        >URL of profile picture</nz-form-label
+        >Upload profile</nz-form-label
       >
       <nz-form-control nzSm="14" nzXs="24">
-        <input nz-input id="url" />
+        <nz-upload
+          class="avatar-uploader"
+          nzName="avatar"
+          [nzAction]="fakeUploadAction"
+          [nzHeaders]="uploadHeaders"
+          nzListType="picture-card"
+          [nzShowUploadList]="false"
+          [nzBeforeUpload]="beforeUpload"
+          (nzChange)="handleChange($event)"
+        >
+          @if (!avatarUrl) {
+          <span nz-icon [nzType]="loading ? 'loading' : 'plus'"></span>
+
+          <div class="ant-upload-text">Upload</div>
+          } @else {
+          <img [src]="avatarUrl" style="width: 100%" />
+          }
+        </nz-upload>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzSm="6" nzXs="24" nzFor="URL of profile picture">
+        <!-- URL of profile picture -->
+        </nz-form-control>
+      <nz-form-control nzSm="14" nzXs="24" *ngIf="avatarUrl">
+        <nz-alert nzType="info" nzMessage="(Hover and click image to re-upload a new photo)" nzShowIcon></nz-alert>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

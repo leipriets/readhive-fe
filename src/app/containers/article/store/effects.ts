@@ -14,6 +14,7 @@ import {drawerActions} from '../../../library/components/drawer/store/actions';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CommentsInterface } from '../../../library/data/types/comments.interface';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 export const getArticleEffect = createEffect(
   (actions$ = inject(Actions), articleService = inject(ArticleService)) => {
@@ -39,6 +40,7 @@ export const createArticleEffect = createEffect(
     return actions$.pipe(
       ofType(articleActions.createArticle),
       switchMap(({request}) => {
+        console.log('create article effect', request);
         return articleService.createArticle(request).pipe(
           map((article: ArticleInterface) => {
             return articleActions.createArticleSuccess({article});
@@ -99,16 +101,21 @@ export const redirectAfterUpdateEffect = createEffect(
   (
     actions$ = inject(Actions),
     router = inject(Router),
-    store = inject(Store)
+    store = inject(Store),
+    messageService = inject(NzMessageService)
   ) => {
     return actions$.pipe(
       ofType(articleActions.updateArticleSuccess),
       tap(({article}) => {
         console.log('editArticle->effects',article);
         store.dispatch(drawerActions.toggleDrawerClose());
+        messageService.success("Article updated successfully.");
         setTimeout(() => {
-          store.dispatch(articleActions.getArticle({slug: article.slug}));
-        }, 1000)
+          // store.dispatch(articleActions.getArticle({slug: article.slug}));
+          location.reload();
+        }, 1000);
+
+
       })
     );
   },

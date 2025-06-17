@@ -1,31 +1,53 @@
 <div nz-row id="comment-container">
-  <div nz-col nzSpan="15">
+  <div nz-col nzSpan="22">
     <nz-divider nzPlain nzText="Comments" nzVariant="solid"></nz-divider>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <nz-comment>
-        <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
-        <nz-comment-content>
-          <nz-form-item>
-            <textarea formControlName="body" nz-input rows="4"></textarea>
-          </nz-form-item>
-          <nz-form-item>
-            <button nz-button nzType="primary">Add Comment</button>
-          </nz-form-item>
-        </nz-comment-content>
-      </nz-comment>
-    </form>
 
-    <nz-card>
-      <div *ngIf="data$ | async as data">
+    <ng-container *ngIf="data$ | async as data; else loginFirst">
+      <div *ngIf="data.error">
+        <span nz-typography nzType="warning">Log in to unlock the comments section.</span>     
+      </div>
+
+      <form *ngIf="data.currentUser" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <nz-comment>
+          <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
+          <nz-comment-content>
+            <nz-form-item>
+              <textarea
+                #commentInput
+                formControlName="body"
+                nz-input
+                rows="4"
+              ></textarea>
+            </nz-form-item>
+            <nz-form-item>
+              <button nz-button nzType="primary">Comment</button>
+            </nz-form-item>
+          </nz-comment-content>
+        </nz-comment>
+      </form>
+    </ng-container>
+
+    <ng-template #loginFirst>
+      test
+    </ng-template>
+    
+
+    <div *ngIf="data$ | async as data">
+      <nz-card *ngIf="data.comments.length > 0">
         @for (comment of data.comments; track $index) {
         <nz-comment
           [nzAuthor]="comment?.user?.username"
-          [nzDatetime]="getRelativeTime(comment.createdAt)"
+          [nzDatetime]="getTimeDiff(comment.createdAt)"
           [attr.id]="'comment-' + comment.id"
         >
-          <nz-avatar nz-comment-avatar nzIcon="user"></nz-avatar>
+          <nz-avatar
+            nz-comment-avatar
+            [nzSrc]="comment?.user?.image"
+            nzIcon="user"
+          ></nz-avatar>
           <nz-comment-content>
             <div class="pull-right">
+              @if (data.currentUser?.id == comment?.user_id) {
               <button
                 nz-button
                 nzType="text"
@@ -40,9 +62,10 @@
                   <li nz-menu-item (click)="onEditComment(comment, $index)">
                     Edit
                   </li>
-                  <li nz-menu-item (click)="showConfirm(comment.id)" >Delete</li>
+                  <li nz-menu-item (click)="showConfirm(comment.id)">Delete</li>
                 </ul>
               </nz-dropdown-menu>
+              }
             </div>
 
             @if (isEditComment && isEditIndex === $index) {
@@ -95,13 +118,14 @@
               [isDisliked]="comment.isDisliked"
               [likesCount]="comment.like_counts"
               [dislikesCount]="comment.dislike_counts"
-              ></app-react-comments>
+            ></app-react-comments>
           </nz-comment-action>
           <!-- <nz-comment-action>Reply to</nz-comment-action> -->
         </nz-comment>
         }
-      </div>
-    </nz-card>
+      </nz-card>
+    </div>
   </div>
-  <div nz-col nzSpan="9"></div>
 </div>
+
+

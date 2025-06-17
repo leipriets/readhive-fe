@@ -29,7 +29,8 @@ import * as userProfileEffects from './containers/userProfile/store/effects';
 import * as followUserEffect from './library/components/followButton/store/effects';
 import * as commentsEffect from './library/components/comments/store/effects';
 import * as reactCommentsEffect from './library/components/reactComments/store/effects';
-
+import * as notificationCountEffect from './library/components/header/store/effects';
+import * as notificationEffect from './containers/notificationList/store/effects';
 
 import {
   feedFeatureKey,
@@ -59,17 +60,32 @@ import {
 } from './containers/userProfile/store/reducers';
 import {
   commentsFeatureKey,
-  commentsReducer
+  commentsReducer,
 } from './library/components/comments/store/reducers';
+import {
+  notificationCountFeatureKey,
+  notificationCountReducer,
+} from './library/components/header/store/reducers';
 
+import {
+  notificationFeatureKey,
+  notificationReducer,
+} from './containers/notificationList/store/reducers';
+
+import {
+  reactCommentsFeatureKey,
+  reactCommentReducer,
+} from './library/components/reactComments/store/reducers';
 
 import {DrawerService} from './library/components/drawer/services/drawerService.service';
 import {AddToFavoritesService} from './library/components/addToFavorites/services/addToFavorites.service';
 import {UserProfileService} from './containers/userProfile/services/userProfile.service';
 import {NzModalService} from 'ng-zorro-antd/modal';
 import {FollowButtonService} from './library/components/followButton/services/followButton.service';
-import { CommentsService } from './library/components/comments/services/comments.service';
-import { ReactCommentService } from './library/components/reactComments/services/reactComment.service';
+import {CommentsService} from './library/components/comments/services/comments.service';
+import {ReactCommentService} from './library/components/reactComments/services/reactComment.service';
+import { NotificationService } from './library/data/services/notification.service';
+import { SearchProfileService } from './library/components/searchProfile/services/searchProfile.service';
 
 registerLocaleData(en);
 
@@ -78,10 +94,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(
-      routes
-      // withRouterConfig({
-      //   onSameUrlNavigation: 'ignore',
-      // })
+      routes,
+      withRouterConfig({
+        onSameUrlNavigation: 'ignore',
+      })
     ),
     provideStore({
       router: routerReducer,
@@ -96,6 +112,9 @@ export const appConfig: ApplicationConfig = {
     provideState(userProfileFeatureKey, userProfileReducer),
     provideState(userProfileFeatureKey, userProfileReducer),
     provideState(commentsFeatureKey, commentsReducer),
+    provideState(reactCommentsFeatureKey, reactCommentReducer),
+    provideState(notificationCountFeatureKey, notificationCountReducer),
+    provideState(notificationFeatureKey, notificationReducer),
     provideEffects(
       authEffects,
       feedEffects,
@@ -105,7 +124,9 @@ export const appConfig: ApplicationConfig = {
       userProfileEffects,
       followUserEffect,
       commentsEffect,
-      reactCommentsEffect
+      reactCommentsEffect,
+      notificationCountEffect,
+      notificationEffect
     ),
     provideNzIcons(),
     provideNzI18n(en_US),
@@ -125,6 +146,8 @@ export const appConfig: ApplicationConfig = {
     FollowButtonService,
     NzModalService,
     CommentsService,
-    ReactCommentService
+    ReactCommentService,
+    NotificationService,
+    SearchProfileService
   ],
 };

@@ -1,11 +1,8 @@
-<app-new-post></app-new-post>
-
 <div nz-row>
-  <div nz-col nzFlex="1 1 200px">
-    <app-feed-toggler></app-feed-toggler>
-    <app-feed [apiUrl]="apiUrl"></app-feed>
+  <div nz-col [nzXs]="{ span: 16 }" [nzLg]="{ span: 15}">
+    <app-feed *ngIf="apiUrl" [apiUrl]="apiUrl"></app-feed>
   </div>
-  <div nz-col nzFlex="0 1 400px">
+  <div nz-col [nzXs]="{ span: 8 }  " [nzLg]="{ span: 8}">
     <app-popular-tags></app-popular-tags>
   </div>
 </div>

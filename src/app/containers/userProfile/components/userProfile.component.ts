@@ -13,6 +13,11 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzImage, NzImageModule, NzImageService } from 'ng-zorro-antd/image';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzAlign, NzFlexModule, NzJustify } from 'ng-zorro-antd/flex';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import {combineLatest, filter, map} from 'rxjs';
 import {selectCurrentUser} from '../../auth/store/reducers';
@@ -23,7 +28,7 @@ import {userProfileActions} from '../store/actions';
 import {authActions} from '../../auth/store/actions';
 import { FeedComponent } from '../../../library/components/feed/feed.component';
 import { FollowButtonComponent } from '../../../library/components/followButton/followButton.component';
-import { NewPostComponent } from '../../../library/components/newPost/newPost.component';
+import { SkeletonProfileComponent } from '../../../library/components/skeletonProfile/skeletonProfile.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -41,9 +46,14 @@ import { NewPostComponent } from '../../../library/components/newPost/newPost.co
     NzCardModule,
     NzDividerModule,
     NzTabsModule,
+    NzImageModule,
+    NzStatisticModule,
+    NzSkeletonModule,
+    NzResultModule,
+    NzFlexModule,
     FeedComponent,
     FollowButtonComponent,
-    NewPostComponent,
+    SkeletonProfileComponent
   ],
 })
 export class UserProfileComponent implements OnInit {
@@ -81,7 +91,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private nzImageService: NzImageService
   ) {}
 
   ngOnInit(): void {
@@ -113,5 +124,17 @@ export class UserProfileComponent implements OnInit {
 
   logout(): void {
     this.store.dispatch(authActions.logout());
+  }
+
+  previewAvatar(image: string) {
+
+    const nzImage = [{
+      src: image,
+      width: '250px',
+      height: '350px',
+      alt: 'angular'
+    }]
+
+    this.nzImageService.preview(nzImage, { nzZoom: 1.5, nzRotate: 0 });
   }
 }

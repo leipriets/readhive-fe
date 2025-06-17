@@ -21,8 +21,8 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
-import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzModalModule, NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 import {CommentsInterface} from '../../data/types/comments.interface';
 import {CommonModule} from '@angular/common';
@@ -44,6 +44,8 @@ import {CommentRequestInterface} from '../../data/types/commentRequest.interface
 import {ReactCommentsComponent} from '../reactComments/reactComments.component';
 import {EditCommentFormValuesInterface} from './types/editCommentFormValues.interface';
 import {EditCommentRequestInterface} from './types/editCommentRequest.interface';
+import {getRelativeTime} from '../../utils/helper';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'app-comment',
@@ -64,15 +66,18 @@ import {EditCommentRequestInterface} from './types/editCommentRequest.interface'
     NzDividerModule,
     NzDropDownModule,
     NzModalModule,
+    NzTypographyModule,
     ReactiveFormsModule,
     ReactCommentsComponent,
   ],
 })
-export class CommentComponent implements OnInit, OnChanges  {
+export class CommentComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() articleId?: number;
   @Input() slug!: string;
+  @Input() isDirectComment?: boolean | undefined;
   @Output() commentSubmit = new EventEmitter<CommentFormValuesInterface>();
   @ViewChild('p') paragraphBody!: ElementRef;
+  @ViewChild('commentInput') commentInput!: ElementRef;
 
   isLiked: boolean | null = null;
   isDisliked: boolean | null = null;
@@ -90,7 +95,7 @@ export class CommentComponent implements OnInit, OnChanges  {
     error: this.store.select(selectError),
     comments: this.store.select(selectCommentsData),
     currentUser: this.store.select(selectCurrentUser),
-    updatedComment: this.store.select(selectUpdatedComment)
+    updatedComment: this.store.select(selectUpdatedComment),
     // articlesCount: this.store.select(selectArticlesCount),
     // isLastPage: this.store.select(selectAllDataLoaded)
   });
@@ -121,22 +126,21 @@ export class CommentComponent implements OnInit, OnChanges  {
         setTimeout(() => this.scrollToComment(comment.id.toString()), 100);
       });
 
-    this.selectCommentSub = this.actions$      
-    .pipe(ofType(commentsActions.updateCommentArticleSuccess))
-    .subscribe(({comment}) => {
+    this.selectCommentSub = this.actions$
+      .pipe(ofType(commentsActions.updateCommentArticleSuccess))
+      .subscribe(({comment}) => {
+        // console.log('select Comment sub', comment);
 
-      // console.log('select Comment sub', comment);
+        const element = document.getElementById('commentBody' + comment.id);
 
-      const element = document.getElementById('commentBody'+comment.id);
+        if (element) {
+          element.innerText = comment.body;
+        }
 
-      if (element) {
-        element.innerText = comment.body;
-      }
+        this.scrollToComment(comment.id.toString());
 
-      this.scrollToComment(comment.id.toString());
-
-      setTimeout(() => this.scrollToComment(comment.id.toString()), 100);
-    });
+        setTimeout(() => this.scrollToComment(comment.id.toString()), 100);
+      });
 
     if (changes['articleId'] && this.articleId !== null) {
       this.store.dispatch(
@@ -148,9 +152,21 @@ export class CommentComponent implements OnInit, OnChanges  {
     }
   }
 
+  ngAfterViewInit(): void {
+    if (this.isDirectComment === true) {
+      console.log(this.isDirectComment);
+      setTimeout(() => {
+        this.commentInput.nativeElement.focus();
 
-  getRelativeTime(dateString: string): string {
-    return formatDistanceToNow(new Date(dateString), {addSuffix: true});
+        this.commentInput.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      }, 500);
+
+    }
+  }
+
+  getTimeDiff(dateString: string) {
+    return getRelativeTime(dateString);
   }
 
   onSubmit(): void {
@@ -218,12 +234,11 @@ export class CommentComponent implements OnInit, OnChanges  {
       nzOkDanger: true,
       nzOnOk: () => {
         const slug = this.slug;
-        this.store.dispatch(commentsActions.deleteComment({commentId, slug}))
+        this.store.dispatch(commentsActions.deleteComment({commentId, slug}));
         this.messageService.success('Comment was successfully deleted.');
-      } 
+      },
     });
   }
-
 
   scrollToComment(commentId: string): void {
     const el = document.getElementById('comment-' + commentId);

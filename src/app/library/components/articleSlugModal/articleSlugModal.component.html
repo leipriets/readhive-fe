@@ -1,0 +1,79 @@
+<div nz-row>
+  <div nz-col nzSpan="20">
+    <div class="content">
+      <h4 nz-typography>{{ nzModalData.articleData.title | titlecase }}</h4>
+      <span nz-typography nzType="secondary">
+        <strong><i>About:</i> &nbsp;</strong
+        >{{ nzModalData.articleData.description }}</span
+      >
+    </div>
+  </div>
+</div>
+<!-- @if (nzModalData.articleData.article_media[0]?.files.length > 0) {
+<div nz-row [nzGutter]="{xs: 8, sm: 16, md: 24, lg: 32}">
+  <nz-card nzHoverable>
+    <nz-image-group>
+      @for (articleMedia of nzModalData.articleData.article_media[0]?.files;
+      track $index) {
+      <img
+        nz-image
+        width="200px"
+        height="210vh"
+        [nzSrc]="pathUrl + '/src/images/' + articleMedia?.filename"
+        alt=""
+      />
+      }
+    </nz-image-group>
+  </nz-card>
+</div>
+} -->
+
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <nz-divider></nz-divider>
+  </div>
+</div>
+
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <div class="content">
+      <div [innerHTML]="nzModalData.articleData.body"></div>
+    </div>
+  </div>
+</div>
+<div nz-row>
+  <div nz-col nzSpan="20">
+    <br/>
+    <ng-container ngFor="" *ngFor="let tag of nzModalData.articleData?.tagList">
+      <nz-tag [nzColor]="'blue'">#{{ tag }}</nz-tag>
+    </ng-container>
+  </div>
+</div>
+<div nz-row>
+  <div nz-col nzSpan="20">
+    <nz-divider></nz-divider>
+  </div>
+</div>
+<div>
+  <div nz-col nzSpan="20">
+    <div class="content-link">
+      <app-add-to-favorites
+        [isFavorited]="nzModalData.articleData.favorited"
+        [articleSlug]="nzModalData.articleData.slug"
+        [favoritesCount]="nzModalData.articleData.favoritesCount"
+      ></app-add-to-favorites>
+
+      <!-- <a>
+        <span nz-icon nzType="heart"></span>&nbsp;{{
+          nzModalData.articleData.favoritesCount
+        }}
+      </a> -->
+    </div>
+  </div>
+</div>
+
+  <app-comment
+    [articleId]="nzModalData.articleData.id"
+    [slug]="nzModalData.articleData.slug"
+    [isDirectComment]="nzModalData.isDirectComment"
+  ></app-comment>

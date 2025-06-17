@@ -20,6 +20,8 @@ import {authActions} from '../../store/actions';
 import {Observable, Observer} from 'rxjs';
 import {RegisterRequestInterface} from '../../types/registerRequest.interface';
 import {PersistenceService} from '../../../../library/data/services/persitence.service';
+import { LeftSectionComponent } from '../leftSection/leftSection.component';
+import { DecorComponent } from '../decor/decor.component';
 
 @Component({
   selector: 'app-register',
@@ -35,6 +37,8 @@ import {PersistenceService} from '../../../../library/data/services/persitence.s
     NzLayoutModule,
     NzCardModule,
     HeaderComponent,
+    LeftSectionComponent,
+    DecorComponent
   ],
   standalone: true,
 })

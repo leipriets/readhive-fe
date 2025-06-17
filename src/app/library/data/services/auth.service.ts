@@ -43,11 +43,22 @@ export class AuthService {
   }
 
   updateCurrentUser(
-    currentUserRequest: CurrentUserRequestInterface
+    currentUserRequest: CurrentUserRequestInterface,
+    filename?: string
   ): Observable<CurrentUserInterface> {
-    const url = environment.apiUrl + '/user';
+    const url = environment.apiUrl + '/user-update';
+
+    const userData = new FormData();
+    userData.append("username", currentUserRequest.user.username);
+    userData.append("bio", currentUserRequest.user.bio);
+    userData.append("email", currentUserRequest.user.email);
+    if (currentUserRequest.user.image) {
+      userData.append("image", currentUserRequest.user.image, filename);
+    }
+      
+
     return this.http
-      .put<AuthResponseInterface>(url, currentUserRequest)
+      .post<AuthResponseInterface>(url, userData)
       .pipe(map(this.getUser));
   }
 }

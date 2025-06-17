@@ -8,7 +8,8 @@ const initialState: FeedStateInterface = {
   error: null,
   articles: [],
   articlesCount: 0,
-  allDataLoaded: false
+  allDataLoaded: false,
+  hasMore: false
 };
 
 const feedFeature = createFeature({
@@ -21,7 +22,8 @@ const feedFeature = createFeature({
       isLoading: false,
       articles: [...state.articles, ...feed.articles],
       articlesCount: feed.articlesCount,
-      allDataLoaded: isLastPage
+      allDataLoaded: isLastPage,
+      hasMore: feed.articles.length > 0
     })),
     on(feedActions.getFeedFailure, (state) => ({...state, isLoading: false})),
     on(routerNavigatedAction, () => initialState),
@@ -35,5 +37,6 @@ export const {
     selectError,
     selectArticles: selectArticlesData,
     selectArticlesCount,
-    selectAllDataLoaded
+    selectAllDataLoaded,
+    selectHasMore
 } = feedFeature

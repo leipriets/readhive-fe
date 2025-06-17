@@ -24,9 +24,57 @@
     width: 100%;
   }
 
+  .editor {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    min-height: 150px;  /* like rows="6" in textarea */
+    max-height: 400px;  /* optional */
+    overflow-y: auto;
+    resize: vertical;   /* user can resize like a textarea */
+    font-family: inherit;
+    font-size: 14px;
+    white-space: pre-wrap; /* preserve spaces and line breaks */
+  }
+
+  .rich-text-container {
+    max-height: none;
+    overflow: hidden;
+    max-width: 150vh;
+    overflow-x: auto;
+    transition: max-height 0.3s ease;
+  }
+  
+  .rich-text-container.collapsed {
+    max-height: 500px; /* or 3 lines if you prefer via line-clamp */
+    max-width: 150vh;
+    /* overflow-x: auto; */
+    overflow-y: hidden;
+    position: relative;
+  }
+  
+  /* Optional: fade out effect */
+  .rich-text-container.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, white);
+  }
+
+  .quill-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
   @media (max-width: 768px) {
     .content-image {
       flex: 100%;
       margin: 24px 0 0;
     }
   }
+
+  

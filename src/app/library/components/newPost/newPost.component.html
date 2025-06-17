@@ -1,19 +1,13 @@
-<div class="mt-10">
-  <div nz-row>
-    <ng-container *ngIf="currentUser$ | async as currentUser">
-      <button
-        nz-button
-        nzSize="default"
-        nzType="primary"
-        (click)="CreateArticleFormDrawer()"
-      >
-        <i
-          ><span class="right10" nz-icon nzType="edit"></span><b>New Post</b></i
-        >
-      </button>
-    </ng-container>
-  </div>
-</div>
+<ng-container *ngIf="currentUser$ | async as currentUser">
+  <button
+    nz-button
+    nzSize="default"
+    nzType="primary"
+    (click)="CreateArticleFormDrawer()"
+  >
+    <i><span class="right10" nz-icon nzType="edit"></span><b>New Post</b></i>
+  </button>
+</ng-container>
 
 <app-drawer [title]="'Create Article'">
   <create-article content />

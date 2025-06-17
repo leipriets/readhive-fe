@@ -1,9 +1,10 @@
+import { LikeCommentsInterface } from "./likeComments.interface";
+
 export interface LikeCommentsResponseInterface {
     data: {
-        user_id: number;
-        article_id: number;
-        comment_id: number;
-        like: boolean;
-        dislike: boolean;
+        like_counts: number;
+        dislike_counts: number;
+        like_comments: LikeCommentsInterface;
+        slug: string;
     }
 }
