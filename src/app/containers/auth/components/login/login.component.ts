@@ -81,6 +81,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const token = this.persistenceService.get('BVaccessToken');
 
+    this.form.patchValue({
+      email: 'johndoe@yopmail.com',
+      password: 'password@123'
+    })
+
     if (token) {
       this.router.navigateByUrl('/');
     }
