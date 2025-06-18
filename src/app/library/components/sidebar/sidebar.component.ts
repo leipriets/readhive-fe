@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzMenuModule} from 'ng-zorro-antd/menu';
@@ -13,6 +13,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { RouterLink } from '@angular/router';
 import { NewPostComponent } from '../newPost/newPost.component';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'app-sider',
@@ -25,16 +26,16 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
     NzMenuModule,
     NzLayoutModule,
     NzIconModule,
+    NzGridModule,
     NzButtonModule,
     NzDividerModule,
     NzAvatarModule,
     NzAffixModule,
-    DrawerComponent,
-    CreateArticleComponent,
     NewPostComponent
   ],
 })
 export class SidebarComponent {
+  @Input() isCollapsed?: boolean;
   @ViewChild(DrawerComponent, {static: false}) drawerTemplate!: DrawerComponent;
 
   currentUser$ = this.store.select(selectCurrentUser);

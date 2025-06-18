@@ -1,11 +1,18 @@
 .container-popular-tags {
-    padding: 2.75rem 0rem 1rem 4rem;
+  /* padding: 2.75rem 0rem 1rem 4rem; */
+  padding-top: 2.75rem;
 }
 
 .tag-bg-color-default {
-    background-color: #818a91;
+  background-color: #818a91;
 }
 
 .mt-5 {
-    margin-top: 5px;
+  margin-top: 5px;
+}
+
+.hide-on-mobile {
+  @media (max-width: 575.98px) {
+    display: none !important;
+  }
 }

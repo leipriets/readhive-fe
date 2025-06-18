@@ -1,11 +1,15 @@
 <nz-layout>
   <nz-affix [nzOffsetTop]="0">
-      <app-header />
+    <app-header />
   </nz-affix>
   <nz-layout>
-    <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzTheme="light">
+    <nz-sider
+      [nzBreakpoint]="'md'"
+      nzCollapsible
+      nzTheme="light"
+    >
       <nz-affix [nzOffsetTop]="70">
-        <app-sider />
+        <app-sider [isCollapsed]="isCollapsed" />
       </nz-affix>
     </nz-sider>
 

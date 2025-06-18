@@ -29,30 +29,29 @@
           Sign in
         </li>
       </ul>
-
       <ul
+        class="header-menu pull-right no-hover"
         nz-menu
         nzMode="horizontal"
         nzTheme="dark"
-        class="header-menu pull-right"
         [nzSelectable]="false"
+        [ngClass]="{'ant-menu-horizontal': false}"
+        *ngIf="data.currentUser"
       >
-        <li nz-menu-item class="no-hover">
-          <a
-            class="pull-right"
+        <li nz-menu-item>
+          <span
+            class="pull-right no-hover"
             nz-dropdown
             nzTrigger="click"
             [nzDropdownMenu]="menu"
             [nzPlacement]="'bottomRight'"
           >
-            <ng-container *ngIf="data.currentUser">
-              <nz-avatar
-                nzSize="small"
-                [nzSrc]="data.currentUser.image"
-                nzIcon="user"
-              ></nz-avatar>
-            </ng-container>
-          </a>
+            <nz-avatar
+              nzSize="small"
+              [nzSrc]="data.currentUser.image"
+              nzIcon="user"
+            ></nz-avatar>
+        </span>
 
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>

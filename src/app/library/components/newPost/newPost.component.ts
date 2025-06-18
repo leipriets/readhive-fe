@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {selectCurrentUser} from '../../../containers/auth/store/reducers';
 import {DrawerComponent} from '../drawer/drawer.component';
@@ -21,6 +21,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   ],
 })
 export class NewPostComponent {
+  @Input() isCollapsed?: boolean;
   @ViewChild(DrawerComponent, {static: false}) drawerTemplate!: DrawerComponent;
 
   currentUser$ = this.store.select(selectCurrentUser);

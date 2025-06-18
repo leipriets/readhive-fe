@@ -5,10 +5,12 @@
     nzType="primary"
     (click)="CreateArticleFormDrawer()"
   >
-    <i><span class="right10" nz-icon nzType="edit"></span><b>New Post</b></i>
+    <i><span  nz-icon nzType="edit"></span>
+      <span *ngIf="!isCollapsed"><b>New Post</b></span>
+    </i>
   </button>
 </ng-container>
 
 <app-drawer [title]="'Create Article'">
-  <create-article content />
+  <create-article content />>
 </app-drawer>

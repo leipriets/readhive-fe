@@ -1,12 +1,14 @@
 <nz-affix [nzOffsetTop]="70">
   <ng-container *ngIf="data$ | async as data">
-  <div class="container-popular-tags">
-    <div *ngIf="data.currentUser">
-      <app-search-profile />
-      <br /> <br />
-    </div>
-    <nz-card nzTitle="Popular Tags">
-    <!-- <i>Popular Tags</i> -->
+    <div
+      class="container-popular-tags hide-on-mobile">
+      <div *ngIf="data.currentUser">
+        <app-search-profile />
+        <br />
+        <br />
+      </div>
+      <nz-card nzTitle="Popular Tags">
+        <!-- <i>Popular Tags</i> -->
         @for (popularTag of data.popularTags; track $index) {
         <nz-tag nzColor="#818a91" class="mt-5">
           <a
