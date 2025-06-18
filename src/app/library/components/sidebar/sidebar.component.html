@@ -1,15 +1,16 @@
 <ul
-  *ngIf="currentUser$ | async as currentUser"
+  
   [nzInlineCollapsed]="isCollapsed"
   nz-menu
   nzMode="inline"
   class="sider-menu"
   [nzSelectable]="false"
 >
-  <li nz-menu-item [nzDisabled]="true">
+  <li *ngIf="currentUser$ | async as currentUser" nz-menu-item [nzDisabled]="true">
     <nz-divider></nz-divider>
   </li>
   <li
+    *ngIf="currentUser$ | async as currentUser"
     nz-menu-item
     [routerLink]="['profile', currentUser.username]"
     [queryParams]="{tab: 'posts'}"
@@ -23,7 +24,7 @@
       >
     </ng-container>
   </li>
-  <li nz-menu-item [nzDisabled]="true">
+  <li *ngIf="currentUser$ | async as currentUser" nz-menu-item [nzDisabled]="true">
     <nz-divider></nz-divider>
   </li>
   <li nz-menu-item routerLink="/global-feed" [nzMatchRouter]="true">
