@@ -3,6 +3,8 @@ import {Component, OnInit} from '@angular/core';
 import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzAffixModule} from 'ng-zorro-antd/affix';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 import {combineLatest, take} from 'rxjs';
 
@@ -16,7 +18,6 @@ import {popularTagActions} from './store/actions';
 import {CommonModule} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
 import {SearchProfileComponent} from '../searchProfile/components/searchProfile.component';
-import { NzGridModule } from 'ng-zorro-antd/grid';
 import { selectCurrentUser } from '../../../containers/auth/store/reducers';
 
 @Component({
@@ -31,7 +32,9 @@ import { selectCurrentUser } from '../../../containers/auth/store/reducers';
     NzCardModule,
     NzAffixModule,
     NzGridModule,
+    NzEmptyModule,
     SearchProfileComponent,
+    
   ],
 })
 export class PopularTagsComponent implements OnInit {
