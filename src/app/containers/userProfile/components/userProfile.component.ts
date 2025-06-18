@@ -97,7 +97,6 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((queryParams) => {
-      console.log(queryParams);
       if (queryParams['tab'] && queryParams['tab'] == 'posts') {
         this.isNewPostTab = true;
       }

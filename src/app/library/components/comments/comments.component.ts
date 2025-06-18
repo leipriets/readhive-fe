@@ -129,7 +129,6 @@ export class CommentComponent implements OnInit, OnChanges, AfterViewInit {
     this.selectCommentSub = this.actions$
       .pipe(ofType(commentsActions.updateCommentArticleSuccess))
       .subscribe(({comment}) => {
-        // console.log('select Comment sub', comment);
 
         const element = document.getElementById('commentBody' + comment.id);
 
@@ -154,7 +153,6 @@ export class CommentComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.isDirectComment === true) {
-      console.log(this.isDirectComment);
       setTimeout(() => {
         this.commentInput.nativeElement.focus();
 

@@ -18,7 +18,6 @@ export class FileHelperUtil {
   ): Observable<boolean> =>
     new Observable((observer: Observer<boolean>) => {
       this.fileList = this.fileList.concat(file);
-      // console.log('fileList', this.fileList);
       const isJpgOrPng =
         file.type === 'image/jpeg' || file.type === 'image/png';
 

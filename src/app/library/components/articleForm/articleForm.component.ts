@@ -180,7 +180,6 @@ export class ArticleFormComponent implements OnInit {
     });
 
   handleChange(info: NzUploadChangeParam): void {
-    console.log(info);
     this.fileList = [...info.fileList];
 
     if (info.type === 'removed') {

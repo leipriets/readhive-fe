@@ -51,7 +51,6 @@ export class EditArticleComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(articleActions.getArticle({slug: this.slug}));
-    console.log(this.slug);
   }
 
   onSubmit(articleFormValues: ArticleFormValuesInterface): void {

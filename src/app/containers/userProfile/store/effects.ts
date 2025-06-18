@@ -15,7 +15,6 @@ export const getUserProfileEffect = createEffect(
       switchMap(({username}) => {
         return userProfileService.getUserProfile(username).pipe(
           map((userProfile: UserProfileInterface) => {
-            console.log(userProfile);
             return userProfileActions.getUserProfileSuccess({userProfile})
           }),
           catchError(() => {

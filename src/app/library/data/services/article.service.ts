@@ -39,8 +39,6 @@ export class ArticleService {
     });
 
     articleRequest.article?.images?.forEach((image: any) => {
-      console.log('article service', image);
-
       postData.append('images', image.originFileObj as any);
     });
 
@@ -87,7 +85,6 @@ export class ArticleService {
   commentArticle(
     commentRequest: CommentRequestInterface
   ): Observable<CommentsInterface> {
-    console.log(commentRequest);
     const slug = commentRequest.comment.slug;
     const fullUrl = `${environment.apiUrl}/articles/${slug}/comments`;
 

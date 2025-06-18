@@ -16,7 +16,7 @@ import {SearchProfileInterface} from '../types/searchProfile.interface';
 import {SearchProfileService} from '../services/searchProfile.service';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {Router} from '@angular/router';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import {NzSkeletonModule} from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'app-search-profile',
@@ -29,7 +29,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
     NzIconModule,
     NzInputModule,
     NzAutocompleteModule,
-    NzSkeletonModule
+    NzSkeletonModule,
   ],
 })
 export class SearchProfileComponent implements OnInit, OnDestroy {
@@ -70,11 +70,10 @@ export class SearchProfileComponent implements OnInit, OnDestroy {
   }
 
   onSelect(): void {
-    // console.log('Selected value:', this.inputValue);
     if (this.inputValue) {
-        this.router.navigate([`/profile/${this.inputValue}`], {
-            queryParams: { tab: 'posts' }
-        });
+      this.router.navigate([`/profile/${this.inputValue}`], {
+        queryParams: {tab: 'posts'},
+      });
     }
   }
 

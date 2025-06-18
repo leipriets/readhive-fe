@@ -16,7 +16,6 @@ export class CommentsService {
   commentArticle(
     commentRequest: CommentRequestInterface
   ): Observable<CommentsInterface> {
-    // console.log(commentRequest);
     const slug = commentRequest.comment.slug;
     const fullUrl = `${environment.apiUrl}/articles/${slug}/comment`;
 

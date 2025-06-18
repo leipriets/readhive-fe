@@ -132,7 +132,6 @@ export class SettingsComponent implements OnInit {
   ): Observable<boolean> =>
     new Observable((observer: Observer<boolean>) => {
       // this.fileList = this.fileList.concat(file);
-      // console.log('fileList', this.fileList);
       const isJpgOrPng =
         file.type === 'image/jpeg' || file.type === 'image/png';
 
@@ -161,7 +160,6 @@ export class SettingsComponent implements OnInit {
   }
 
   handleChange(info: {file: NzUploadFile}): void {
-    console.log('file', info.file);
     switch (info.file.status) {
       case 'uploading':
         this.loading = true;

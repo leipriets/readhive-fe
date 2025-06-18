@@ -16,7 +16,6 @@ export const getNotificationCountEffect = createEffect(
       switchMap(() => {
         return notifService.getNotificationBadge().pipe(
           map((response) => {
-            console.log('notification count -> ', response);
             return notificationCountActions.getNotificationCountSuccess({
               data: response,
             });

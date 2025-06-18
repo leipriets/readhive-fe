@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     this.currentUserSubscription = this.store
       .pipe(select(selectCurrentUser), filter(Boolean))
       .subscribe((currentUser: CurrentUserInterface) => {
-        console.log('app component current user ->',currentUser);
+        // console.log('app component current user ->',currentUser);
         const userId = currentUser.id;
         this.notificationService.registerUser(userId);
         this.notificationService.listenForNotifications();

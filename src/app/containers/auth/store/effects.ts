@@ -95,12 +95,10 @@ export const registerEffect = createEffect(
         switchMap(({request}) => {
           return authService.login(request).pipe(
             map((currentUser: CurrentUserInterface) => {
-              console.log(currentUser);
               persistenceService.set('BVaccessToken', currentUser.token);
               return authActions.loginSuccess({currentUser});
             }),
             catchError((errorResponse: HttpErrorResponse) => {
-              console.log(errorResponse);
               return of(
                 authActions.loginFailure({
                   errors: errorResponse.error.error,

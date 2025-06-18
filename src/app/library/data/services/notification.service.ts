@@ -33,7 +33,6 @@ export class NotificationService {
 
     events.forEach((event) => {
       this.socket.on(event, (data: NotificationMessagePart[]) => {
-        console.log(event);
         let messagePart = this.extractMsgParts(data, 'message') ?? '';
         let username = this.extractMsgParts(data, 'user') ?? '';
 
