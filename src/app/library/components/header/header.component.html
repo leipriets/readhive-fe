@@ -1,38 +1,52 @@
-<nz-header [ngClass]="{ 'ant-layout-header': false }" class="">
-  <!-- <div class="grid lg:grid-cols-1 md:grid-cols-3 sm:grid-cols-3 gap-6"> -->
-  <div class="flex items-center lg:justify-end justify-between px-4 py-2 bg-white shadow">
-    <div class="lg:hidden flex items-center">ReadHive</div>
-    <div class="lg:hidden absolute left-1/2 transform -translate-x-1/2 text-lg font-semibold">
-      <ul nz-menu nzMode="horizontal">
-        <li nz-menu-item routerLink="/global-feed" [nzMatchRouter]="true">
-          <a nz-button nzType="text">
-            <span nz-icon nzType="home"></span>
-          </a>
-        </li>
-        <li nz-menu-item routerLink="/feed" [nzMatchRouter]="true">
-          <a nz-button nzType="text">
-            <span nz-icon nzType="usergroup-add"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <!-- <div class="lg:hidden justify-self-start">Following</div> -->
-    <div class="lg:w-auto flex items-center ">
-      <ng-container *ngIf="data$ | async as data">
+<ng-container *ngIf="data$ | async as data">
+  <nz-header [ngClass]="{'ant-layout-header': false}" class="">
+    <!-- <div class="grid lg:grid-cols-1 md:grid-cols-3 sm:grid-cols-3 gap-6"> -->
+    <div class="flex items-center lg:justify-end justify-between px-4">
+      <div class="lg:hidden flex items-center">ReadHive</div>
+      <div
+        class="lg:hidden absolute left-1/2 transform -translate-x-1/2 text-lg font-semibold"
+      >
         <ul nz-menu nzMode="horizontal">
-          <li *ngIf="data.currentUser" nz-menu-item [nzMatchRouter]="true">
-            <a
-              nz-button
-              nzType="text"
-              nzPlacement="bottomRight"
-              [routerLink]="['notification', data.currentUser.username]"
-            >
+          <li nz-menu-item routerLink="/global-feed" [nzMatchRouter]="true">
+            <a nz-button nzType="text">
+              <span nz-icon nzType="home"></span>
+            </a>
+          </li>
+          <li
+            *ngIf="data.currentUser"
+            nz-menu-item
+            routerLink="/feed"
+            [nzMatchRouter]="true"
+          >
+            <a nz-button nzType="text">
+              <span nz-icon nzType="usergroup-add"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- <div class="lg:hidden justify-self-start">Following</div> -->
+      <div class="lg:w-auto flex items-center">
+        <ul nz-menu nzMode="horizontal">
+          <li
+            *ngIf="data.currentUser"
+            nz-menu-item
+            [routerLink]="['notification', data.currentUser.username]"
+            [nzMatchRouter]="true"
+          >
+            <a nz-button nzType="text" nzPlacement="bottomRight">
               <nz-badge nzSize="small" [nzCount]="data?.notif_count?.count">
                 <span class="outline-amber-950" nz-icon nzType="bell"></span>
               </nz-badge>
             </a>
           </li>
-          <li *ngIf="data.currentUser" nz-menu-item [nzMatchRouter]="true">
+          <li
+            class="no-hover pointer-events-auto"
+            [nzSelected]="false"
+            *ngIf="data.currentUser"
+            nz-menu-item
+            [class.ant-menu-item-selected]="null"
+            [ngClass]="{ 'ant-menu-item-selected': false }"
+          >
             <span
               class="pull-right no-hover"
               nz-dropdown
@@ -64,7 +78,7 @@
             Sign in
           </li>
         </ul>
-      </ng-container>
+      </div>
     </div>
-  </div>
-</nz-header>
+  </nz-header>
+</ng-container>

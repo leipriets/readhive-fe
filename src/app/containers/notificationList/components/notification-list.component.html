@@ -1,6 +1,6 @@
 <ng-container *ngIf="data$ | async as data">
-  <div nz-row>
-    <div nz-col nzSpan="12" nzOffset="6">
+  <div class="flex sm:h-screen justify-center">
+    <div class="flex-1 lg:pl-40 lg:pr-40">
       <nz-card nzTitle="Notifications">
         <nz-list nzItemLayout="horizontal">
           @for (notif of data?.notifData?.data; track $index) {

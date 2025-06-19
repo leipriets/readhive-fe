@@ -48,6 +48,17 @@ nz-header {
   color: inherit !important;
 }
 
+/* :host ::ng-deep .no-hover:hover.ant-menu-item.ant-menu-item-selected {
+  background-color: transparent !important;
+  color: inherit !important;
+  cursor: pointer !important;
+} */
+
+:host ::ng-deep .no-hover.ant-menu-item-selected {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
 .no-hover.ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover
 {
   background-color: transparent !important;
