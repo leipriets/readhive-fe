@@ -4,8 +4,9 @@
     [backendErrors]="errors"
   ></app-backend-error-messages>
 
-  <div nz-row [nzGutter]="32">
-    <div nz-col class="gutter-row" [nzSpan]="12">
+  <!-- Title -->
+  <div nz-row>
+    <div nz-col class="gutter-row" nzXs="6">
       <nz-form-item>
         <nz-form-label
           nzFor="title"
@@ -14,6 +15,10 @@
         >
           <span>Title</span>
         </nz-form-label>
+      </nz-form-item>
+    </div>
+    <div nz-col nzXs="14">
+      <nz-form-item>
         <nz-form-control nzErrorTip="">
           <input
             nz-input
@@ -24,7 +29,11 @@
         </nz-form-control>
       </nz-form-item>
     </div>
-    <div nz-col class="gutter-row" [nzSpan]="12">
+  </div>
+
+  <!-- About -->
+  <div nz-row>
+    <div nz-col class="gutter-row" nzXs="6">
       <nz-form-item>
         <nz-form-label
           nzFor="description"
@@ -33,7 +42,11 @@
         >
           <span>About</span>
         </nz-form-label>
-        <nz-form-control [nzSm]="20" [nzXs]="16" nzErrorTip="">
+      </nz-form-item>
+    </div>
+    <div nz-col nzXs="14">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="">
           <input
             nz-input
             id="description"
@@ -44,9 +57,44 @@
       </nz-form-item>
     </div>
   </div>
+  
+  <!-- Tags-->
 
-  <div nz-row [nzGutter]="32">
-    <div nz-col class="gutter-row" [nzSpan]="32">
+  <div nz-row>
+    <div
+      nz-col
+      class="gutter-row"
+      nzXs="6"
+      nzSm="6"
+    >
+      <nz-form-item>
+        <nz-form-label
+          nzFor="tagList"
+          nzRequired
+          nzTooltipTitle="Enter your article tags, e.g: news"
+        >
+          <span>Tags</span>
+        </nz-form-label>
+      </nz-form-item>
+    </div>
+    <div nz-col nzXs="14" nzSm="14">
+      <nz-form-control nzErrorTip="">
+        <nz-select nzMode="tags" nzPlaceHolder="Tags" formControlName="tagList">
+          <ng-container *ngIf="data$ | async as data">
+            @for (popularTag of data.popularTags; track $index) {
+            <nz-option
+              [nzLabel]="popularTag"
+              [nzValue]="popularTag"
+            ></nz-option>
+            }
+          </ng-container>
+        </nz-select>
+      </nz-form-control>
+    </div>
+  </div>
+
+  <div nz-row nzXs="6" nzSm="6">
+    <div nz-col class="gutter-row">
       <nz-form-item>
         <nz-form-label
           nzFor="body"
@@ -56,7 +104,9 @@
           <span>Body</span>
         </nz-form-label>
       </nz-form-item>
-      <nz-form-control  [nzOffset]="1">
+    </div>
+    <div nz-col nzXs="24">
+      <nz-form-control>
         <div class="ql-container">
           <div class="ql-editor">
             <quill-editor
@@ -70,31 +120,6 @@
     </div>
   </div>
 
-  <div nz-row [nzGutter]="32">
-    <div nz-col class="gutter-row" [nzSpan]="12">
-      <nz-form-item>
-        <nz-form-label
-          nzFor="tagList"
-          nzRequired
-          nzTooltipTitle="Enter your article tags, e.g: news"
-        >
-          <span>Tags</span>
-        </nz-form-label>
-        <nz-form-control nzErrorTip="">
-          <nz-select nzMode="tags" nzPlaceHolder="Tags" formControlName="tagList">
-            <ng-container *ngIf="data$ | async as data">
-              @for (popularTag of data.popularTags; track $index) {
-              <nz-option
-                [nzLabel]="popularTag"
-                [nzValue]="popularTag"
-              ></nz-option>
-              }
-            </ng-container>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-  </div>
   <!-- <nz-form-item>
     <nz-form-label
       [nzSm]="6"
@@ -126,9 +151,9 @@
 
   <br />
 
-  <div nz-row [nzGutter]="32">
+  <div nz-row>
     <nz-form-item nz-row class="register-area">
-      <nz-form-control [nzOffset]="17">
+      <nz-form-control [nzOffset]="5">
         <button
           type="submit"
           nz-button
@@ -140,7 +165,6 @@
       </nz-form-control>
     </nz-form-item>
   </div>
-
 </form>
 
 <nz-modal

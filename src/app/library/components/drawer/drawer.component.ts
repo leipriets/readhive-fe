@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {
   NzDrawerModule,
@@ -24,15 +24,36 @@ import { Observable } from 'rxjs';
     NzInputModule,
   ],
 })
-export class DrawerComponent {
+export class DrawerComponent implements OnInit {
   @Input() title: string = 'Create';
   visible: any;
 
   drawerVisible$: Observable<boolean>;
-
+  drawerWidth: string | number = 400;
 
   constructor(private store: Store, private drawerService: DrawerService) {
     this.drawerVisible$ = this.store.select(selectIsVisible);
+  }
+
+  ngOnInit(): void {
+    this.setResponsiveDrawerWidth();
+  }
+
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    this.setResponsiveDrawerWidth();
+  }
+  
+  setResponsiveDrawerWidth(): void {
+    const width = window.innerWidth;
+    if (width < 640) {
+      this.drawerWidth = '100%'; // full width on small screens
+    } else if (width < 1024) {
+      this.drawerWidth = '80%';
+    } else {
+      this.drawerWidth = 1000;
+    }
   }
 
   toggleDrawer() {
