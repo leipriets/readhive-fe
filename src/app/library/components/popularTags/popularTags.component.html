@@ -1,6 +1,6 @@
 <nz-affix [nzOffsetTop]="70">
   <ng-container *ngIf="data$ | async as data">
-    <div class="container-popular-tags hide-on-mobile">
+    <div class="container-popular-tags hidden lg:block">
       <div *ngIf="data.currentUser">
         <app-search-profile />
         <br />
@@ -18,7 +18,7 @@
           </nz-tag>
           }
         </div>
-      </nz-card>
+    </nz-card>
       <ng-template #noData>
         <nz-empty nzNotFoundImage="simple"></nz-empty>
       </ng-template>

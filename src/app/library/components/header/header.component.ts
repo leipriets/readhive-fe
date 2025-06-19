@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   OnInit,
+  Output,
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
@@ -19,6 +21,7 @@ import {NzAlign, NzFlexModule, NzJustify} from 'ng-zorro-antd/flex';
 import {NzAvatarModule} from 'ng-zorro-antd/avatar';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzAutocompleteModule} from 'ng-zorro-antd/auto-complete';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 import {
   catchError,
@@ -67,10 +70,13 @@ interface Option {
     NzFlexModule,
     NzAvatarModule,
     NzInputModule,
-    NzAutocompleteModule
+    NzAutocompleteModule,
+    NzTabsModule
   ],
 })
 export class HeaderComponent implements OnInit {
+  @Output() toggle = new EventEmitter<boolean>();
+  isCollapsed = true;
   currentRoute: string = '';
   isSelected = false;
   isSelectedNotif = false;
@@ -105,6 +111,11 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.store.dispatch(authActions.logout());
+  }
+
+  toggleCollapse() {
+    this.isCollapsed = !this.isCollapsed;
+    this.toggle.emit(this.isCollapsed);
   }
 
   ngOnDestroy(): void {}

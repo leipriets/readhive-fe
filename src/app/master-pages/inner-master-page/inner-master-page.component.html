@@ -1,20 +1,13 @@
 <nz-layout>
-  <nz-affix [nzOffsetTop]="0">
-    <app-header />
-  </nz-affix>
+  <nz-sider class="hidden lg:block" nzTheme="light">
+    <app-sider [isCollapsed]="isCollapsed" />
+  </nz-sider>
   <nz-layout>
-    <nz-sider
-      [nzBreakpoint]="'md'"
-      nzCollapsible
-      nzTheme="light"
-    >
-      <nz-affix [nzOffsetTop]="70">
-        <app-sider [isCollapsed]="isCollapsed" />
-      </nz-affix>
-    </nz-sider>
-
-    <nz-content>
-      <div class="inner-content">
+    <nz-affix [nzOffsetTop]="0">
+      <app-header (toggle)="listenToggle($event)" />
+    </nz-affix>
+    <nz-content class="mt-8 m-16">
+      <div class="inner-content space-y-6">
         <router-outlet></router-outlet>
       </div>
     </nz-content>

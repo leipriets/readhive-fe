@@ -27,4 +27,9 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 export class InnerMasterPageComponent {
   isCollapsed = false;
 
+  listenToggle(isCollapsed: boolean) {
+    console.log(isCollapsed);
+    this.isCollapsed = isCollapsed;
+  }
+
 }

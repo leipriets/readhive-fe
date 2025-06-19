@@ -55,6 +55,8 @@ import {selectArticleContent} from '../../../containers/article/store/selectors'
 import {getRelativeTime} from '../../utils/helper';
 import {ToolTipDateComponent} from '../tooltipDate/toolTipDate.component';
 import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NewPostComponent } from '../newPost/newPost.component';
 
 @Component({
   selector: 'app-feed',
@@ -78,11 +80,13 @@ import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
     NzImageModule,
     NzBadgeModule,
     NzToolTipModule,
+    NzAffixModule,
     NzBreadCrumbModule,
     AddToFavoritesComponent,
     SkeletonComponent,
     ToolTipDateComponent,
     InfiniteScrollDirective,
+    NewPostComponent,
   ],
 })
 export class FeedComponent implements OnInit, OnDestroy {

@@ -1,53 +1,69 @@
-<ul
-  [nzInlineCollapsed]="isCollapsed"
-  nz-menu
-  nzMode="inline"
-  class="sider-menu"
-  [nzSelectable]="false"
->
-  <li *ngIf="currentUser$ | async as currentUser" nz-menu-item [nzDisabled]="true">
-    <nz-divider></nz-divider>
-  </li>
-  <li
-    *ngIf="currentUser$ | async as currentUser"
-    nz-menu-item
-    [routerLink]="['profile', currentUser.username]"
-    [queryParams]="{tab: 'posts'}"
-    nzIcon="user"
-  >
-    <ng-container>
-      <nz-avatar [nzSrc]="currentUser.image"></nz-avatar>
-      &nbsp;&nbsp;
-      <span
-        > <strong>{{ currentUser.username }}</strong></span
-      >
-    </ng-container>
-  </li>
-  <li *ngIf="currentUser$ | async as currentUser" nz-menu-item [nzDisabled]="true">
-    <nz-divider></nz-divider>
-  </li>
-  <li nz-menu-item routerLink="/global-feed" [nzMatchRouter]="true">
-    <span nz-icon nzType="home"></span>&nbsp;&nbsp; For You
-  </li>
-  <li
-    *ngIf="currentUser$ | async as currentUser"
-    nz-menu-item
-    routerLink="/feed"
-    [queryParams]="{tab: 'feed'}"
-    [nzMatchRouter]="true"
-  >
-    <span nz-icon nzType="usergroup-add"></span>&nbsp;&nbsp; Following
-  </li>
-  <li nz-menu-item [nzDisabled]="true">
-    <nz-divider></nz-divider>
-  </li>
-  <li
-    nz-menu-item
-    [nzDisabled]="true"
-    *ngIf="currentUser$ | async as currentUser"
+<!-- <nz-affix [nzOffsetTop]="0" style="height: 100% !important;"> -->
+<div class="fixed left-0 top-0 w-50 h-full">
+  <ul
     nz-menu
+    nzMode="inline"
     class="sider-menu"
+    [nzSelectable]="false"
+    nzTheme="dark"
   >
-    <app-new-post [isCollapsed]="isCollapsed" />
-  </li>
-</ul>
+    <li nz-menu-item routerLink="/global-feed" class="text-white">
+      <div class="flex justify-start items-center">
+        <span class="font-sans"><strong>ReadHive</strong></span>
+      </div>
+    </li>
+    <li
+      *ngIf="currentUser$ | async as currentUser"
+      nz-menu-item
+      [nzDisabled]="true"
+    >
+      <nz-divider></nz-divider>
+    </li>
+    <li
+      *ngIf="currentUser$ | async as currentUser"
+      nz-menu-item
+      [routerLink]="['profile', currentUser.username]"
+      [queryParams]="{tab: 'posts'}"
+      nzIcon="user"
+    >
+      <ng-container>
+        <nz-avatar [nzSrc]="currentUser.image"></nz-avatar>
+        &nbsp;&nbsp;
+        <span>
+          <strong>{{ currentUser.username }}</strong></span
+        >
+      </ng-container>
+    </li>
+    <li
+      *ngIf="currentUser$ | async as currentUser"
+      nz-menu-item
+      [nzDisabled]="true"
+    >
+      <nz-divider></nz-divider>
+    </li>
+    <li nz-menu-item routerLink="/global-feed" [nzMatchRouter]="true">
+      <span nz-icon nzType="home"></span>&nbsp;&nbsp; For You
+    </li>
+    <li
+      *ngIf="currentUser$ | async as currentUser"
+      nz-menu-item
+      routerLink="/feed"
+      [queryParams]="{tab: 'feed'}"
+      [nzMatchRouter]="true"
+    >
+      <span nz-icon nzType="usergroup-add"></span>&nbsp;&nbsp; Following
+    </li>
+    <li nz-menu-item [nzDisabled]="true">
+      <nz-divider></nz-divider>
+    </li>
+    <li
+      nz-menu-item
+      [nzDisabled]="true"
+      *ngIf="currentUser$ | async as currentUser"
+      nz-menu
+    >
+      <app-new-post [isCollapsed]="isCollapsed" />
+    </li>
+  </ul>
+</div>
+<!-- </nz-affix> -->

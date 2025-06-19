@@ -1,72 +1,70 @@
-<nz-header nzTheme="dark">
-  <div>
-    <a routerLink="/global-feed" [queryParams]="{tab: 'globalFeed'}">
-      <h3 class="banner-title">ReadHive</h3>
-    </a>
-  </div>
-  <div nz-flex [nzJustify]="'flex-end'" [nzAlign]="'flex-end'">
-    <ng-container *ngIf="data$ | async as data">
-      <ul
-        nz-menu
-        nzMode="horizontal"
-        nzTheme="dark"
-        class="header-menu pull-right"
-      >
-        <li *ngIf="data.currentUser" nz-menu-item [nzMatchRouter]="true">
-          <a
-            nz-button
-            nzType="text"
-            nzPlacement="bottomRight"
-            [routerLink]="['notification', data.currentUser.username]"
-          >
-            <nz-badge nzSize="small" [nzCount]="data?.notif_count?.count">
-              <span nz-icon nzType="bell"></span>
-            </nz-badge>
+<nz-header [ngClass]="{ 'ant-layout-header': false }" class="">
+  <!-- <div class="grid lg:grid-cols-1 md:grid-cols-3 sm:grid-cols-3 gap-6"> -->
+  <div class="flex items-center lg:justify-end justify-between px-4 py-2 bg-white shadow">
+    <div class="lg:hidden flex items-center">ReadHive</div>
+    <div class="lg:hidden absolute left-1/2 transform -translate-x-1/2 text-lg font-semibold">
+      <ul nz-menu nzMode="horizontal">
+        <li nz-menu-item routerLink="/global-feed" [nzMatchRouter]="true">
+          <a nz-button nzType="text">
+            <span nz-icon nzType="home"></span>
           </a>
         </li>
-
-        <li *ngIf="!data.currentUser" nz-menu-item routerLink="/sp/login">
-          Sign in
+        <li nz-menu-item routerLink="/feed" [nzMatchRouter]="true">
+          <a nz-button nzType="text">
+            <span nz-icon nzType="usergroup-add"></span>
+          </a>
         </li>
       </ul>
-      <ul
-        class="header-menu pull-right no-hover"
-        nz-menu
-        nzMode="horizontal"
-        nzTheme="dark"
-        [nzSelectable]="false"
-        [ngClass]="{'ant-menu-horizontal': false}"
-        *ngIf="data.currentUser"
-      >
-        <li nz-menu-item>
-          <span
-            class="pull-right no-hover"
-            nz-dropdown
-            nzTrigger="click"
-            [nzDropdownMenu]="menu"
-            [nzPlacement]="'bottomRight'"
-          >
-            <nz-avatar
-              nzSize="small"
-              [nzSrc]="data.currentUser.image"
-              nzIcon="user"
-            ></nz-avatar>
-        </span>
+    </div>
+    <!-- <div class="lg:hidden justify-self-start">Following</div> -->
+    <div class="lg:w-auto flex items-center ">
+      <ng-container *ngIf="data$ | async as data">
+        <ul nz-menu nzMode="horizontal">
+          <li *ngIf="data.currentUser" nz-menu-item [nzMatchRouter]="true">
+            <a
+              nz-button
+              nzType="text"
+              nzPlacement="bottomRight"
+              [routerLink]="['notification', data.currentUser.username]"
+            >
+              <nz-badge nzSize="small" [nzCount]="data?.notif_count?.count">
+                <span class="outline-amber-950" nz-icon nzType="bell"></span>
+              </nz-badge>
+            </a>
+          </li>
+          <li *ngIf="data.currentUser" nz-menu-item [nzMatchRouter]="true">
+            <span
+              class="pull-right no-hover"
+              nz-dropdown
+              nzTrigger="click"
+              [nzDropdownMenu]="menu"
+              [nzPlacement]="'bottomRight'"
+            >
+              <nz-avatar
+                nzSize="small"
+                [nzSrc]="data.currentUser!.image"
+                nzIcon="user"
+              ></nz-avatar>
+            </span>
 
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item routerLink="/settings">
-                <span nz-icon nzType="setting"></span>&nbsp;Edit Profile
-              </li>
-              <li nz-menu-divider></li>
-              <li nz-menu-item (click)="logout()" nzDanger>
-                <span nz-icon nzType="logout"></span>
-                Logout
-              </li>
-            </ul>
-          </nz-dropdown-menu>
-        </li>
-      </ul>
-    </ng-container>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item routerLink="/settings">
+                  <span nz-icon nzType="setting"></span>&nbsp;Edit Profile
+                </li>
+                <li nz-menu-divider></li>
+                <li nz-menu-item (click)="logout()" nzDanger>
+                  <span nz-icon nzType="logout"></span>
+                  Logout
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+          </li>
+          <li *ngIf="!data.currentUser" nz-menu-item routerLink="/sp/login">
+            Sign in
+          </li>
+        </ul>
+      </ng-container>
+    </div>
   </div>
 </nz-header>
