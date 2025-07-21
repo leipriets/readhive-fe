@@ -188,8 +188,6 @@ export class FeedComponent implements OnInit, OnDestroy {
       this.store.dispatch(feedActions.getFeed({url: apiUrlWithParams}));
     }
 
-    console.log('feed component');
-
     this.queryParams = this.route.snapshot.queryParams;
   }
 
@@ -203,7 +201,6 @@ export class FeedComponent implements OnInit, OnDestroy {
       ...parsedUrl.query,
     });
     const apiUrlWithParams = `${parsedUrl.url}?${stringifiedParams}`;
-    console.log('this.currentSessionId', this.currentSessionId);
 
     const dataSubs = this.data$.subscribe((response) => {
       this.pageSize = response.articlesCount;
@@ -217,13 +214,11 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   onScroll(): void {
-    console.log('scrolled!');
     setTimeout(() => {
       combineLatest([this.hasMore$])
       .pipe(take(1))
       .subscribe(([hasMore]) => {
         if (hasMore) {
-          console.log(hasMore);
           this.fetchFeed();
         }
       });
@@ -234,7 +229,6 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.currentUserSubscription = this.store
       .pipe(select(selectCurrentUser), filter(Boolean), take(1))
       .subscribe((currentUser: CurrentUserInterface) => {
-        console.log('app component current user ->', currentUser);
         this.currentSessionId = currentUser.id;
         this.currentSessionUsername = currentUser.username;
       });

@@ -5,7 +5,7 @@ import { PopularTagStateInterface } from '../types/popularTagsState.interface';
 const initialState: PopularTagStateInterface = {
   isLoading: false,
   error: null,
-  data: null,
+  data: [],
 };
 
 const popularTagsFeature = createFeature({

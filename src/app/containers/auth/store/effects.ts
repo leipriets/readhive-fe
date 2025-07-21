@@ -22,7 +22,7 @@ export const getCurrentUserEffect = createEffect(
         const token = persistenceService.get('BVaccessToken');
 
         if (!token) {
-          return of(authActions.getCurrentUserFailure);
+          return of(authActions.getCurrentUserFailure());
         }
         return authService.getCurrentUser().pipe(
           map((currentUser: CurrentUserInterface) => {
