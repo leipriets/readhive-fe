@@ -15,6 +15,7 @@ const authFeature = createFeature({
   name: 'auth',
   reducer: createReducer(
     initialState,
+    // Register
     on(authActions.register, (state) => ({
       ...state,
       isSubmitting: true,
@@ -31,6 +32,7 @@ const authFeature = createFeature({
       validationErrors: action.errors,
     })),
 
+    // Login 
     on(authActions.login, (state) => ({
       ...state,
       isSubmitting: true,
@@ -48,6 +50,7 @@ const authFeature = createFeature({
       validationErrors: action.errors,
     })),
 
+    // Get Current User
     on(authActions.getCurrentUser, (state, action) => ({
       ...state,
       isLoading: true,
@@ -63,12 +66,15 @@ const authFeature = createFeature({
       currentUser: null,
     })),
 
+    // Update Current User
     on(authActions.updateCurrentUserSuccess, (state, action) => ({
       ...state,
       isLoading: false,
       isSubmitting: false,
       currentUser: action.currentUser
     })),
+
+    // Logout
     on(authActions.logout, state => ({
       ...state,
       ...initialState,

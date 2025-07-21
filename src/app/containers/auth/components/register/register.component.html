@@ -30,8 +30,10 @@
             <input nz-input formControlName="username" placeholder="username" />
             <ng-template #userErrorTpl let-control>
               @if (control.errors?.['required']) { Please input your username! }
-              @if (control.errors?.['duplicated']) { The username is redundant!
-              }
+              @if (control.errors?.['minlength']) { Username must be at least
+              {{ control.errors?.['minlength'].requiredLength }} characters. }
+              @if (control.errors?.['duplicated']) { This username is already
+              taken. Please try a different one. }
             </ng-template>
           </nz-form-control>
         </nz-form-item>
@@ -51,6 +53,8 @@
             <ng-template #emailErrorTpl let-control>
               @if (control.errors?.['email']) { The input is not valid E-mail! }
               @if (control.errors?.['required']) { Please input your E-mail! }
+              @if (control.errors?.['duplicated']) { This email is already
+              taken. Please try a different one. }
             </ng-template>
           </nz-form-control>
         </nz-form-item>
@@ -95,15 +99,20 @@
 
         <nz-form-item>
           <nz-form-control [nzOffset]="7" [nzSpan]="12">
-            <button
-              nz-button
-              type="submit"
-              nzType="primary"
-              [disabled]="!validateForm.valid"
-            >
-              Submit
-            </button>
-            <button nz-button (click)="resetForm($event)">Reset</button>
+            <nz-space size="middle">
+              <button
+                *nzSpaceItem
+                nz-button
+                type="submit"
+                nzType="primary"
+                [disabled]="!validateForm.valid"
+              >
+                Submit
+              </button>
+              <button *nzSpaceItem nz-button (click)="resetForm($event)">
+                Reset
+              </button>
+            </nz-space>
           </nz-form-control>
         </nz-form-item>
       </form>

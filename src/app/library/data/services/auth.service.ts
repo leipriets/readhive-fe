@@ -7,6 +7,7 @@ import {Injectable} from '@angular/core';
 import {RegisterRequestInterface} from '../../../containers/auth/types/registerRequest.interface';
 import {LoginRequestInterface} from '../../../containers/auth/types/loginRequest.interface';
 import {CurrentUserRequestInterface} from '../types/currentUserRequest.interface';
+import {IValidateFieldResponse} from '../../../containers/auth/types/validateFieldResponse.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -49,16 +50,33 @@ export class AuthService {
     const url = environment.apiUrl + '/user-update';
 
     const userData = new FormData();
-    userData.append("username", currentUserRequest.user.username);
-    userData.append("bio", currentUserRequest.user.bio);
-    userData.append("email", currentUserRequest.user.email);
+    userData.append('username', currentUserRequest.user.username);
+    userData.append('bio', currentUserRequest.user.bio);
+    userData.append('email', currentUserRequest.user.email);
     if (currentUserRequest.user.image) {
-      userData.append("image", currentUserRequest.user.image, filename);
+      userData.append('image', currentUserRequest.user.image, filename);
     }
-      
 
     return this.http
       .post<AuthResponseInterface>(url, userData)
       .pipe(map(this.getUser));
+  }
+
+  validateUsername(username: string): Observable<IValidateFieldResponse> {
+    const url = environment.apiUrl + '/user/validate-username';
+    return this.http.get<IValidateFieldResponse>(url, {
+      params: {
+        username,
+      },
+    });
+  }
+
+  validateEmail(email: string): Observable<IValidateFieldResponse> {
+    const url = environment.apiUrl + '/user/validate-email';
+    return this.http.get<IValidateFieldResponse>(url, {
+      params: {
+        email,
+      },
+    });
   }
 }
