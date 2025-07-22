@@ -18,7 +18,7 @@ import {notificationActions} from '../store/actions';
 import {NotificationMessagePart} from '../../../library/data/types/notifMessagePart.interface';
 import {getShortTimeDifference} from '../../../library/utils/helper';
 import {CommonModule} from '@angular/common';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import {NzSkeletonModule} from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'app-notification-list',
@@ -33,7 +33,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
     NzCardModule,
     NzIconModule,
     NzDividerModule,
-    NzSkeletonModule
+    NzSkeletonModule,
   ],
 })
 export class NotificationListComponent implements OnInit, OnDestroy {
@@ -43,7 +43,7 @@ export class NotificationListComponent implements OnInit, OnDestroy {
     isLoading: this.store.select(selectIsLoading),
     error: this.store.select(selectError),
     notifData: this.store.select(selectNotifData),
-    actionData:  this.store.select(selectActionData)
+    actionData: this.store.select(selectActionData),
   });
 
   notifContent: string = '';
@@ -65,8 +65,10 @@ export class NotificationListComponent implements OnInit, OnDestroy {
     this.store.dispatch(notificationActions.clearNotifications());
   }
 
-  extractMsgPart(data: NotificationMessagePart[], type: string) {
-    const msgContent = this.notificationService.extractMsgParts(data, type);
+  extractMsgPart(data: string, type: string) {
+    const msgParts: NotificationMessagePart[] = JSON.parse(data);
+
+    const msgContent = this.notificationService.extractMsgParts(msgParts, type);
 
     return msgContent;
   }
