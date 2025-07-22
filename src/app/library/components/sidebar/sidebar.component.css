@@ -3,6 +3,10 @@
   border-right: 0;
 }
 
+.menu-item-bg {
+  background-color: #001529 !important;
+}
+
 
 /* .logo {
   height: 32px;
