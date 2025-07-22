@@ -12,9 +12,9 @@ import {DrawerService} from '../../../library/components/drawer/services/drawerS
 import {Store} from '@ngrx/store';
 import {drawerActions} from '../../../library/components/drawer/store/actions';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { CommentsInterface } from '../../../library/data/types/comments.interface';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
+import {CommentsInterface} from '../../../library/data/types/comments.interface';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 export const getArticleEffect = createEffect(
   (actions$ = inject(Actions), articleService = inject(ArticleService)) => {
@@ -107,13 +107,11 @@ export const redirectAfterUpdateEffect = createEffect(
       ofType(articleActions.updateArticleSuccess),
       tap(({article}) => {
         store.dispatch(drawerActions.toggleDrawerClose());
-        messageService.success("Article updated successfully.");
+        messageService.success('Article updated successfully.');
         setTimeout(() => {
           // store.dispatch(articleActions.getArticle({slug: article.slug}));
           location.reload();
         }, 1000);
-
-
       })
     );
   },
@@ -159,7 +157,6 @@ export const showSuccessModalAfterDeleteEffect = createEffect(
           modal.destroy();
           router.navigateByUrl('/');
         }, 2000);
-
       })
     );
   },
@@ -169,21 +166,30 @@ export const showSuccessModalAfterDeleteEffect = createEffect(
   }
 );
 
-
 export const showErrorNotifArticleEffect = createEffect(
-  (actions$ = inject(Actions), notification = inject(NzNotificationService)) => {
+  (
+    actions$ = inject(Actions),
+    notification = inject(NzNotificationService)
+  ) => {
     return actions$.pipe(
       ofType(articleActions.createArticleFailure),
       tap(({errors}) => {
-
         const errorKey = Object.keys(errors)[1];
         const errorMessage = errors[errorKey].toString();
 
-        notification.error(
-          'Error Article',
-          errorMessage,
-          { nzDuration: 3000, nzPlacement: 'topLeft' }
-        );
+        if (errors && typeof errors === 'object') {
+          const keys = Object.keys(errors);
+          const errorKey = keys[1]; // safely access the second key
+
+          notification.error('Error Article', errorMessage, {
+            nzDuration: 3000,
+            nzPlacement: 'topLeft',
+          });
+          
+        } else {
+          console.warn('No errors object found');
+        }
+
       })
     );
   },
