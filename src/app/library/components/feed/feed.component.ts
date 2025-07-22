@@ -124,6 +124,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     })
   );
 
+  timerSubs?: Subscription;
   hasMore$ = this.store.select(selectHasMore);
 
   offset = 0;

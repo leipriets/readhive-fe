@@ -42,18 +42,6 @@ export class GlobalFeedComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // for logout - reload the app-feed component
-    this.reloadFeed();
-
-  }
-
-  reloadFeed(): void {
-
-    // Optional: If <app-feed> needs a "refreshed" key
-    this.apiUrl = ''; // Force reset
-    setTimeout(() => {
-      this.apiUrl = '/articles'; // Trigger change detection
-    });
   }
 
 }

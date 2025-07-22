@@ -32,7 +32,10 @@ export class NotificationService {
     const events = ['notification', 'notificationComment'];
 
     events.forEach((event) => {
+      // Avoid multiple listeners
+      this.socket.off(event);
       this.socket.on(event, (data: NotificationMessagePart[]) => {
+        console.log(event);
         let messagePart = this.extractMsgParts(data, 'message') ?? '';
         let username = this.extractMsgParts(data, 'user') ?? '';
 
