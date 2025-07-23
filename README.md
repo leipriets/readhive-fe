@@ -1,27 +1,75 @@
-# ReadHive
+# 🐝 Read Hive (Frontend Only)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.7.
+A modern blogging platform where users can share their thoughts, quotes, or full-length articles — built with Angular and TypeScript.  
+**Note:** This repository is for the frontend only. The backend is hosted in a separate repository (Node.js).
 
-## Development server
+🌐 **Live Demo:** [https://read-hive-theta.vercel.app/global-feed](https://read-hive-theta.vercel.app/global-feed)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## ✨ Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- 🔐 **Authentication (JWT)**
+  - Sign Up with reactive username & email validation (unique)
+  - Sign In
+  - Update profile
+- 📝 **Article Management (CRUD)**
+  - Create, update, and delete articles using a WYSIWYG editor
+  - Add tags and filter by tags
+  - Like (Favorite) articles
+  - View posts under "For You" and "Following" tabs
+- 👤 **User Profiles**
+  - Search and view profiles
+  - Follow / Unfollow users
+  - Change avatar
+  - View user's articles and favorited articles
+- 💬 **Comments**
+  - Comment on articles
+  - Edit or delete comments
+  - Like or dislike comments
+- 🔔 **Real-Time Notifications (WebSocket)**
+  - Article reactions
+  - New comments
+  - New followers
+  - Comment likes
+- 📜 **Miscellaneous**
+  - Tag list display
+  - Infinite scroll for feeds
+  - Mobile-responsive UI
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🛠️ Tech Stack (Frontend)
 
-## Running unit tests
+- **Angular** v18.2.13  
+- **TypeScript**  
+- **TailwindCSS** – Utility-first CSS framework for custom styling  
+- **NgZorro Ant Design** – Elegant and feature-rich UI components for Angular  
+- **WebSocket** – Real-time notification system  
+- **JWT** – Secure user authentication  
+- **SCSS** – Additional custom styling  
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+> _Backend is built using Node.js (separate repository)._
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 📚 Use Case & Scope
 
-## Further help
+This project reflects real-world development skills commonly required in freelance and client-based Angular projects.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+It is applicable to:
+- Single-Page Application (SPA) development  
+- Dashboard and admin panel interfaces  
+- CMS and blog platforms  
+- Custom business frontends with real-time interactivity  
+- Scalable, modular Angular applications with stateful behavior and API integration  
+
+---
+
+## 🚀 Installation (Optional for Devs)
+
+```bash
+git clone https://github.com/leipriets/readhive-fe.git
+cd readhive-fe
+npm install
+ng serve

@@ -1,10 +1,12 @@
 import {inject} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import { followUserActions } from './actions';
-import {catchError, map, of, switchMap} from 'rxjs';
-import { ArticleInterface } from '../../../data/types/article.interface';
-import { FollowButtonService } from '../services/followButton.service';
-import { ProfileInterface } from '../../../data/types/profile.interface';
+import {followUserActions} from './actions';
+import {catchError, map, of, switchMap, tap} from 'rxjs';
+import {ArticleInterface} from '../../../data/types/article.interface';
+import {FollowButtonService} from '../services/followButton.service';
+import {ProfileInterface} from '../../../data/types/profile.interface';
+import {Store} from '@ngrx/store';
+import {userProfileActions} from '../../../../containers/userProfile/store/actions';
 
 export const followUserEffect = createEffect(
   (

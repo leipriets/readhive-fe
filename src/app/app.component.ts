@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
         // console.log('app component current user ->',currentUser);
         const userId = currentUser.id;
         this.notificationService.registerUser(userId);
-        this.notificationService.listenForNotifications();
+        this.notificationService.listenForNotifications(currentUser.username);
       });
   }
 

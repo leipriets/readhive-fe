@@ -19,6 +19,8 @@
         <app-follow-button
           [isFollowing]="data.userProfile?.following"
           [username]="data.userProfile?.username"
+          (followSubmit)="onHandleFollowCount($event)"
+          #followUserButton
         ></app-follow-button>
       </ng-container>
     </div>
@@ -29,7 +31,7 @@
       <nz-col [nzSpan]="6" [nzOffset]="2">
         <nz-statistic
           [nzValueStyle]="{fontSize: '20px'}"
-          [nzValue]="(data.userProfile?.followersCount | number)!"
+          [nzValue]="((data.userProfile!.followersCount + onListenFollowing )| number)!"
           nzTitle="Followers"
           [nzPrefix]="prefixTpl"
         ></nz-statistic>

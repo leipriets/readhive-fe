@@ -11,6 +11,7 @@ import {Store} from '@ngrx/store';
 import {notificationCountActions} from '../../components/header/store/actions';
 import {notificationActions} from '../../../containers/notificationList/store/actions';
 import queryString from 'query-string';
+import { userProfileActions } from '../../../containers/userProfile/store/actions';
 
 @Injectable({providedIn: 'root'})
 export class NotificationService {
@@ -28,7 +29,7 @@ export class NotificationService {
     this.socket.emit('register', userId);
   }
 
-  listenForNotifications() {
+  listenForNotifications(currentUserProfile?: string) {
     const events = ['notification', 'notificationComment'];
 
     events.forEach((event) => {
@@ -49,6 +50,13 @@ export class NotificationService {
         this.store.dispatch(
           notificationActions.getNotifications({limit: 5, offset: 0})
         );
+
+        if (currentUserProfile) {
+          this.store.dispatch(
+            userProfileActions.getUserProfile({username: currentUserProfile})
+          );
+        }
+
       });
     });
   }
