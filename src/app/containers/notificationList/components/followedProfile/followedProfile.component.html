@@ -1,0 +1,12 @@
+<ng-container *ngIf="notifData?.type === 'followed_profile'">
+  @if (notifData?.actors.length === 1) {
+  <strong>{{ notifData?.actors[0].username | capitalizeFirst }} </strong>
+
+  } @else if (notifData?.actors.length === 2) {
+  <strong>{{ notifData?.actors[0].username | capitalizeFirst }} </strong> and
+  <strong>{{ notifData?.actors[1].username | capitalizeFirst }}</strong>
+  } @else if(notifData?.actors.length > 2) {
+  <strong>{{ notifData?.actors[0].username | capitalizeFirst }} </strong> and
+  <strong>{{ notifData?.actors.length - 1 }}&nbsp;others</strong>
+  } &nbsp;{{ message }}
+</ng-container>

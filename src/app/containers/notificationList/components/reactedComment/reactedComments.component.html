@@ -1,0 +1,37 @@
+<ng-container *ngIf="notifData?.type === 'reacted_comment'">
+  <ng-container *ngIf="notifData?.actors.length === 1">
+    <strong>{{ notifData?.actors[0].username | capitalizeFirst }} </strong>
+  </ng-container>
+
+  <ng-container *ngIf="notifData?.actors.length > 1">
+    <strong>{{ notifData?.actors[0].username | capitalizeFirst }} </strong> and
+    <strong>{{ notifData?.actors[1].username | capitalizeFirst }} </strong>
+  </ng-container>
+
+  <ng-container *ngIf="notifData?.actors.length > 2">
+    <strong>{{ notifData?.actors[0].username | capitalizeFirst }} </strong> and
+    others
+  </ng-container>
+
+  <!-- Comment Content -->
+  &nbsp;{{ message }}
+
+  <ng-container *ngIf="commentReact === 'liked'">
+    <ng-container *ngTemplateOutlet="likeReact"></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="commentReact === 'disliked'">
+    <ng-container *ngTemplateOutlet="dislikedReact"></ng-container>
+  </ng-container>
+
+  &nbsp;
+  <i>- {{ comment }}</i>
+</ng-container>
+
+<ng-template #likeReact>
+  <span nz-icon nzType="like"></span>
+</ng-template>
+
+<ng-template #dislikedReact>
+  <span nz-icon nzType="dislike"></span>
+</ng-template>

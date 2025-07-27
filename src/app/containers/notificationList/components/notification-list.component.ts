@@ -19,6 +19,8 @@ import {NotificationMessagePart} from '../../../library/data/types/notifMessageP
 import {getShortTimeDifference} from '../../../library/utils/helper';
 import {CommonModule} from '@angular/common';
 import {NzSkeletonModule} from 'ng-zorro-antd/skeleton';
+import { ReactedCommentsComponent } from './reactedComment/reactedComments.component';
+import { FollowedProfileComponent } from './followedProfile/followedProfile.component';
 
 @Component({
   selector: 'app-notification-list',
@@ -34,6 +36,8 @@ import {NzSkeletonModule} from 'ng-zorro-antd/skeleton';
     NzIconModule,
     NzDividerModule,
     NzSkeletonModule,
+    ReactedCommentsComponent,
+    FollowedProfileComponent
   ],
 })
 export class NotificationListComponent implements OnInit, OnDestroy {

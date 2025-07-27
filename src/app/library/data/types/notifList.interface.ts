@@ -8,7 +8,7 @@ export interface NotifListData {
     type: string;
     title: string | null;
     channel: string;
-    message_parts: string;
+    message_parts: NotificationMessagePart[];
     data: any;
     actors: any;
     is_read: boolean;

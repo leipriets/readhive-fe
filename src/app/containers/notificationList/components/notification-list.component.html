@@ -4,83 +4,14 @@
       <nz-card nzTitle="Notifications">
         <nz-list nzItemLayout="horizontal">
           @for (notif of data?.notifData?.data; track $index) {
+
+          <!-- {{  notif | json  }} -->
           <nz-list-item>
             <nz-list-item-meta [nzAvatar]="notif.actors[0]?.image">
               <nz-list-item-meta-description>
-                <div *ngIf="notif.actors.length === 1">
-                  <span
-                    ><strong>{{ notif.actors[0]?.username }}</strong></span
-                  >&nbsp;<i>{{
-                    extractMsgPart(notif.message_parts, 'message')
-                  }}</i
-                  >&nbsp; @if (notif.type === 'reacted_comment' &&
-                  extractMsgPart(notif.message_parts, 'content') == 'liked') {
-                  <ng-container *ngTemplateOutlet="likeReact"></ng-container>
-
-                  } @if (notif.type === 'reacted_comment' &&
-                  extractMsgPart(notif.message_parts, 'content') == 'disliked')
-                  {
-                  <ng-container
-                    *ngTemplateOutlet="dislikedReact"
-                  ></ng-container>
-
-                  } @if (notif.type !== 'followed_profile') { -
-                  <span>{{
-                    extractMsgPart(notif.message_parts, 'title')
-                  }}</span>
-                  }
-                </div>
-
-                <div *ngIf="notif.actors.length === 2">
-                  <span
-                    ><strong>{{ notif.actors[0]?.username }}</strong></span
-                  >
-                  and
-                  <span
-                    ><strong>{{ notif.actors[1]?.username }}</strong></span
-                  ><i>{{ extractMsgPart(notif.message_parts, 'message') }}</i
-                  >&nbsp; @if (notif.type === 'reacted_comment' &&
-                  extractMsgPart(notif.message_parts, 'content') == 'liked') {
-                  <ng-container *ngTemplateOutlet="likeReact"></ng-container>
-
-                  } @if (notif.type === 'reacted_comment' &&
-                  extractMsgPart(notif.message_parts, 'content') == 'disliked')
-                  {
-                  <ng-container
-                    *ngTemplateOutlet="dislikedReact"
-                  ></ng-container>
-
-                  } -
-                  <span>{{
-                    extractMsgPart(notif.message_parts, 'title')
-                  }}</span>
-                </div>
-
-                <ng-container *ngIf="notif.actors.length > 2">
-                  <span
-                    ><strong>{{ notif.actors[0].username }}</strong></span
-                  >
-                  and <span>{{ notif.actors.length - 1 }} others </span
-                  ><span>{{
-                    extractMsgPart(notif.message_parts, 'message')
-                  }}</span>
-
-                  @if (notif.type === 'reacted_comment' &&
-                  extractMsgPart(notif.message_parts, 'content') == 'liked') {
-                  <ng-container *ngTemplateOutlet="likeReact"></ng-container>
-
-                  } @if (notif.type === 'reacted_comment' &&
-                  extractMsgPart(notif.message_parts, 'content') == 'disliked')
-                  {
-                  <ng-container
-                    *ngTemplateOutlet="dislikedReact"
-                  ></ng-container>
-
-                  } -
-                  <span>{{
-                    extractMsgPart(notif.message_parts, 'title')
-                  }}</span>
-                </ng-container>
+                <!-- Sub Component -->
+                <reacted-comments [notifData]="notif" />
+                <followed-profile [notifData]="notif" />
               </nz-list-item-meta-description>
             </nz-list-item-meta>
             <ul nz-list-item-actions>
@@ -91,7 +22,7 @@
           </nz-list-item>
           }
         </nz-list>
-        <div *ngIf="data.actionData.length > 0" class="loadmore">
+        <div *ngIf="data.actionData.length > limit" class="loadmore">
           <button nz-button (click)="onLoadMore()">loading more</button>
         </div>
         <br />
